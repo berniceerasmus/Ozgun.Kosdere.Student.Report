@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Level Assessment & Training Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2244;
+    --navy-mid: #1a3660;
+    --navy-light: #2a4f8f;
+    --accent: #c8a96e;
+    --accent-light: #e8d5a8;
+    --steel: #4a5e7a;
+    --slate: #8898aa;
+    --fog: #f0f4f9;
+    --cloud: #e8eef6;
+    --white: #ffffff;
+    --text: #1e2d42;
+    --muted: #5a6e85;
+    --success: #2d7a5f;
+    --warning: #b85c00;
+    --error-red: #8b1a1a;
+    --correct-green: #1a5c3a;
+    --radius: 10px;
+    --shadow: 0 4px 24px rgba(15,34,68,0.10);
+    --shadow-sm: 0 2px 10px rgba(15,34,68,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #e9eef6;
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ─── HEADER ─── */
+  .report-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, var(--navy-light) 100%);
+    color: white;
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(200,169,110,0.12);
+  }
+  .report-header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: rgba(200,169,110,0.08);
+  }
+  .header-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+  }
+  .report-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .report-header h2 {
+    font-size: 1.15rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    margin-bottom: 28px;
+    letter-spacing: 0.5px;
+  }
+  .header-meta {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .header-meta span {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 7px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+  }
+  .header-meta span strong { color: var(--accent); }
+
+  /* ─── CONTAINER ─── */
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* ─── SECTION ─── */
+  .section {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .section-header {
+    background: var(--navy);
+    color: white;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-header .icon {
+    width: 32px; height: 32px;
+    background: rgba(200,169,110,0.25);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  .section-header .section-num {
+    margin-left: auto;
+    background: rgba(200,169,110,0.3);
+    color: var(--accent-light);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 3px 10px;
+    border-radius: 10px;
+  }
+  .section-body { padding: 28px; }
+
+  /* ─── CEFR LEVEL ─── */
+  .cefr-display {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+  }
+  .cefr-badge {
+    background: linear-gradient(135deg, var(--navy), var(--navy-light));
+    color: white;
+    padding: 20px 32px;
+    border-radius: var(--radius);
+    text-align: center;
+    min-width: 140px;
+    box-shadow: 0 4px 16px rgba(15,34,68,0.2);
+  }
+  .cefr-badge .level-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-light); margin-bottom: 4px; }
+  .cefr-badge .level-value { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 700; color: white; }
+  .cefr-arrow {
+    font-size: 2rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .cefr-badge.target { background: linear-gradient(135deg, var(--success), #1a5c3a); }
+  .cefr-explanation {
+    background: var(--fog);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--text);
+    font-size: 14.5px;
+    line-height: 1.65;
+  }
+
+  /* ─── TABLE ─── */
+  .styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .styled-table thead tr {
+    background: var(--navy);
+    color: white;
+  }
+  .styled-table thead th {
+    padding: 13px 16px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 13px;
+    text-transform: uppercase;
+  }
+  .styled-table tbody tr { border-bottom: 1px solid var(--cloud); }
+  .styled-table tbody tr:hover { background: var(--fog); }
+  .styled-table tbody td { padding: 14px 16px; vertical-align: top; }
+  .styled-table tbody td:first-child { font-weight: 600; color: var(--navy); }
+
+  .level-pill {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .level-b1 { background: #fff3cd; color: #7d5a00; }
+  .level-b2 { background: #d4edda; color: #155724; }
+  .level-b1p { background: #fde8c8; color: #7d3a00; }
+
+  /* ─── CARD GRID ─── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    background: var(--fog);
+    border-radius: var(--radius);
+    padding: 20px;
+    border-top: 4px solid var(--accent);
+    box-shadow: var(--shadow-sm);
+  }
+  .card.weakness { border-top-color: #c0392b; }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h3 .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .card.weakness h3 .dot { background: #c0392b; }
+  .card p { font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+
+  /* ─── MONTH PLAN ─── */
+  .month-block {
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--cloud);
+  }
+  .month-block:last-child { margin-bottom: 0; }
+  .month-title {
+    background: var(--navy-mid);
+    color: white;
+    padding: 13px 22px;
+    font-weight: 700;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .month-title .badge {
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+  }
+  .month-body { padding: 20px 22px; background: white; }
+  .month-body h4 {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--slate);
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+  .month-body h4:first-child { margin-top: 0; }
+  .month-body ul { padding-left: 18px; }
+  .month-body ul li { margin-bottom: 5px; font-size: 14px; color: var(--text); }
+  .week-row {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--fog);
+    font-size: 14px;
+  }
+  .week-row:last-child { border-bottom: none; }
+  .week-label { font-weight: 700; color: var(--navy-light); font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+
+  /* ─── VOCAB SECTIONS ─── */
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 18px;
+  }
+  .vocab-block {
+    background: var(--fog);
+    border-radius: var(--radius);
+    padding: 18px;
+    border-left: 4px solid var(--navy-light);
+  }
+  .vocab-block h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--navy);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cloud);
+  }
+  .vocab-block ul { list-style: none; padding: 0; }
+  .vocab-block ul li {
+    font-size: 13.5px;
+    padding: 4px 0;
+    color: var(--text);
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+  }
+  .vocab-block ul li::before { content: '›'; color: var(--accent); font-weight: 700; font-size: 15px; }
+
+  /* ─── FUNCTIONAL LANGUAGE ─── */
+  .func-category { margin-bottom: 24px; }
+  .func-category:last-child { margin-bottom: 0; }
+  .func-category h3 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--navy);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+  .phrase-list { display: flex; flex-direction: column; gap: 8px; }
+  .phrase-item {
+    background: var(--fog);
+    border-radius: 8px;
+    padding: 11px 16px;
+    font-size: 14px;
+    color: var(--text);
+    border-left: 3px solid var(--navy-light);
+    font-style: italic;
+  }
+
+  /* ─── ROLEPLAY ─── */
+  .roleplay-block {
+    border: 1px solid var(--cloud);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .roleplay-block:last-child { margin-bottom: 0; }
+  .roleplay-header {
+    background: linear-gradient(90deg, var(--navy) 0%, var(--navy-light) 100%);
+    padding: 15px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .roleplay-header h3 { color: white; font-size: 15px; font-weight: 700; }
+  .roleplay-header .rp-num {
+    background: var(--accent);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 12px;
+    letter-spacing: 1px;
+  }
+  .roleplay-body { padding: 22px; background: white; }
+  .rp-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .rp-meta-item {
+    background: var(--fog);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+  .rp-meta-item strong { display: block; color: var(--navy); font-size: 11px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .rp-meta-item span { color: var(--text); }
+
+  .dialogue {
+    background: var(--fog);
+    border-radius: var(--radius);
+    padding: 18px;
+    margin-bottom: 18px;
+  }
+  .dialogue h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--slate);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--cloud);
+  }
+  .dialogue-line {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .dialogue-line:last-child { margin-bottom: 0; }
+  .speaker {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+  .speaker.student { color: var(--navy-light); }
+  .speaker.ai { color: #6b4226; }
+  .speech {
+    background: white;
+    padding: 9px 14px;
+    border-radius: 0 8px 8px 8px;
+    border: 1px solid var(--cloud);
+  }
+
+  .rp-phrases h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--slate);
+    margin-bottom: 10px;
+  }
+  .rp-phrases-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rp-phrase-tag {
+    background: var(--navy);
+    color: white;
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 12.5px;
+    font-style: italic;
+  }
+
+  /* ─── ERROR CORRECTION ─── */
+  .error-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .error-table thead tr { background: var(--navy); color: white; }
+  .error-table thead th { padding: 12px 14px; text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .error-table tbody tr { border-bottom: 1px solid var(--cloud); }
+  .error-table tbody tr:hover { background: var(--fog); }
+  .error-table tbody td { padding: 12px 14px; vertical-align: top; }
+  .incorrect { color: var(--error-red); font-weight: 600; text-decoration: line-through; }
+  .correct { color: var(--correct-green); font-weight: 600; }
+  .explanation { color: var(--muted); font-style: italic; line-height: 1.5; }
+
+  .pattern-block {
+    background: var(--fog);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--navy-light);
+  }
+  .pattern-block h4 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+  .pattern-block p { font-size: 14px; color: var(--text); line-height: 1.65; }
+
+  .strategy-block {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .strategy-item {
+    background: var(--navy);
+    color: white;
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+  .strategy-item h4 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+  .strategy-item p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.82); }
+
+  /* ─── FINAL SUMMARY ─── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  .summary-card {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: var(--radius);
+    padding: 22px;
+    color: white;
+    text-align: center;
+  }
+  .summary-card .sc-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-light); margin-bottom: 8px; }
+  .summary-card .sc-value { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 700; }
+  .summary-card.transform { background: linear-gradient(135deg, #1a4a2e, #2d7a5f); }
+  .transformation-box {
+    background: var(--fog);
+    border-radius: var(--radius);
+    padding: 22px 26px;
+    border-left: 5px solid var(--accent);
+  }
+  .transformation-box h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+  .transformation-box ul { padding-left: 18px; }
+  .transformation-box ul li { margin-bottom: 8px; font-size: 14px; color: var(--text); }
+
+  /* ─── FOOTER ─── */
+  .report-footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--slate);
+    font-size: 13px;
+    border-top: 1px solid var(--cloud);
+    margin-top: 10px;
+  }
+  .report-footer strong { color: var(--navy); }
+
+  /* ─── UTILITIES ─── */
+  .highlight { color: var(--navy-light); font-weight: 700; }
+  .gold { color: var(--accent); font-weight: 700; }
+  .divider { height: 1px; background: var(--cloud); margin: 22px 0; }
+  .subsection-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--navy);
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+    margin-bottom: 16px;
+    margin-top: 24px;
+  }
+  .subsection-title:first-child { margin-top: 0; }
+  p { margin-bottom: 12px; }
+  p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 600px) {
+    .report-header h1 { font-size: 1.9rem; }
+    .cefr-display { justify-content: center; }
+    .dialogue-line { grid-template-columns: 80px 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="report-header">
+  <div class="header-badge">Confidential Teaching Report</div>
+  <h1>Özgün Koşedere</h1>
+  <h2>English Level Assessment &amp; Training Plan</h2>
+  <div class="header-meta">
+    <span><strong>Prepared by:</strong> ESL Business Trainer</span>
+    <span><strong>Date:</strong> April 2026</span>
+    <span><strong>Duration:</strong> 3-Month Programme</span>
+    <span><strong>Focus:</strong> Business English · Engineering</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════ 1. CEFR ASSESSMENT ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">🎯</div>
+    <h2>CEFR Level Assessment</h2>
+    <span class="section-num">01</span>
+  </div>
+  <div class="section-body">
+    <div class="cefr-display">
+      <div class="cefr-badge">
+        <div class="level-label">Current Level</div>
+        <div class="level-value">B1+</div>
+      </div>
+      <div class="cefr-arrow">→</div>
+      <div class="cefr-badge target">
+        <div class="level-label">Target Level</div>
+        <div class="level-value">B2</div>
+      </div>
+    </div>
+    <div class="cefr-explanation">
+      <strong>Assessment Summary:</strong> Özgün demonstrates solid B1 competency with emerging B2 features in vocabulary range and topic familiarity. He can communicate ideas in professional contexts but struggles with sustained fluency, complex grammar structures, and natural spoken discourse. His technical background provides strong thematic vocabulary in engineering, but he lacks the functional language for meetings, negotiations, and cross-cultural business contexts — particularly with international colleagues and Romanian counterparts. The 3-month programme targets B2 consolidation with a strong focus on spoken confidence and professional register.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 2. SKILL BREAKDOWN ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">📊</div>
+    <h2>Skill Breakdown</h2>
+    <span class="section-num">02</span>
+  </div>
+  <div class="section-body" style="padding:0;">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Skill</th>
+          <th>Level</th>
+          <th>Strengths</th>
+          <th>Weaknesses</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Speaking</td>
+          <td><span class="level-pill level-b1">B1+</span></td>
+          <td>Willing to communicate; uses filler strategies; familiar with work topics</td>
+          <td>Hesitation, self-interruption, sentence fragments, limited linking language</td>
+        </tr>
+        <tr>
+          <td>Vocabulary</td>
+          <td><span class="level-pill level-b1p">B1–B2</span></td>
+          <td>Good core technical vocabulary; recalls words under pressure</td>
+          <td>Overuses basic words (big, problem, do, make); limited collocations; weak idiomatic range</td>
+        </tr>
+        <tr>
+          <td>Grammar</td>
+          <td><span class="level-pill level-b1">B1</span></td>
+          <td>Basic tense use is mostly correct; can form questions</td>
+          <td>Article errors (a/the/ø), wrong prepositions, conditional confusion, verb–noun agreement breaks</td>
+        </tr>
+        <tr>
+          <td>Listening</td>
+          <td><span class="level-pill level-b2">B2</span></td>
+          <td>Understands standard accents well; follows meeting content with scaffolding</td>
+          <td>Struggles with fast native speech, reduced forms, and strong non-native accents (Romanian)</td>
+        </tr>
+        <tr>
+          <td>Writing</td>
+          <td><span class="level-pill level-b1">B1</span></td>
+          <td>Can write clear emails at sentence level; logical structure present</td>
+          <td>Run-on sentences, informal register, direct translation from Turkish, missing linking words</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════ 3. KEY STRENGTHS ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">✅</div>
+    <h2>Key Strengths</h2>
+    <span class="section-num">03</span>
+  </div>
+  <div class="section-body">
+    <div class="card-grid">
+      <div class="card">
+        <h3><span class="dot"></span>Technical Knowledge Base</h3>
+        <p>Özgün enters conversations with a strong subject-matter foundation. He understands engineering concepts deeply and can convey technical logic even when English vocabulary fails him — a key asset in business communication.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot"></span>Communicative Courage</h3>
+        <p>He does not freeze under communication pressure. He attempts complex ideas, self-repairs, and pushes through uncertainty — exactly the behaviour that accelerates language acquisition at B1–B2 transition.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot"></span>Professional Context Awareness</h3>
+        <p>Özgün understands register differences between formal and informal communication. He knows when professional language is expected, even if he doesn't always have the precise vocabulary to use it.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot"></span>Listening Comprehension</h3>
+        <p>His receptive skills are noticeably stronger than his production. He follows professional conversations, understands instructions, and grasps meaning from context — making pair-work and listening tasks very effective.</p>
+      </div>
+      <div class="card">
+        <h3><span class="dot"></span>Motivation &amp; Relevance</h3>
+        <p>His learning is goal-oriented and job-specific. He has clear professional needs (managing teams, Romania meetings, budget talks) which makes lesson design straightforward and student engagement consistently high.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 4. KEY WEAKNESSES ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">⚠️</div>
+    <h2>Key Weaknesses</h2>
+    <span class="section-num">04</span>
+  </div>
+  <div class="section-body">
+    <div class="card-grid">
+      <div class="card weakness">
+        <h3><span class="dot"></span>Article System (a / the / ø)</h3>
+        <p>Turkish has no articles, so Özgün omits or misuses them almost universally. This is his most consistent and noticeable grammar error in both spoken and written output.</p>
+      </div>
+      <div class="card weakness">
+        <h3><span class="dot"></span>Discourse Connectivity</h3>
+        <p>Sentences are produced in isolation without linking devices. He rarely uses "however," "as a result," "in addition to," or "given that" — which makes his speech feel choppy and his arguments hard to follow.</p>
+      </div>
+      <div class="card weakness">
+        <h3><span class="dot"></span>Conditional Structures</h3>
+        <p>He confuses zero, first, and second conditionals. In business contexts this is critical — the difference between "if we delay, the client will leave" and "if we had planned better, this wouldn't happen" carries significant meaning.</p>
+      </div>
+      <div class="card weakness">
+        <h3><span class="dot"></span>Vocabulary Range (Collocations)</h3>
+        <p>Overreliance on basic verbs (do, make, have, get) instead of precise collocations: "make a decision" → fine, but misses "reach a consensus," "set a deadline," "flag a risk," "raise a concern."</p>
+      </div>
+      <div class="card weakness">
+        <h3><span class="dot"></span>Diplomatic &amp; Polite Register</h3>
+        <p>Özgün tends toward direct, assertive language that can seem blunt or even rude in international professional settings. He lacks the modal softeners and hedging language needed for polite disagreement and negotiation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 5. LEARNING PRIORITIES ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">🔑</div>
+    <h2>Learning Priorities</h2>
+    <span class="section-num">05</span>
+  </div>
+  <div class="section-body">
+    <p>Based on the assessment and Özgün's professional context, the following priorities are ranked by impact and urgency:</p>
+    <table class="styled-table" style="margin-top:16px;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Priority Area</th>
+          <th>Why It Matters</th>
+          <th>Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>Meeting Language &amp; Facilitation</strong></td>
+          <td>Özgün chairs and attends cross-border meetings weekly. Fluency here has immediate professional ROI.</td>
+          <td><span class="level-pill level-b2" style="background:#d4edda;color:#155724;">Critical</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Article System Mastery</strong></td>
+          <td>Most frequent error. Fixing this alone raises perceived language level significantly.</td>
+          <td><span class="level-pill level-b2" style="background:#d4edda;color:#155724;">High</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Diplomatic Language &amp; Softeners</strong></td>
+          <td>Managing Romanian colleagues and engineers requires careful register. Bluntness causes friction.</td>
+          <td><span class="level-pill level-b2" style="background:#d4edda;color:#155724;">High</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>Business Collocations</strong></td>
+          <td>Replacing weak verbs with professional collocations transforms output quality immediately.</td>
+          <td><span class="level-pill level-b1p">Medium–High</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Conditional &amp; Hypothetical Structures</strong></td>
+          <td>Essential for risk discussion, planning, and persuasion in engineering contexts.</td>
+          <td><span class="level-pill level-b1p">Medium–High</span></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>Spoken Discourse &amp; Linking</strong></td>
+          <td>Adding cohesion to spoken language makes presentations and explanations more credible.</td>
+          <td><span class="level-pill level-b1">Medium</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════ 6. 3-MONTH LESSON PLAN ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">📅</div>
+    <h2>3-Month Lesson Plan</h2>
+    <span class="section-num">06</span>
+  </div>
+  <div class="section-body">
+
+    <div class="month-block">
+      <div class="month-title">
+        <span>Month 1 — Foundation &amp; Core Business Communication</span>
+        <span class="badge">Weeks 1–4</span>
+      </div>
+      <div class="month-body">
+        <h4>Goals</h4>
+        <ul>
+          <li>Build article system awareness and begin habit correction</li>
+          <li>Introduce professional meeting vocabulary and expressions</li>
+          <li>Develop confidence in giving structured updates and reports</li>
+          <li>Activate passive vocabulary into active use</li>
+        </ul>
+        <h4>Weekly Focus</h4>
+        <div class="week-row"><span class="week-label">Week 1</span><span>Articles (a/the/ø) — rules, patterns, common errors. Practice: describe your workspace, your project, your team.</span></div>
+        <div class="week-row"><span class="week-label">Week 2</span><span>Meeting language — opening, turn-taking, summarising. Roleplay: leading a project status meeting.</span></div>
+        <div class="week-row"><span class="week-label">Week 3</span><span>Giving updates and reports — tense use (present perfect vs. past simple). Activity: weekly status email + spoken update.</span></div>
+        <div class="week-row"><span class="week-label">Week 4</span><span>Business collocations: project management vocabulary. Review Month 1 errors. Mock meeting roleplay with feedback.</span></div>
+        <h4>Key Activities</h4>
+        <ul>
+          <li>Article correction exercises with real examples from Özgün's speech</li>
+          <li>Vocabulary flashcard set: 40 core business collocations (Anki or handout)</li>
+          <li>15-min recorded speaking task each week — self-review with checklist</li>
+          <li>Email writing: send a status update to a client</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="month-block">
+      <div class="month-title">
+        <span>Month 2 — Diplomacy, Negotiation &amp; Technical Communication</span>
+        <span class="badge">Weeks 5–8</span>
+      </div>
+      <div class="month-body">
+        <h4>Goals</h4>
+        <ul>
+          <li>Master polite disagreement and hedging language</li>
+          <li>Use conditionals accurately in planning and risk discussions</li>
+          <li>Lead and participate in cross-cultural meetings (Romania context)</li>
+          <li>Communicate engineering issues clearly to non-technical stakeholders</li>
+        </ul>
+        <h4>Weekly Focus</h4>
+        <div class="week-row"><span class="week-label">Week 5</span><span>Diplomatic language — softeners, modal verbs, hedging. Practice: disagreeing without offending.</span></div>
+        <div class="week-row"><span class="week-label">Week 6</span><span>Conditionals (1st &amp; 2nd) — risk, planning, hypotheticals. Activity: risk discussion roleplay.</span></div>
+        <div class="week-row"><span class="week-label">Week 7</span><span>Cross-cultural communication — Romania context, international email conventions, telephone/video calls.</span></div>
+        <div class="week-row"><span class="week-label">Week 8</span><span>Explaining technical problems to non-engineers. Structuring clear, simple explanations. Presentation skills basics.</span></div>
+        <h4>Key Activities</h4>
+        <ul>
+          <li>Roleplay: Özgün disagrees with a Romanian colleague about a deadline</li>
+          <li>Gap-fill and transformation exercises on conditionals</li>
+          <li>Watch: TED Talk on engineering/leadership — note 10 useful expressions</li>
+          <li>Write: Email to a client explaining a project delay (politely)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="month-block">
+      <div class="month-title">
+        <span>Month 3 — Fluency, Consolidation &amp; Exam Readiness</span>
+        <span class="badge">Weeks 9–12</span>
+      </div>
+      <div class="month-body">
+        <h4>Goals</h4>
+        <ul>
+          <li>Achieve smooth, connected spoken discourse with linking language</li>
+          <li>Handle budget discussions, persuasion, and leadership scenarios</li>
+          <li>Consolidate all grammar and vocabulary targets</li>
+          <li>Assess progress and plan next steps (B2 → C1 roadmap)</li>
+        </ul>
+        <h4>Weekly Focus</h4>
+        <div class="week-row"><span class="week-label">Week 9</span><span>Persuasion and influencing language — making a business case. Roleplay: requesting additional budget.</span></div>
+        <div class="week-row"><span class="week-label">Week 10</span><span>Managing people in English — giving feedback, delegating, setting expectations. Roleplay: engineer performance review.</span></div>
+        <div class="week-row"><span class="week-label">Week 11</span><span>Discourse fluency — linking, pausing, chunking. Record and self-review a 3-min presentation.</span></div>
+        <div class="week-row"><span class="week-label">Week 12</span><span>Full assessment: mock meeting + written report + spoken interview. Progress review against Month 1 baseline.</span></div>
+        <h4>Key Activities</h4>
+        <ul>
+          <li>Full-length roleplay: 20-minute budget review meeting (teacher plays CFO)</li>
+          <li>Recorded presentation: "My team's project progress this quarter"</li>
+          <li>Comprehensive error correction: compare Month 1 recordings to Month 3</li>
+          <li>Create a personal vocabulary booklet — 100+ words in context</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ 7. BUSINESS VOCABULARY ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">📚</div>
+    <h2>Business Vocabulary Bank</h2>
+    <span class="section-num">07</span>
+  </div>
+  <div class="section-body">
+    <div class="vocab-grid">
+      <div class="vocab-block">
+        <h3>🗂 Project Management</h3>
+        <ul>
+          <li>Set a milestone / deadline</li>
+          <li>Allocate resources</li>
+          <li>Flag a risk / raise a concern</li>
+          <li>Meet / miss a deadline</li>
+          <li>Deliver on time / within scope</li>
+          <li>Track progress / monitor KPIs</li>
+          <li>Escalate an issue</li>
+          <li>Sign off on a deliverable</li>
+          <li>Carry out a review</li>
+          <li>Put something on hold</li>
+        </ul>
+      </div>
+      <div class="vocab-block">
+        <h3>⚙️ Engineering / Technical</h3>
+        <ul>
+          <li>Identify a root cause</li>
+          <li>Run diagnostics / tests</li>
+          <li>Implement a solution</li>
+          <li>Conduct a feasibility study</li>
+          <li>Retrofit / upgrade a system</li>
+          <li>Comply with standards</li>
+          <li>Validate / verify results</li>
+          <li>Troubleshoot the issue</li>
+          <li>Integrate the components</li>
+          <li>Exceed / meet specifications</li>
+        </ul>
+      </div>
+      <div class="vocab-block">
+        <h3>👔 Leadership</h3>
+        <ul>
+          <li>Delegate responsibilities</li>
+          <li>Give / receive feedback</li>
+          <li>Motivate the team</li>
+          <li>Set expectations clearly</li>
+          <li>Hold someone accountable</li>
+          <li>Drive performance</li>
+          <li>Resolve a conflict</li>
+          <li>Foster collaboration</li>
+          <li>Lead by example</li>
+          <li>Build a high-performing team</li>
+        </ul>
+      </div>
+      <div class="vocab-block">
+        <h3>🤝 Meetings</h3>
+        <ul>
+          <li>Kick off / wrap up a meeting</li>
+          <li>Go through the agenda</li>
+          <li>Take the floor / hand over</li>
+          <li>Reach a consensus</li>
+          <li>Table a point / defer a topic</li>
+          <li>Minute / action point</li>
+          <li>Come to an agreement</li>
+          <li>Chair the meeting</li>
+          <li>Circle back / follow up</li>
+          <li>Call a vote / move forward</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ 8. FUNCTIONAL LANGUAGE ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">💬</div>
+    <h2>Functional Language — Ready-to-Use Phrases</h2>
+    <span class="section-num">08</span>
+  </div>
+  <div class="section-body">
+
+    <div class="func-category">
+      <h3>Explaining Problems</h3>
+      <div class="phrase-list">
+        <div class="phrase-item">"The issue we're facing is that the delivery schedule has been pushed back by two weeks."</div>
+        <div class="phrase-item">"What seems to be causing this is a bottleneck in the supply chain."</div>
+        <div class="phrase-item">"To give you some context, this problem first appeared when we started the second phase."</div>
+        <div class="phrase-item">"The root cause, as far as we can tell, is a miscommunication between the two teams."</div>
+      </div>
+    </div>
+
+    <div class="func-category">
+      <h3>Giving Updates</h3>
+      <div class="phrase-list">
+        <div class="phrase-item">"I'm pleased to report that we've completed Phase 1 ahead of schedule."</div>
+        <div class="phrase-item">"We're currently at around 70% completion on the installation work."</div>
+        <div class="phrase-item">"There's been a slight delay, but we're confident we can recover the timeline by next Friday."</div>
+        <div class="phrase-item">"To update you on the situation — we've resolved the technical issue and resumed testing."</div>
+      </div>
+    </div>
+
+    <div class="func-category">
+      <h3>Disagreeing Politely</h3>
+      <div class="phrase-list">
+        <div class="phrase-item">"I take your point, but I'd like to suggest we look at this from a different angle."</div>
+        <div class="phrase-item">"I'm not entirely convinced that approach would work in our context."</div>
+        <div class="phrase-item">"That's an interesting perspective — though I do have some reservations about the timeline."</div>
+        <div class="phrase-item">"With respect, I think we need to reconsider before we commit to that decision."</div>
+      </div>
+    </div>
+
+    <div class="func-category">
+      <h3>Persuading</h3>
+      <div class="phrase-list">
+        <div class="phrase-item">"If we invest in this now, we'll avoid much larger costs down the line."</div>
+        <div class="phrase-item">"The data clearly shows that this approach delivers the best results."</div>
+        <div class="phrase-item">"I strongly believe this is the right direction for the team — and here's why."</div>
+        <div class="phrase-item">"Would you be open to considering an alternative approach that might address your concerns?"</div>
+      </div>
+    </div>
+
+    <div class="func-category">
+      <h3>Leading Meetings</h3>
+      <div class="phrase-list">
+        <div class="phrase-item">"Right, let's get started. The main items on today's agenda are..."</div>
+        <div class="phrase-item">"I'd like to hand over to Mirela for the update on the Romanian site."</div>
+        <div class="phrase-item">"Let's park that for now and come back to it at the end."</div>
+        <div class="phrase-item">"So to summarise what we've agreed — the action points are as follows..."</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ 9. ROLEPLAY SCENARIOS ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">🎭</div>
+    <h2>Roleplay Scenarios</h2>
+    <span class="section-num">09</span>
+  </div>
+  <div class="section-body">
+
+    <!-- ROLEPLAY 1 -->
+    <div class="roleplay-block">
+      <div class="roleplay-header">
+        <h3>The Project Delay — Informing a Romanian Colleague</h3>
+        <span class="rp-num">ROLEPLAY 01</span>
+      </div>
+      <div class="roleplay-body">
+        <div class="rp-meta">
+          <div class="rp-meta-item"><strong>Context</strong><span>A critical installation project in Romania is 10 days behind schedule due to a supplier failure. Özgün must inform his Romanian counterpart and propose a recovery plan.</span></div>
+          <div class="rp-meta-item"><strong>Student Role</strong><span>Project Manager (Özgün) — must explain the delay, take responsibility, and propose solutions without damaging the relationship.</span></div>
+          <div class="rp-meta-item"><strong>AI / Teacher Role</strong><span>Romanian Site Manager (Mirela) — initially frustrated; open to solutions if approached professionally.</span></div>
+          <div class="rp-meta-item"><strong>Objective</strong><span>Practice: giving bad news diplomatically, using conditionals for solutions, and managing cross-cultural professional tension.</span></div>
+        </div>
+        <div class="dialogue">
+          <h4>Step-by-Step Conversation Flow</h4>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">Good morning, Mirela. Thank you for making time. I wanted to speak with you directly about the Phase 2 installation. I'm afraid I have some difficult news to share.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">MIRELA</span>
+            <div class="speech">Good morning, Özgün. That sounds concerning. What's happened?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">Unfortunately, our main equipment supplier has informed us of a production delay. As a result, the delivery has been pushed back by approximately ten days. I understand this is not ideal, and I want to be transparent with you about the situation.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">MIRELA</span>
+            <div class="speech">Ten days? Özgün, this is a serious problem. We have commitments to the client. What are you proposing to do about this?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">I fully understand your concern, and I take responsibility for not anticipating this risk earlier. I've already been in contact with two alternative suppliers. If we approve the sourcing change today, we can recover approximately six of the ten days. I'd like to walk you through our revised plan.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">MIRELA</span>
+            <div class="speech">What's the cost impact of switching suppliers at this stage?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">There would be an additional cost of roughly €4,000. However, if we don't act now, the delay penalty from the client would be significantly higher. I believe this is the most cost-effective path forward.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">MIRELA</span>
+            <div class="speech">I see. I appreciate you coming to me with a solution rather than just the problem. Let me review the supplier options and get back to you by end of day.</div>
+          </div>
+        </div>
+        <div class="rp-phrases">
+          <h4>Useful Phrases for Özgün</h4>
+          <div class="rp-phrases-list">
+            <span class="rp-phrase-tag">"I'm afraid I have some difficult news..."</span>
+            <span class="rp-phrase-tag">"I want to be transparent with you..."</span>
+            <span class="rp-phrase-tag">"I take responsibility for..."</span>
+            <span class="rp-phrase-tag">"If we approve this today, we can recover..."</span>
+            <span class="rp-phrase-tag">"I believe this is the most cost-effective path..."</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLEPLAY 2 -->
+    <div class="roleplay-block">
+      <div class="roleplay-header">
+        <h3>The Budget Negotiation — Requesting Additional Resources</h3>
+        <span class="rp-num">ROLEPLAY 02</span>
+      </div>
+      <div class="roleplay-body">
+        <div class="rp-meta">
+          <div class="rp-meta-item"><strong>Context</strong><span>Özgün needs to request an extra €15,000 from his regional manager to hire a contract engineer for Q2. The manager is cautious about spending.</span></div>
+          <div class="rp-meta-item"><strong>Student Role</strong><span>Engineering Manager (Özgün) — must present a clear, business-case-driven argument. Should use data and conditional language.</span></div>
+          <div class="rp-meta-item"><strong>AI / Teacher Role</strong><span>Regional Manager — financially cautious; needs to be persuaded with logic, not emotion.</span></div>
+          <div class="rp-meta-item"><strong>Objective</strong><span>Practice: persuasion, making a business case, handling objections, using conditional and modal structures.</span></div>
+        </div>
+        <div class="dialogue">
+          <h4>Step-by-Step Conversation Flow</h4>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">Thank you for meeting me, Andrei. I'd like to discuss the Q2 staffing situation. As you're aware, we're currently managing three concurrent projects with the same team size as last year. I'm concerned this is creating a capacity risk.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">ANDREI</span>
+            <div class="speech">I understand the workload is high, Özgün. But budget is tight this quarter. What exactly are you proposing?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">I'd like to request approval for a contract engineer for a 3-month period — a budget of approximately €15,000. In return, we would be able to deliver the Romanian project on schedule, which protects a client contract worth €120,000.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">ANDREI</span>
+            <div class="speech">That's a significant cost. Why can't the existing team absorb the extra work?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">I've looked at this carefully. If we redistribute the workload, we'd be asking engineers to work 20% above capacity. Based on our last overload situation, that led to quality issues that cost us €30,000 in rework. I believe the investment in a contractor is the lower-risk option.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">ANDREI</span>
+            <div class="speech">That's a fair point. Can you send me a written justification by Thursday?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">Absolutely. I'll prepare a one-page summary with the cost-benefit analysis. I'm confident this will be a sound investment for the business.</div>
+          </div>
+        </div>
+        <div class="rp-phrases">
+          <h4>Useful Phrases for Özgün</h4>
+          <div class="rp-phrases-list">
+            <span class="rp-phrase-tag">"I'm concerned this is creating a risk..."</span>
+            <span class="rp-phrase-tag">"In return, we would be able to..."</span>
+            <span class="rp-phrase-tag">"Based on our last situation..."</span>
+            <span class="rp-phrase-tag">"I believe this is the lower-risk option"</span>
+            <span class="rp-phrase-tag">"I'll prepare a cost-benefit analysis"</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROLEPLAY 3 -->
+    <div class="roleplay-block">
+      <div class="roleplay-header">
+        <h3>The Difficult Engineer — Managing Performance in English</h3>
+        <span class="rp-num">ROLEPLAY 03</span>
+      </div>
+      <div class="roleplay-body">
+        <div class="rp-meta">
+          <div class="rp-meta-item"><strong>Context</strong><span>A senior engineer on Özgün's team (based in Romania) has been missing deadlines and communicating poorly. Özgün must address this professionally in a 1:1 meeting.</span></div>
+          <div class="rp-meta-item"><strong>Student Role</strong><span>Engineering Manager (Özgün) — must give constructive feedback, set clear expectations, and keep the relationship intact.</span></div>
+          <div class="rp-meta-item"><strong>AI / Teacher Role</strong><span>Senior Engineer (Cristian) — defensive at first; responds well to respect and specificity.</span></div>
+          <div class="rp-meta-item"><strong>Objective</strong><span>Practice: giving feedback, setting expectations, using diplomatic register, managing conflict without aggression.</span></div>
+        </div>
+        <div class="dialogue">
+          <h4>Step-by-Step Conversation Flow</h4>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">Cristian, thank you for joining. I wanted to check in with you — not just about the project, but about how things are going for you generally. How are you finding the current workload?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">CRISTIAN</span>
+            <div class="speech">It's fine. A bit busy. Why are you asking?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">I appreciate your honesty. I want to be equally direct with you. Over the last two weeks, the test reports have been delivered late — on Tuesday and Thursday instead of Monday. This creates pressure for the rest of the team. I'd like to understand what's happening from your perspective.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">CRISTIAN</span>
+            <div class="speech">The deadlines are not realistic. I need more time for the test procedures.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">That's useful feedback — thank you for raising it. If the timeline needs adjusting, I'm open to that conversation. What I need from you is to flag these issues early, so we can adapt. Missing the deadline without communication puts the whole project at risk. Can we agree on that going forward?</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker ai">CRISTIAN</span>
+            <div class="speech">Yes, I understand. I will inform you earlier next time.</div>
+          </div>
+          <div class="dialogue-line">
+            <span class="speaker student">MEHMET</span>
+            <div class="speech">I appreciate that, Cristian. Your technical work is strong — I want to make sure we remove the obstacles that are getting in the way. Let's review the timeline together and see what's realistic. I'll book 30 minutes with you on Friday.</div>
+          </div>
+        </div>
+        <div class="rp-phrases">
+          <h4>Useful Phrases for Özgün</h4>
+          <div class="rp-phrases-list">
+            <span class="rp-phrase-tag">"I want to be direct with you..."</span>
+            <span class="rp-phrase-tag">"I'd like to understand your perspective..."</span>
+            <span class="rp-phrase-tag">"I'm open to that conversation"</span>
+            <span class="rp-phrase-tag">"Can we agree on that going forward?"</span>
+            <span class="rp-phrase-tag">"Your technical work is strong, but..."</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ 10. ERROR CORRECTION SYSTEM ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">🔍</div>
+    <h2>Error Correction System</h2>
+    <span class="section-num">10</span>
+  </div>
+  <div class="section-body">
+
+    <div class="subsection-title">A. Common Errors Table — From Transcript</div>
+    <table class="error-table">
+      <thead>
+        <tr>
+          <th>Incorrect (Transcript)</th>
+          <th>Correct Form</th>
+          <th>Explanation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="incorrect">"We have problem with delivery."</span></td>
+          <td><span class="correct">"We have a problem with the delivery."</span></td>
+          <td class="explanation">Missing article <em>a</em> (indefinite, singular countable noun) and <em>the</em> (specific delivery already in context). Turkish has no articles — high-frequency omission error.</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"I make meeting with Romania team."</span></td>
+          <td><span class="correct">"I had a meeting with the Romanian team."</span></td>
+          <td class="explanation">Wrong verb: <em>make</em> → <em>have/had</em> (fixed collocation: have a meeting). Missing article. <em>Romania</em> used as adjective → should be <em>Romanian</em>.</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"The engineer, he told me..."</span></td>
+          <td><span class="correct">"The engineer told me..."</span></td>
+          <td class="explanation">Subject pronoun doubling — common in Turkish (pro-drop language). <em>The engineer he</em> = redundant repetition of subject. Drop the pronoun.</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"If we will finish on time, client is happy."</span></td>
+          <td><span class="correct">"If we finish on time, the client will be happy."</span></td>
+          <td class="explanation">First conditional error: the <em>if</em>-clause uses present simple (not future). <em>Will</em> belongs in the result clause. Also: missing article <em>the</em>.</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"I am work in this company since 8 years."</span></td>
+          <td><span class="correct">"I have been working at this company for 8 years."</span></td>
+          <td class="explanation">Three errors: (1) Wrong tense — present perfect continuous for ongoing action. (2) <em>in</em> → <em>at</em> for companies. (3) <em>since</em> → <em>for</em> (since = point in time; for = duration).</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"We need to do a decision quickly."</span></td>
+          <td><span class="correct">"We need to make a decision quickly."</span></td>
+          <td class="explanation">Wrong verb in collocation: <em>do a decision</em> is not standard English. The fixed collocation is <em>make a decision</em>. High frequency business vocabulary error.</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"The budget is not enough for do this."</span></td>
+          <td><span class="correct">"The budget isn't sufficient to do this."</span></td>
+          <td class="explanation">Infinitive error: after prepositions and verbs like <em>enough</em>, use <em>to + infinitive</em>, not bare infinitive. Also: <em>sufficient</em> is more professional than <em>enough</em> in formal contexts.</td>
+        </tr>
+        <tr>
+          <td><span class="incorrect">"Yesterday I go to office and see problem."</span></td>
+          <td><span class="correct">"Yesterday I went to the office and saw the problem."</span></td>
+          <td class="explanation">Simple past required for completed past actions — present tense used in error. Also: missing articles <em>the</em> before both <em>office</em> (specific, known) and <em>problem</em> (previously referenced).</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+    <div class="subsection-title">B. Pattern Analysis</div>
+
+    <div class="pattern-block">
+      <h4>Pattern 1 — The Article System (Most Frequent Error)</h4>
+      <p>Turkish has no grammatical article system (no equivalent of <em>a</em>, <em>an</em>, <em>the</em>). As a result, Özgün systematically omits articles in all positions — before singular countable nouns, before specific or previously mentioned referents, and in fixed expressions. This is not random but deeply systematic. Correction requires conscious rule application before automaticity develops.</p>
+    </div>
+
+    <div class="pattern-block">
+      <h4>Pattern 2 — Subject Pronoun Doubling</h4>
+      <p>Turkish allows sentences without explicit subjects (pro-drop language). When Özgün uses a noun subject, he sometimes adds a redundant pronoun: <em>"The manager, he said..."</em> This is a direct transfer of a Turkish syntactic pattern. It sounds informal or non-native to English listeners and should be systematically eliminated.</p>
+    </div>
+
+    <div class="pattern-block">
+      <h4>Pattern 3 — Tense Conflation (Present / Past / Perfect)</h4>
+      <p>Özgün regularly uses present simple where past simple or present perfect is required. This is partly due to Turkish tense system differences (Turkish aspect is marked differently). The present perfect / simple past distinction is particularly problematic and requires focused practise with timeline-based activities.</p>
+    </div>
+
+    <div class="pattern-block">
+      <h4>Pattern 4 — Do/Make Confusion &amp; Weak Verb Collocations</h4>
+      <p>Özgün relies heavily on the verbs <em>do</em>, <em>make</em>, <em>have</em>, and <em>get</em> where more precise collocations are required. This is a B1 plateau feature common across many L1 backgrounds. Targeted vocabulary instruction focusing on verb–noun pairs (e.g., <em>reach a decision, set a deadline, raise a concern</em>) will raise his register to B2 level rapidly.</p>
+    </div>
+
+    <div class="divider"></div>
+    <div class="subsection-title">C. Correction Strategy — Teacher Instructions</div>
+
+    <div class="strategy-block">
+      <div class="strategy-item">
+        <h4>When to Interrupt</h4>
+        <p>Do NOT interrupt mid-sentence unless the error blocks meaning entirely. Allow Özgün to complete his thought, then model the correction calmly. Constant interruption kills fluency confidence. Reserve immediate corrections for article errors (his most frequent pattern) in controlled grammar exercises only.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>How to Correct</h4>
+        <p>Use <strong>recasting</strong>: repeat his sentence back with the correction embedded naturally, then ask a follow-up question. This exposes the correct form without making the correction feel punitive. Example — Student: "We make meeting." Teacher: "You had a meeting — good. What was the main outcome of the meeting?"</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Error Logging System</h4>
+        <p>Keep a live error log during speaking tasks. At the end of 10 minutes of speaking, present the top 3 errors on paper and ask Özgün to self-correct before you provide the answer. This metacognitive step builds long-term accuracy far more effectively than immediate correction alone.</p>
+      </div>
+      <div class="strategy-item">
+        <h4>Building Accuracy</h4>
+        <p>Alternate fluency tasks (uninterrupted) with accuracy tasks (controlled grammar drilling). Use the ratio 60% fluency / 40% accuracy at B1+. As patterns stabilise, shift to 70/30. Track article usage as a specific KPI — set a goal of fewer than 3 article errors per 5 minutes of speech by Month 3.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════ 11. FINAL SUMMARY ═══════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="icon">🏁</div>
+    <h2>Final Summary</h2>
+    <span class="section-num">11</span>
+  </div>
+  <div class="section-body">
+    <div class="summary-grid">
+      <div class="summary-card">
+        <div class="sc-label">Current Level</div>
+        <div class="sc-value">B1+</div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-label">Target Level (3 Months)</div>
+        <div class="sc-value">B2</div>
+      </div>
+      <div class="summary-card transform">
+        <div class="sc-label">Primary Domain</div>
+        <div class="sc-value" style="font-size:1.3rem;">Business English</div>
+      </div>
+    </div>
+
+    <div class="transformation-box">
+      <h3>Key Transformation Required</h3>
+      <ul>
+        <li><strong>From reactive to proactive communication:</strong> Özgün needs to move from answering questions to initiating, leading, and structuring professional discourse in English.</li>
+        <li><strong>From informational to diplomatic language:</strong> Technical accuracy is not enough for his role — he must develop the soft-skill register needed for cross-cultural management.</li>
+        <li><strong>From isolated sentences to connected discourse:</strong> The leap from B1 to B2 is largely about coherence — linking ideas, using hedging, and structuring arguments with nuance.</li>
+        <li><strong>From passive vocabulary to active use:</strong> Özgün understands far more than he produces. Targeted activation exercises will close this receptive–productive gap quickly.</li>
+        <li><strong>From formula-driven to authentic communication:</strong> By Month 3, the goal is not memorised phrases but genuine communicative flexibility — the ability to adapt language to any professional situation.</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<div class="report-footer">
+  <strong>Confidential Teaching Document</strong> · Prepared for Private Use Only · English Level Assessment &amp; Training Plan · Özgün Koşedere · April 2026
+</div>
+
+</body>
+</html>
