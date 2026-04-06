@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Özgün B1 · Homework 1 — Tense Control</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#080b0f;--bg2:#0b0e14;--surface:#0f1318;--surface2:#141820;
+  --border:#1c2030;--border2:#232840;
+  --orange:#f97316;--orange-l:#fb923c;--orange-dim:rgba(249,115,22,0.09);
+  --orange-strong:rgba(249,115,22,0.18);
+  --rose:#f43f5e;--rose-dim:rgba(244,63,94,0.09);
+  --green:#10b981;--green-dim:rgba(16,185,129,0.08);
+  --red:#ef4444;--red-dim:rgba(239,68,68,0.09);
+  --amber:#f59e0b;--amber-dim:rgba(245,158,11,0.08);
+  --sky:#0ea5e9;--sky-dim:rgba(14,165,233,0.08);
+  --text:#d8dce8;--muted:#4e5268;--muted2:#30344a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-weight:300;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(249,115,22,0.04) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(244,63,94,0.03) 0%,transparent 50%);
+  pointer-events:none;z-index:0;
+}
+.page{max-width:820px;margin:0 auto;padding:40px 20px 110px;position:relative;z-index:1;}
+
+/* ── HEADER ── */
+.hw-header{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px;position:relative;overflow:hidden;}
+.hw-header::after{content:'HW';position:absolute;right:-8px;top:-20px;font-family:'Syne',sans-serif;font-size:180px;font-weight:800;color:rgba(244,63,94,0.04);line-height:1;pointer-events:none;letter-spacing:-4px;}
+.hw-tag{display:inline-flex;align-items:center;gap:8px;background:var(--rose-dim);border:1px solid rgba(244,63,94,0.22);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--rose);padding:4px 12px;margin-bottom:14px;}
+.hw-header h1{font-family:'Syne',sans-serif;font-size:clamp(24px,5vw,44px);font-weight:800;color:var(--text);line-height:1.05;margin-bottom:8px;}
+.hw-header h1 em{color:var(--rose);font-style:normal;}
+.hw-header p{font-size:13.5px;color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:16px;font-weight:400;}
+.l-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.l-meta span{background:rgba(255,255,255,0.025);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:3px 10px;letter-spacing:0.05em;}
+
+/* ── WARNING BANNER ── */
+.hw-banner{background:var(--rose-dim);border:1px solid rgba(244,63,94,0.22);border-left:3px solid var(--rose);padding:12px 16px;margin-bottom:28px;font-size:12.5px;line-height:1.7;color:var(--muted);}
+.hw-banner strong{color:var(--rose);}
+
+/* ── PROGRESS ── */
+.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.prog-steps{display:flex;gap:3px;flex:1;}
+.prog-step{flex:1;height:3px;background:var(--border);}
+.prog-step.done{background:var(--rose);}
+.prog-step.active{background:var(--amber);}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--rose);}
+
+/* ── BLOCK ── */
+.block{background:var(--surface);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;transition:border-color 0.2s;}
+.block:hover{border-color:var(--border2);}
+.block-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.b-ico{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.b-meta{flex:1;}
+.b-meta h2{font-size:13px;font-weight:700;color:var(--text);margin-bottom:1px;}
+.b-meta p{font-size:10.5px;color:var(--muted);}
+.b-badge{display:inline-flex;align-items:center;gap:5px;}
+.b-tag{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid var(--border);color:var(--muted);}
+.b-diff{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid rgba(244,63,94,0.3);color:var(--rose);background:var(--rose-dim);}
+.b-chev{color:var(--muted);font-size:11px;transition:transform 0.25s;flex-shrink:0;}
+.block-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height 0.45s ease,padding 0.3s;}
+.block-body.open{max-height:6000px;padding:18px;}
+
+/* ── INSTR ── */
+.instr{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.65;padding:10px 14px;background:var(--surface2);border-left:2px solid var(--border2);font-weight:400;}
+.instr strong{color:var(--text);}
+
+/* ── EX HEADER ── */
+.ex-hdr{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.ex-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-label{background:var(--rose);color:white;padding:2px 9px;font-size:8px;font-weight:700;}
+
+/* ── FILL IN ── */
+.fi-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);margin-bottom:6px;font-size:13px;line-height:2;}
+.fi-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;}
+.fi-inp{display:inline-block;min-width:140px;padding:2px 8px;border:none;border-bottom:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;font-size:12.5px;color:var(--text);outline:none;transition:border-color 0.2s;vertical-align:middle;}
+.fi-inp:focus{border-bottom-color:var(--orange);}
+.fi-inp.ok{border-bottom-color:var(--green);color:var(--green);}
+.fi-inp.no{border-bottom-color:var(--red);color:var(--red);}
+.chk{padding:2px 9px;background:var(--rose);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:0.05em;vertical-align:middle;margin-left:3px;transition:opacity 0.15s;}
+.chk:hover{opacity:0.75;}
+.chk-all{padding:2px 10px;background:var(--orange);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:0.05em;vertical-align:middle;margin-left:3px;transition:opacity 0.15s;}
+
+/* hint tag */
+.hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted2);background:var(--surface2);border:1px solid var(--border);padding:1px 7px;margin-left:4px;vertical-align:middle;}
+
+/* ── CHOICE ── */
+.mc-block{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:7px;}
+.mc-q{font-size:13px;color:var(--text);margin-bottom:9px;font-weight:500;line-height:1.6;}
+.mc-sub{font-size:11.5px;color:var(--muted);margin-bottom:9px;font-style:italic;}
+.mc-opts{display:flex;gap:6px;flex-wrap:wrap;}
+.mc-btn{padding:5px 14px;border:1px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all 0.15s;line-height:1.5;text-align:left;}
+.mc-btn:hover{border-color:var(--orange);color:var(--orange-l);}
+.mc-btn.cor{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.mc-btn.wrng{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.mc-fb{font-size:11px;margin-top:7px;padding:5px 10px;display:none;line-height:1.55;}
+.mc-fb.show{display:block;}
+.mc-fb.ok{background:var(--green-dim);color:var(--green);}
+.mc-fb.no{background:var(--red-dim);color:var(--red);}
+
+/* ── ERROR CORRECTION ── */
+.ec-block{background:var(--surface2);border:1px solid var(--border);padding:13px 15px;margin-bottom:8px;}
+.ec-n{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.ec-errors{font-size:10px;color:var(--rose);font-style:normal;}
+.ec-wrong{font-size:13px;color:var(--text);margin-bottom:10px;padding:8px 12px;background:rgba(244,63,94,0.06);border-left:2px solid var(--rose);line-height:1.65;}
+.ec-wrong .err{text-decoration:underline;text-decoration-style:wavy;text-decoration-color:var(--red);color:var(--red);}
+.ec-inp{width:100%;padding:8px 12px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;margin-top:6px;}
+.ec-inp:focus{border-color:var(--orange);}
+.ec-inp.ok{border-color:var(--green);background:var(--green-dim);}
+.ec-inp.no{border-color:var(--red);background:var(--red-dim);}
+
+/* ── READING PASSAGE ── */
+.reading{background:var(--surface2);border:1px solid var(--border);border-top:2px solid var(--sky);padding:18px 20px;margin-bottom:14px;font-size:13px;line-height:1.9;color:rgba(216,220,232,0.88);}
+.reading .subj{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--sky);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.reading .gap{display:inline-block;min-width:110px;border-bottom:1.5px solid var(--orange);margin:0 3px;vertical-align:middle;}
+.read-q{background:var(--surface2);border:1px solid var(--border);padding:11px 14px;margin-bottom:7px;font-size:12.5px;}
+.read-q .rq-n{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;}
+.read-q .rq-txt{color:var(--text);font-weight:500;margin-bottom:7px;line-height:1.55;}
+.rq-inp{width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;}
+.rq-inp:focus{border-color:var(--orange);}
+.rq-inp.ok{border-color:var(--green);background:var(--green-dim);}
+.rq-inp.no{border-color:var(--red);background:var(--red-dim);}
+
+/* ── WRITING ── */
+.write-task{background:var(--surface2);border:1px solid var(--border);padding:16px 18px;margin-bottom:12px;}
+.write-task h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:7px;}
+.write-task p{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;font-weight:400;}
+.scenario{background:rgba(14,165,233,0.06);border:1px solid rgba(14,165,233,0.18);border-left:3px solid var(--sky);padding:10px 14px;font-size:12.5px;color:var(--muted);line-height:1.7;margin:10px 0;}
+.scenario strong{color:var(--text);}
+.wl{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.wl-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:22px;flex-shrink:0;margin-top:5px;}
+.wl-tns{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--rose);width:60px;flex-shrink:0;margin-top:6px;line-height:1.4;}
+.wl-inp{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);outline:none;padding:3px 5px;}
+.wl-inp:focus{border-bottom-color:var(--orange);}
+
+/* ── TENSE SELECTOR ── */
+.tense-sel{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:5px;}
+.ts-btn{padding:3px 10px;border:1px solid var(--border);background:transparent;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;}
+.ts-btn:hover,.ts-btn.sel{border-color:var(--orange);color:var(--orange-l);background:var(--orange-dim);}
+
+/* ── BUTTONS ── */
+.main-btn{width:100%;padding:11px;background:linear-gradient(90deg,var(--rose),rgba(244,63,94,0.65));color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:10px;transition:opacity 0.15s;}
+.main-btn:hover{opacity:0.82;}
+
+/* ── SCORE ── */
+.score-card{background:var(--surface2);border:1px solid var(--rose);padding:18px;text-align:center;display:none;margin-top:12px;}
+.score-card.show{display:block;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:44px;color:var(--rose);line-height:1;}
+.sc-val span{font-size:16px;}
+.sc-label{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--text);margin:6px 0 4px;}
+.sc-sub{font-size:12px;color:var(--muted);line-height:1.55;}
+
+/* ── NAV ── */
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+.nav-btn{padding:9px 20px;border:1px solid var(--border);background:transparent;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;letter-spacing:0.05em;transition:all 0.15s;}
+.nav-btn:hover{border-color:var(--rose);color:var(--rose);}
+.nav-btn.next{background:var(--rose);color:white;border-color:var(--rose);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:center;line-height:1.8;}
+
+/* ── SAVE ── */
+.save-bar{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:999;}
+.save-btn{padding:7px 14px;background:var(--rose);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;}
+.save-btn:hover{opacity:0.8;}
+.save-btn.clear{background:var(--surface2);border:1px solid var(--border);color:var(--muted);}
+#save-toast{position:fixed;bottom:58px;right:18px;background:var(--rose);color:white;font-family:'JetBrains Mono',monospace;font-size:9px;padding:6px 14px;letter-spacing:0.1em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:1000;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hw-header">
+  <div class="hw-tag">// B1_PATHWAY · PHASE_1 · HOMEWORK_01</div>
+  <h1>Tense <em>Control</em></h1>
+  <p>No grammar rules. No hints. Apply what you learned — Present Simple, Present Perfect, and Past Simple — in context.</p>
+  <div class="l-meta">
+    <span>⏱ 40–50 MIN</span>
+    <span>INDEPENDENT PRACTICE</span>
+    <span>No scaffolding</span>
+    <span>B1 Level</span>
+  </div>
+</div>
+
+<!-- BANNER -->
+<div class="hw-banner">
+  <strong>Important:</strong> This homework has <strong>no grammar explanations or rule reminders</strong>. You must decide which tense is correct based on context and meaning. All exercises are based on real workplace situations. Some sentences contain <strong>more than one error</strong>. Read carefully before answering.
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-row">
+  <span class="prog-lbl">homework_progress</span>
+  <div class="prog-steps" id="steps">
+    <div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div>
+    <div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div>
+  </div>
+  <span class="prog-pct" id="pct">0%</span>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 0 — MIXED TENSE GAP FILL
+════════════════════════════════════ -->
+<div class="block" id="s0">
+  <div class="block-top" onclick="tog(0)">
+    <div class="b-ico">✏️</div>
+    <div class="b-meta"><h2>Part 1 — Mixed Tense Gap Fill</h2><p>10 sentences. No tense labels. Choose the correct form.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch0" style="transform:rotate(180deg);">▼</span>
+  </div>
+  <div class="block-body open" id="b0">
+    <div class="instr">Complete each sentence with the correct form of the verb in brackets. You must decide: <strong>Present Simple, Present Perfect, or Past Simple.</strong> No hints are given. Press CHECK after each answer.</div>
+
+    <div class="fi-row">
+      <span class="fi-n">01</span>
+      <span>My team</span>
+      <input class="fi-inp" id="f1" placeholder="[manage]" autocomplete="off">
+      <span>40 investment projects across three factories.</span>
+      <button class="chk" onclick="cf('f1','manages')">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">02</span>
+      <span>I</span>
+      <input class="fi-inp" id="f2" placeholder="[never / visit]" autocomplete="off">
+      <span>the Romania factory, but I am planning to go in May.</span>
+      <button class="chk" onclick="cfm('f2',['have never visited','have never been to'])">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">03</span>
+      <span>We</span>
+      <input class="fi-inp" id="f3" placeholder="[hold]" autocomplete="off">
+      <span>a project review meeting every Monday morning.</span>
+      <button class="chk" onclick="cf('f3','hold')">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">04</span>
+      <span>The previous manager</span>
+      <input class="fi-inp" id="f4" placeholder="[leave]" autocomplete="off">
+      <span>the team three weeks ago.</span>
+      <button class="chk" onclick="cf('f4','left')">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">05</span>
+      <span>I</span>
+      <input class="fi-inp" id="f5" placeholder="[just / take over]" autocomplete="off">
+      <span>this role and there are 40 active projects waiting.</span>
+      <button class="chk" onclick="cfm('f5',['have just taken over','just took over'])">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">06</span>
+      <span>The Romania investment project</span>
+      <input class="fi-inp" id="f6" placeholder="[already / begin]" autocomplete="off">
+      <span>, so we cannot change the budget now.</span>
+      <button class="chk" onclick="cfm('f6',['has already begun','has already started'])">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">07</span>
+      <span>I</span>
+      <input class="fi-inp" id="f7" placeholder="[work]" autocomplete="off">
+      <span>in maintenance for nine years before this promotion.</span>
+      <button class="chk" onclick="cfm('f7',['worked','was working'])">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">08</span>
+      <span>The engineers</span>
+      <input class="fi-inp" id="f8" placeholder="[report]" autocomplete="off">
+      <span>to me every day with their project status updates.</span>
+      <button class="chk" onclick="cf('f8','report')">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">09</span>
+      <span>We</span>
+      <input class="fi-inp" id="f9" placeholder="[not / approve]" autocomplete="off">
+      <span>the final procurement list yet — it is still under review.</span>
+      <button class="chk" onclick="cfm('f9',['have not approved','haven\'t approved'])">CHECK</button>
+    </div>
+
+    <div class="fi-row">
+      <span class="fi-n">10</span>
+      <span>The last manager</span>
+      <input class="fi-inp" id="f10" placeholder="[not / finish]" autocomplete="off">
+      <span>the Gantt chart before he left.</span>
+      <button class="chk" onclick="cfm('f10',['did not finish','didn\'t finish'])">CHECK</button>
+    </div>
+
+    <button class="main-btn" onclick="chkFill()">CHECK ALL & CONTINUE →</button>
+    <div class="score-card" id="fillSc"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 1 — READING: EMAIL GAP FILL
+════════════════════════════════════ -->
+<div class="block" id="s1">
+  <div class="block-top" onclick="tog(1)">
+    <div class="b-ico">📧</div>
+    <div class="b-meta"><h2>Part 2 — Professional Email: Gap Fill</h2><p>A real work email with 8 gaps. Choose the correct verb form.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch1">▼</span>
+  </div>
+  <div class="block-body" id="b1">
+    <div class="instr">Read the complete email carefully first. Then complete the 8 gaps using the correct form of the verb in brackets. There are no tense labels — you must decide based on context and meaning.</div>
+
+    <div class="reading">
+      <div class="subj">FROM: ozgun@eti.com.tr &nbsp;|&nbsp; TO: investment_team@eti.com.tr &nbsp;|&nbsp; SUBJECT: Q2 Project Status Update</div>
+
+      Dear team,<br/><br/>
+
+      I am writing to give you a brief overview of where we (1)<input class="fi-inp" id="e1" placeholder="[currently / stand]" autocomplete="off" style="min-width:160px"><button class="chk" onclick="cfm('e1',['currently stand','are currently standing'])">✓</button> with our Q2 projects.<br/><br/>
+
+      As you know, I (2)<input class="fi-inp" id="e2" placeholder="[recently / take over]" autocomplete="off" style="min-width:160px"><button class="chk" onclick="cfm('e2',['have recently taken over','recently took over'])">✓</button> this role, and in the past four days, I (3)<input class="fi-inp" id="e3" placeholder="[review]" autocomplete="off" style="min-width:130px"><button class="chk" onclick="cfm('e3',['have reviewed','reviewed'])">✓</button> all 40 active projects.<br/><br/>
+
+      Currently, two of our projects in Romania (4)<input class="fi-inp" id="e4" placeholder="[face]" autocomplete="off" style="min-width:110px"><button class="chk" onclick="cf('e4','face')">✓</button> budget approval delays. The previous manager (5)<input class="fi-inp" id="e5" placeholder="[not / complete]" autocomplete="off" style="min-width:150px"><button class="chk" onclick="cfm('e5',['did not complete','didn\'t complete'])">✓</button> the procurement documentation before he left, so we now need to restart that process.<br/><br/>
+
+      I (6)<input class="fi-inp" id="e6" placeholder="[already / contact]" autocomplete="off" style="min-width:150px"><button class="chk" onclick="cfm('e6',['have already contacted','already contacted'])">✓</button> the Romania site coordinator, and we (7)<input class="fi-inp" id="e7" placeholder="[schedule]" autocomplete="off" style="min-width:130px"><button class="chk" onclick="cfm('e7',['have scheduled','scheduled'])">✓</button> a call for this Wednesday.<br/><br/>
+
+      Going forward, our team (8)<input class="fi-inp" id="e8" placeholder="[meet]" autocomplete="off" style="min-width:110px"><button class="chk" onclick="cf('e8','meets')">✓</button> every Monday to review project timelines.<br/><br/>
+
+      Best regards,<br/>Özgün<br/><em style="font-size:11px;color:var(--muted)">Utilities Investment Unit Manager</em>
+    </div>
+
+    <button class="main-btn" onclick="chkEmail()">CHECK ALL EMAIL ANSWERS →</button>
+    <div class="score-card" id="emailSc"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 2 — ERROR CORRECTION (2 errors)
+════════════════════════════════════ -->
+<div class="block" id="s2">
+  <div class="block-top" onclick="tog(2)">
+    <div class="b-ico">⚠️</div>
+    <div class="b-meta"><h2>Part 3 — Error Correction</h2><p>Each sentence has TWO errors. Find and fix both.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">VERY HARD</span></div>
+    <span class="b-chev" id="ch2">▼</span>
+  </div>
+  <div class="block-body" id="b2">
+    <div class="instr">Each sentence contains <strong>exactly two errors</strong> — they can be tense errors, auxiliary verb errors, or agreement errors. Rewrite the full corrected sentence in the box below each one.</div>
+
+    <div class="ec-block">
+      <div class="ec-n">Sentence 01 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">I have work at ETİ since 2015 and I was promoted last <span class="err">week, I have started</span> my new role immediately.</div>
+      <input class="ec-inp" id="ec1" autocomplete="off" placeholder="Write the fully corrected sentence…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec1',['have worked','started'])">CHECK</button>
+    </div>
+
+    <div class="ec-block">
+      <div class="ec-n">Sentence 02 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">My team <span class="err">manage</span> 40 projects and we <span class="err">don't approved</span> the final budget yet.</div>
+      <input class="ec-inp" id="ec2" autocomplete="off" placeholder="Write the fully corrected sentence…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec2',['manages','haven\'t approved'])">CHECK</button>
+    </div>
+
+    <div class="ec-block">
+      <div class="ec-n">Sentence 03 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">The previous manager <span class="err">has left</span> three weeks ago and <span class="err">haven't finish</span> the documentation.</div>
+      <input class="ec-inp" id="ec3" autocomplete="off" placeholder="Write the fully corrected sentence…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec3',['left','didn\'t finish'])">CHECK</button>
+    </div>
+
+    <div class="ec-block">
+      <div class="ec-n">Sentence 04 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">I <span class="err">never visited</span> the Romania factory before, but the project <span class="err">start</span> already and I need to go soon.</div>
+      <input class="ec-inp" id="ec4" autocomplete="off" placeholder="Write the fully corrected sentence…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec4',['have never visited','has already started'])">CHECK</button>
+    </div>
+
+    <div class="ec-block">
+      <div class="ec-n">Sentence 05 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">My engineers <span class="err">reports</span> to me every day, but this week they <span class="err">haven't reported</span> last Tuesday's issue.</div>
+      <input class="ec-inp" id="ec5" autocomplete="off" placeholder="Write the fully corrected sentence…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec5',['report','didn\'t report'])">CHECK</button>
+    </div>
+
+    <button class="main-btn" onclick="done(2)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 3 — MULTIPLE CHOICE (tricky)
+════════════════════════════════════ -->
+<div class="block" id="s3">
+  <div class="block-top" onclick="tog(3)">
+    <div class="b-ico">🎯</div>
+    <div class="b-meta"><h2>Part 4 — Tricky Multiple Choice</h2><p>All options look correct — choose the one that best fits the context</p></div>
+    <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch3">▼</span>
+  </div>
+  <div class="block-body" id="b3">
+    <div class="instr">All three options may be grammatically possible. Choose the <strong>most appropriate</strong> one based on the context and meaning of the full sentence.</div>
+
+    <div class="mc-block" id="mc1">
+      <div class="mc-q">1. "I ______ in maintenance for nine years before this promotion. Now I am a unit manager."</div>
+      <div class="mc-sub">→ Which tense is correct for an action that finished before the present role began?</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc1',this,'have worked','worked')">have worked</button>
+        <button class="mc-btn" onclick="smc('mc1',this,'worked','worked')">worked</button>
+        <button class="mc-btn" onclick="smc('mc1',this,'work','worked')">work</button>
+      </div>
+      <div class="mc-fb" id="f-mc1"></div>
+    </div>
+
+    <div class="mc-block" id="mc2">
+      <div class="mc-q">2. "______ you ever managed an international team before this role?"</div>
+      <div class="mc-sub">→ Asking about experience at any point in someone's life</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc2',this,'Did','Have')">Did</button>
+        <button class="mc-btn" onclick="smc('mc2',this,'Have','Have')">Have</button>
+        <button class="mc-btn" onclick="smc('mc2',this,'Do','Have')">Do</button>
+      </div>
+      <div class="mc-fb" id="f-mc2"></div>
+    </div>
+
+    <div class="mc-block" id="mc3">
+      <div class="mc-q">3. "The Romania project ______ . We cannot change the scope now."</div>
+      <div class="mc-sub">→ Something that happened recently and affects the present situation</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc3',this,'started','has already started')">started</button>
+        <button class="mc-btn" onclick="smc('mc3',this,'has already started','has already started')">has already started</button>
+        <button class="mc-btn" onclick="smc('mc3',this,'starts','has already started')">starts</button>
+      </div>
+      <div class="mc-fb" id="f-mc3"></div>
+    </div>
+
+    <div class="mc-block" id="mc4">
+      <div class="mc-q">4. A colleague asks: "When did you join ETİ?" You answer: "I ______ ETİ in 2015."</div>
+      <div class="mc-sub">→ A specific date was given in the question</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc4',this,'have joined','joined')">have joined</button>
+        <button class="mc-btn" onclick="smc('mc4',this,'joined','joined')">joined</button>
+        <button class="mc-btn" onclick="smc('mc4',this,'join','joined')">join</button>
+      </div>
+      <div class="mc-fb" id="f-mc4"></div>
+    </div>
+
+    <div class="mc-block" id="mc5">
+      <div class="mc-q">5. In a Monday meeting: "Team, I ______ all 40 project files over the weekend. Let me share what I found."</div>
+      <div class="mc-sub">→ Recent action, result (the findings) matters now</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc5',this,'reviewed','have reviewed')">reviewed</button>
+        <button class="mc-btn" onclick="smc('mc5',this,'have reviewed','have reviewed')">have reviewed</button>
+        <button class="mc-btn" onclick="smc('mc5',this,'review','have reviewed')">review</button>
+      </div>
+      <div class="mc-fb" id="f-mc5"></div>
+    </div>
+
+    <div class="mc-block" id="mc6">
+      <div class="mc-q">6. "My director ______ me to explain the budget delay. I have a meeting in one hour."</div>
+      <div class="mc-sub">→ Regular, recurring situation — part of the job</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc6',this,'has asked','asks')">has asked</button>
+        <button class="mc-btn" onclick="smc('mc6',this,'asks','asks')">asks</button>
+        <button class="mc-btn" onclick="smc('mc6',this,'asked','asks')">asked</button>
+      </div>
+      <div class="mc-fb" id="f-mc6"></div>
+    </div>
+
+    <button class="main-btn" onclick="done(3)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 4 — TENSE LABELLING
+════════════════════════════════════ -->
+<div class="block" id="s4">
+  <div class="block-top" onclick="tog(4)">
+    <div class="b-ico">🔬</div>
+    <div class="b-meta"><h2>Part 5 — Tense Awareness</h2><p>Read sentences from a real meeting. Identify the tense and explain why.</p></div>
+    <div class="b-badge"><span class="b-tag">6 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch4">▼</span>
+  </div>
+  <div class="block-body" id="b4">
+    <div class="instr">These sentences come from a real meeting. For each one: (A) select the tense used, and (B) write a short reason why that tense was chosen — in English.</div>
+
+    <div class="mc-block" id="ta1">
+      <div class="mc-q">"I have worked in this company for nine years."</div>
+      <div class="tense-sel">
+        <button class="ts-btn" onclick="selTense(this,'ta1','Present Simple')">Present Simple</button>
+        <button class="ts-btn" onclick="selTense(this,'ta1','Past Simple')">Past Simple</button>
+        <button class="ts-btn sel" onclick="selTense(this,'ta1','Present Perfect')">Present Perfect ✓</button>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Why was this tense used?</div>
+      <input class="rq-inp" id="ta1r" placeholder="Write your reason here (e.g. because I still work here now…)" autocomplete="off">
+    </div>
+
+    <div class="mc-block" id="ta2">
+      <div class="mc-q">"The previous manager left the team three weeks ago."</div>
+      <div class="tense-sel">
+        <button class="ts-btn" onclick="selTense(this,'ta2','Present Simple')">Present Simple</button>
+        <button class="ts-btn sel" onclick="selTense(this,'ta2','Past Simple')">Past Simple ✓</button>
+        <button class="ts-btn" onclick="selTense(this,'ta2','Present Perfect')">Present Perfect</button>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Why was this tense used?</div>
+      <input class="rq-inp" id="ta2r" placeholder="Write your reason here…" autocomplete="off">
+    </div>
+
+    <div class="mc-block" id="ta3">
+      <div class="mc-q">"My team handles all equipment procurement decisions."</div>
+      <div class="tense-sel">
+        <button class="ts-btn sel" onclick="selTense(this,'ta3','Present Simple')">Present Simple ✓</button>
+        <button class="ts-btn" onclick="selTense(this,'ta3','Past Simple')">Past Simple</button>
+        <button class="ts-btn" onclick="selTense(this,'ta3','Present Perfect')">Present Perfect</button>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin-bottom:6px;">Why was this tense used?</div>
+      <input class="rq-inp" id="ta3r" placeholder="Write your reason here…" autocomplete="off">
+    </div>
+
+    <button class="main-btn" onclick="done(4)">FINAL SECTION →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════
+     BLOCK 5 — FREE WRITING (no prompts)
+════════════════════════════════════ -->
+<div class="block" id="s5">
+  <div class="block-top" onclick="tog(5)">
+    <div class="b-ico">✍️</div>
+    <div class="b-meta"><h2>Part 6 — Free Writing: Meeting Introduction</h2><p>Write 10 sentences. No line-by-line prompts. Real professional writing.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">VERY HARD</span></div>
+    <span class="b-chev" id="ch5">▼</span>
+  </div>
+  <div class="block-body" id="b5">
+    <div class="write-task">
+      <h4>Scenario</h4>
+      <div class="scenario">
+        <strong>Situation:</strong> It is your first meeting with your Romanian colleagues. You are online. You need to introduce yourself, explain your new role, describe your team's responsibilities, mention relevant experience, and outline what you want to achieve with them in the next quarter.<br/><br/>
+        <strong>Audience:</strong> Professional colleagues — speak clearly and formally.<br/>
+        <strong>Length:</strong> Minimum 10 sentences.<br/>
+        <strong>Grammar targets:</strong> Use each tense at least twice — Present Simple, Present Perfect, Past Simple.
+      </div>
+      <div style="font-size:11.5px;color:var(--muted);margin:10px 0 14px;padding:8px 10px;border-left:2px solid var(--border2);">
+        No sentence starters are given. This is free production — use everything you have learned.
+      </div>
+      <div class="wl"><div class="wl-n">1</div><input class="wl-inp" id="fw1" placeholder=""></div>
+      <div class="wl"><div class="wl-n">2</div><input class="wl-inp" id="fw2" placeholder=""></div>
+      <div class="wl"><div class="wl-n">3</div><input class="wl-inp" id="fw3" placeholder=""></div>
+      <div class="wl"><div class="wl-n">4</div><input class="wl-inp" id="fw4" placeholder=""></div>
+      <div class="wl"><div class="wl-n">5</div><input class="wl-inp" id="fw5" placeholder=""></div>
+      <div class="wl"><div class="wl-n">6</div><input class="wl-inp" id="fw6" placeholder=""></div>
+      <div class="wl"><div class="wl-n">7</div><input class="wl-inp" id="fw7" placeholder=""></div>
+      <div class="wl"><div class="wl-n">8</div><input class="wl-inp" id="fw8" placeholder=""></div>
+      <div class="wl"><div class="wl-n">9</div><input class="wl-inp" id="fw9" placeholder=""></div>
+      <div class="wl"><div class="wl-n">10</div><input class="wl-inp" id="fw10" placeholder=""></div>
+    </div>
+    <div style="background:var(--orange-dim);border-left:2px solid var(--orange);padding:9px 13px;font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;">
+      <strong style="color:var(--orange-l);">Self-check before submitting:</strong>
+      Count your tenses — at least 2× Present Simple, 2× Present Perfect, 2× Past Simple. Check subject-verb agreement (he/she/it → -s). No "have + past participle" with specific past times (yesterday, last week, ago).
+    </div>
+    <button class="main-btn" onclick="finish()">✓ SUBMIT HOMEWORK 1</button>
+    <div class="score-card" id="finalSc"></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="lesson-nav">
+  <button class="nav-btn" onclick="alert('Go back to Lesson 1 to review!')">← LESSON 01</button>
+  <div class="nav-info">B1 PATHWAY · PHASE 1<br>HOMEWORK 01 OF 12</div>
+  <button class="nav-btn next" onclick="alert('Complete homework first!')">LESSON 02 →</button>
+</div>
+
+</div>
+
+<script>
+const comp = new Array(6).fill(false);
+
+function upd() {
+  const d = comp.filter(Boolean).length;
+  const s = document.getElementById('steps').children;
+  for (let i = 0; i < s.length; i++) {
+    s[i].classList.remove('done','active');
+    if (i < d) s[i].classList.add('done');
+    else if (i === d) s[i].classList.add('active');
+  }
+  document.getElementById('pct').textContent = Math.round(d / 6 * 100) + '%';
+}
+
+function tog(i) {
+  const b = document.getElementById('b' + i);
+  const c = document.getElementById('ch' + i);
+  b.classList.toggle('open');
+  if (b.classList.contains('open')) {
+    b.style.maxHeight = '6000px'; b.style.padding = '18px';
+    if (c) c.style.transform = 'rotate(180deg)';
+  } else {
+    b.style.maxHeight = '0'; b.style.padding = '0 18px';
+    if (c) c.style.transform = '';
+  }
+}
+
+function done(i) {
+  comp[i] = true; upd();
+  const ni = 'b' + (i + 1);
+  const nb = document.getElementById(ni);
+  if (nb && !nb.classList.contains('open')) {
+    nb.classList.add('open'); nb.style.maxHeight = '6000px'; nb.style.padding = '18px';
+    const nc = document.getElementById('ch' + (i + 1));
+    if (nc) nc.style.transform = 'rotate(180deg)';
+    document.getElementById('s' + (i + 1))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function cf(id, a) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const v = el.value.trim().toLowerCase();
+  const ok = v === a.toLowerCase();
+  el.classList.toggle('ok', ok); el.classList.toggle('no', !ok);
+  return ok;
+}
+
+function cfm(id, arr) {
+  const el = document.getElementById(id);
+  if (!el) return false;
+  const v = el.value.trim().toLowerCase();
+  const ok = arr.some(a => v === a.toLowerCase());
+  el.classList.toggle('ok', ok); el.classList.toggle('no', !ok);
+  return ok;
+}
+
+function cec(id, kw) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const v = el.value.trim().toLowerCase();
+  const ok = v.includes(kw.toLowerCase());
+  el.classList.toggle('ok', ok); el.classList.toggle('no', !ok);
+}
+
+function cec2(id, keywords) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const v = el.value.trim().toLowerCase();
+  const ok = keywords.every(kw => v.includes(kw.toLowerCase()));
+  el.classList.toggle('ok', ok); el.classList.toggle('no', !ok);
+}
+
+function smc(pid, btn, val, correct) {
+  const par = document.getElementById(pid);
+  par.querySelectorAll('.mc-btn').forEach(b => b.classList.remove('cor','wrng'));
+  const ok = val === correct;
+  btn.classList.add(ok ? 'cor' : 'wrng');
+  if (!ok) par.querySelectorAll('.mc-btn').forEach(b => {
+    if (b.textContent.trim() === correct) b.classList.add('cor');
+  });
+  const fb = document.getElementById('f-' + pid);
+  const explanations = {
+    'mc1': 'Past Simple is correct here — "nine years before this promotion" refers to a finished period with a clear endpoint.',
+    'mc2': '"Ever" signals a life experience question → Present Perfect.',
+    'mc3': 'The result matters now ("we cannot change the scope") → Present Perfect with "already".',
+    'mc4': '"In 2015" is a specific past time → Past Simple always.',
+    'mc5': 'The findings matter NOW in the meeting → Present Perfect.',
+    'mc6': 'Recurring job duty (regular routine) → Present Simple.',
+  };
+  fb.textContent = ok ? '✓ Correct. ' + (explanations[pid] || '') : '✗ Incorrect. ' + (explanations[pid] || '');
+  fb.className = 'mc-fb show ' + (ok ? 'ok' : 'no');
+}
+
+const tenseAnswers = { ta1: 'Present Perfect', ta2: 'Past Simple', ta3: 'Present Simple' };
+function selTense(btn, id, val) {
+  const block = document.getElementById(id);
+  block.querySelectorAll('.ts-btn').forEach(b => b.classList.remove('sel'));
+  const correct = tenseAnswers[id];
+  const ok = val === correct;
+  btn.classList.add('sel');
+  btn.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+  btn.style.color = ok ? 'var(--green)' : 'var(--red)';
+}
+
+function chkFill() {
+  let ok = 0;
+  if (cf('f1','manages')) ok++;
+  if (cfm('f2',['have never visited','have never been to'])) ok++;
+  if (cf('f3','hold')) ok++;
+  if (cf('f4','left')) ok++;
+  if (cfm('f5',['have just taken over','just took over'])) ok++;
+  if (cfm('f6',['has already begun','has already started'])) ok++;
+  if (cfm('f7',['worked','was working'])) ok++;
+  if (cf('f8','report')) ok++;
+  if (cfm('f9',['have not approved','haven\'t approved'])) ok++;
+  if (cfm('f10',['did not finish','didn\'t finish'])) ok++;
+  comp[0] = ok >= 7; upd();
+  showSc('fillSc', ok, 10, 'Part 1 complete.', 'Review the red answers — focus on which time signals go with which tense.');
+  done(0);
+}
+
+function chkEmail() {
+  let ok = 0;
+  if (cfm('e1',['currently stand','are currently standing'])) ok++;
+  if (cfm('e2',['have recently taken over','recently took over'])) ok++;
+  if (cfm('e3',['have reviewed','reviewed'])) ok++;
+  if (cf('e4','face')) ok++;
+  if (cfm('e5',['did not complete','didn\'t complete'])) ok++;
+  if (cfm('e6',['have already contacted','already contacted'])) ok++;
+  if (cfm('e7',['have scheduled','scheduled'])) ok++;
+  if (cf('e8','meets')) ok++;
+  comp[1] = ok >= 6; upd();
+  showSc('emailSc', ok, 8, 'Email exercise complete.', 'Check the red gaps — re-read the sentences around each gap for context clues.');
+  done(1);
+}
+
+function showSc(id, got, total, good, bad) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const p = Math.round(got / total * 100);
+  el.innerHTML = `<div class="sc-val">${got}<span>/${total}</span></div>
+    <div class="sc-label">${p >= 75 ? 'Strong' : p >= 50 ? 'Developing' : 'Needs Review'}</div>
+    <div class="sc-sub">${p >= 75 ? good : bad}</div>`;
+  el.classList.add('show');
+}
+
+function finish() {
+  comp[5] = true; upd();
+  const filled = ['fw1','fw2','fw3','fw4','fw5','fw6','fw7','fw8','fw9','fw10'].filter(id => document.getElementById(id)?.value.trim().length > 5).length;
+  const sc = document.getElementById('finalSc');
+  sc.innerHTML = `<div class="sc-val">${filled}<span>/10</span></div>
+    <div class="sc-label">Homework 1 ${filled >= 8 ? 'Complete ✓' : 'Submitted'}</div>
+    <div class="sc-sub">${filled >= 8
+      ? 'All 10 sentences written. Your teacher will review your tense choices and give feedback in Lesson 2.'
+      : 'You have written ' + filled + ' sentences. Try to complete all 10 — the more you write, the faster you improve.'}</div>`;
+  sc.classList.add('show');
+  sc.scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ── LOCAL STORAGE ── */
+const LS_KEY = 'ozgun_b1_hw1';
+function saveProgress() {
+  const state = { comp, inputs: {} };
+  document.querySelectorAll('input[id]').forEach(el => { state.inputs[el.id] = el.value; });
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); showSaveToast(); } catch(e) {}
+}
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (state.comp) { state.comp.forEach((v, i) => { comp[i] = v; }); upd(); }
+    if (state.inputs) {
+      Object.entries(state.inputs).forEach(([id, val]) => {
+        const el = document.getElementById(id);
+        if (el) el.value = val;
+      });
+    }
+  } catch(e) {}
+}
+function clearProgress() {
+  if (confirm('Clear all saved progress for this homework?')) { localStorage.removeItem(LS_KEY); location.reload(); }
+}
+function showSaveToast() {
+  const t = document.getElementById('save-toast');
+  if (!t) return;
+  t.style.opacity = '1'; t.style.transform = 'translateY(0)';
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(10px)'; }, 2000);
+}
+document.addEventListener('input', () => saveProgress());
+document.addEventListener('DOMContentLoaded', () => {
+  const b = document.getElementById('b0');
+  if (b) { b.style.maxHeight = '6000px'; b.style.padding = '18px'; }
+  const c = document.getElementById('ch0');
+  if (c) c.style.transform = 'rotate(180deg)';
+  loadProgress();
+});
+</script>
+
+<div id="save-toast">✓ PROGRESS SAVED</div>
+<div class="save-bar">
+  <button class="save-btn clear" onclick="clearProgress()">RESET</button>
+  <button class="save-btn" onclick="saveProgress()">SAVE PROGRESS</button>
+</div>
+</body>
+</html>
