@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Özgün B1 · Homework 4 — Modal Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0b0800;--surface:#131005;--surface2:#181408;--border:#221c06;--border2:#2e2608;--am:#b45309;--am-l:#fcd34d;--am-dim:rgba(180,83,9,0.09);--rose:#f43f5e;--rose-dim:rgba(244,63,94,0.09);--green:#22c55e;--green-dim:rgba(34,197,94,0.08);--red:#ef4444;--red-dim:rgba(239,68,68,0.09);--text:#e4d8b0;--muted:#524418;--muted2:#312a0c;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-weight:300;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(180,83,9,0.06) 0%,transparent 55%);pointer-events:none;z-index:0;}
+.page{max-width:820px;margin:0 auto;padding:40px 20px 110px;position:relative;z-index:1;}
+.hw-header{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px;position:relative;overflow:hidden;}
+.hw-header::after{content:'HW';position:absolute;right:-8px;top:-20px;font-family:'Syne',sans-serif;font-size:180px;font-weight:800;color:rgba(180,83,9,0.05);line-height:1;pointer-events:none;}
+.hw-tag{display:inline-flex;align-items:center;gap:8px;background:var(--am-dim);border:1px solid rgba(180,83,9,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--am-l);padding:4px 12px;margin-bottom:14px;}
+.hw-header h1{font-family:'Syne',sans-serif;font-size:clamp(24px,5vw,44px);font-weight:800;color:var(--text);line-height:1.05;margin-bottom:8px;}
+.hw-header h1 em{color:var(--am-l);font-style:normal;}
+.hw-header p{font-size:13.5px;color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:16px;font-weight:400;}
+.l-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.l-meta span{background:rgba(255,255,255,0.025);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:3px 10px;letter-spacing:0.05em;}
+.hw-banner{background:var(--am-dim);border:1px solid rgba(180,83,9,0.2);border-left:3px solid var(--am-l);padding:12px 16px;margin-bottom:28px;font-size:12.5px;line-height:1.7;color:var(--muted);}
+.hw-banner strong{color:var(--am-l);}
+.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.prog-steps{display:flex;gap:3px;flex:1;}
+.prog-step{flex:1;height:3px;background:var(--border);}
+.prog-step.done{background:var(--am);}
+.prog-step.active{background:var(--am-l);}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--am-l);}
+.block{background:var(--surface);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.block-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.b-ico{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.b-meta{flex:1;}
+.b-meta h2{font-size:13px;font-weight:700;color:var(--text);margin-bottom:1px;}
+.b-meta p{font-size:10.5px;color:var(--muted);}
+.b-badge{display:inline-flex;align-items:center;gap:5px;}
+.b-tag{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid var(--border);color:var(--muted);}
+.b-diff{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid rgba(180,83,9,0.3);color:var(--am-l);background:var(--am-dim);}
+.b-diff.vhard{border-color:rgba(244,63,94,0.3);color:var(--rose);background:var(--rose-dim);}
+.b-chev{color:var(--muted);font-size:11px;transition:transform 0.25s;flex-shrink:0;}
+.block-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height 0.45s ease,padding 0.3s;}
+.block-body.open{max-height:6000px;padding:18px;}
+.instr{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.65;padding:10px 14px;background:var(--surface2);border-left:2px solid var(--border2);font-weight:400;}
+.instr strong{color:var(--text);}
+.ex-hdr{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.ex-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-label{background:var(--am);color:white;padding:2px 9px;font-size:8px;font-weight:700;}
+.fi-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);margin-bottom:6px;font-size:13px;line-height:2;}
+.fi-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;}
+.fi-inp{display:inline-block;min-width:130px;padding:2px 8px;border:none;border-bottom:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;font-size:12.5px;color:var(--text);outline:none;transition:border-color 0.2s;vertical-align:middle;}
+.fi-inp:focus{border-bottom-color:var(--am-l);}
+.fi-inp.ok{border-bottom-color:var(--green);color:var(--green);}
+.fi-inp.no{border-bottom-color:var(--red);color:var(--red);}
+.chk{padding:2px 9px;background:var(--am);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:0.05em;vertical-align:middle;margin-left:3px;transition:opacity 0.15s;}
+.chk:hover{opacity:0.75;}
+.mc-block{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:7px;}
+.mc-q{font-size:13px;color:var(--text);margin-bottom:5px;font-weight:500;line-height:1.6;}
+.mc-ctx{font-size:11.5px;color:var(--muted);margin-bottom:9px;font-style:italic;}
+.mc-opts{display:flex;flex-direction:column;gap:6px;}
+.mc-btn{padding:8px 14px;border:1px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all 0.15s;text-align:left;}
+.mc-btn:hover{border-color:var(--am-l);color:var(--am-l);}
+.mc-btn.cor{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.mc-btn.wrng{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.mc-fb{font-size:11px;margin-top:7px;padding:5px 10px;display:none;line-height:1.55;}
+.mc-fb.show{display:block;}
+.mc-fb.ok{background:var(--green-dim);color:var(--green);}
+.mc-fb.no{background:var(--red-dim);color:var(--red);}
+.ec-block{background:var(--surface2);border:1px solid var(--border);padding:13px 15px;margin-bottom:8px;}
+.ec-n{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.ec-errors{font-size:10px;color:var(--rose);}
+.ec-wrong{font-size:13px;color:var(--text);margin-bottom:10px;padding:8px 12px;background:rgba(244,63,94,0.05);border-left:2px solid var(--rose);line-height:1.65;}
+.ec-wrong .err{text-decoration:underline;text-decoration-style:wavy;text-decoration-color:var(--red);color:var(--red);}
+.ec-inp{width:100%;padding:8px 12px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;margin-top:6px;}
+.ec-inp:focus{border-color:var(--am-l);}
+.ec-inp.ok{border-color:var(--green);background:var(--green-dim);}
+.ec-inp.no{border-color:var(--red);background:var(--red-dim);}
+.write-task{background:var(--surface2);border:1px solid var(--border);padding:16px 18px;margin-bottom:12px;}
+.write-task h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.write-task p{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;}
+.scenario{background:rgba(180,83,9,0.07);border:1px solid rgba(180,83,9,0.2);border-left:3px solid var(--am-l);padding:10px 14px;font-size:12.5px;color:var(--muted);line-height:1.7;margin:10px 0;}
+.scenario strong{color:var(--text);}
+.wl{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.wl-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:22px;flex-shrink:0;margin-top:5px;}
+.wl-inp{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);outline:none;padding:3px 5px;}
+.wl-inp:focus{border-bottom-color:var(--am-l);}
+.main-btn{width:100%;padding:11px;background:linear-gradient(90deg,var(--am),rgba(180,83,9,0.6));color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:10px;transition:opacity 0.15s;}
+.main-btn:hover{opacity:0.82;}
+.score-card{background:var(--surface2);border:1px solid var(--am);padding:18px;text-align:center;display:none;margin-top:12px;}
+.score-card.show{display:block;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:44px;color:var(--am-l);line-height:1;}
+.sc-val span{font-size:16px;}
+.sc-label{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--text);margin:6px 0 4px;}
+.sc-sub{font-size:12px;color:var(--muted);line-height:1.55;}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+.nav-btn{padding:9px 20px;border:1px solid var(--border);background:transparent;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;letter-spacing:0.05em;transition:all 0.15s;}
+.nav-btn:hover{border-color:var(--am-l);color:var(--am-l);}
+.nav-btn.next{background:var(--am);color:white;border-color:var(--am);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:center;line-height:1.8;}
+.save-bar{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:999;}
+.save-btn{padding:7px 14px;background:var(--am);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;}
+.save-btn:hover{opacity:0.8;}
+.save-btn.clear{background:var(--surface2);border:1px solid var(--border);color:var(--muted);}
+#save-toast{position:fixed;bottom:58px;right:18px;background:var(--am);color:white;font-family:'JetBrains Mono',monospace;font-size:9px;padding:6px 14px;letter-spacing:0.1em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:1000;}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hw-header">
+  <div class="hw-tag">// B1_PATHWAY · PHASE_2 · HOMEWORK_04</div>
+  <h1>Modal <em>Mastery</em></h1>
+  <p>No grammar support. No hint boxes. Apply must / should / could / might / have to / must not / don't have to in real management contexts.</p>
+  <div class="l-meta"><span>⏱ 45 MIN</span><span>INDEPENDENT PRACTICE</span><span>No scaffolding</span><span>B1 Level</span></div>
+</div>
+<div class="hw-banner"><strong>Reminder:</strong> Must not ≠ don't have to. Modal + base verb only — never -s, -ed, or -ing. Two errors per sentence in Part 3. The final task is an unguided policy document — use all six modals.</div>
+<div class="prog-row">
+  <span class="prog-lbl">homework_progress</span>
+  <div class="prog-steps" id="steps"><div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div></div>
+  <span class="prog-pct" id="pct">0%</span>
+</div>
+
+<!-- PART 1: GAP FILL NO LABELS -->
+<div class="block" id="s0">
+  <div class="block-top" onclick="tog(0)">
+    <div class="b-ico">✏️</div>
+    <div class="b-meta"><h2>Part 1 — Choose the Modal: No Labels</h2><p>10 management sentences. No modal is indicated. You decide.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch0" style="transform:rotate(180deg);">▼</span>
+  </div>
+  <div class="block-body open" id="b0">
+    <div class="instr">Write the most appropriate modal verb for each sentence. Read the context carefully — the meaning of the sentence tells you which modal to use. <strong>More than one answer may be correct</strong> — CHECK accepts common answers.</div>
+    <div class="fi-row"><span class="fi-n">01</span><span>It is a company regulation. All engineers</span><input class="fi-inp" id="f1" placeholder="modal" autocomplete="off"><span>complete the safety certification before site visits.</span><button class="chk" onclick="cfm('f1',['must','have to'])">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">02</span><span>I'm advising my engineer: "You</span><input class="fi-inp" id="f2" placeholder="modal" autocomplete="off"><span>prepare a backup plan in case the supplier cancels."</span><button class="chk" onclick="cfm('f2',['should','could'])">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">03</span><span>The Friday meeting is voluntary. Team members</span><input class="fi-inp" id="f3" placeholder="modal" autocomplete="off"><span>attend if they have other priorities.</span><button class="chk" onclick="cf('f3',"don't have to")">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">04</span><span>Sharing confidential cost data is strictly prohibited. You</span><input class="fi-inp" id="f4" placeholder="modal" autocomplete="off"><span>discuss budget figures outside this team.</span><button class="chk" onclick="cf('f4','must not')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">05</span><span>I am uncertain. The Romania meeting</span><input class="fi-inp" id="f5" placeholder="modal" autocomplete="off"><span>move to Thursday if Andrei is unavailable Wednesday.</span><button class="chk" onclick="cfm('f5',['might','may','could'])">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">06</span><span>Suggesting an alternative to my engineer: "We</span><input class="fi-inp" id="f6" placeholder="modal" autocomplete="off"><span>also evaluate a local supplier to reduce shipping time."</span><button class="chk" onclick="cfm('f6',['could','should'])">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">07</span><span>The data is wrong and doesn't add up. There</span><input class="fi-inp" id="f7" placeholder="modal" autocomplete="off"><span>be an error in the financial report.</span><button class="chk" onclick="cfm('f7',['must','has to'])">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">08</span><span>Expressing ability: "I</span><input class="fi-inp" id="f8" placeholder="modal" autocomplete="off"><span>explain the technical requirements to the Romanian team in English."</span><button class="chk" onclick="cfm('f8',['can','could'])">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">09</span><span>The engineers worked hard — asking if something is required is fine. "</span><input class="fi-inp" id="f9" placeholder="modal" autocomplete="off"><span>they prepare the documentation this weekend, or can it wait until Monday?"</span><button class="chk" onclick="cf('f9','do')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">10</span><span>The project deadline is June 30th — it is non-negotiable. We</span><input class="fi-inp" id="f10" placeholder="modal" autocomplete="off"><span>deliver on time — no extension is possible.</span><button class="chk" onclick="cfm('f10',['must','have to'])">CHECK</button></div>
+    <button class="main-btn" onclick="chkFill()">CHECK ALL & CONTINUE →</button>
+    <div class="score-card" id="fillSc"></div>
+  </div>
+</div>
+
+<!-- PART 2: MC HARD -->
+<div class="block" id="s1">
+  <div class="block-top" onclick="tog(1)">
+    <div class="b-ico">🎯</div>
+    <div class="b-meta"><h2>Part 2 — Meaning-Based Multiple Choice</h2><p>All options are grammatically possible. Choose the right meaning.</p></div>
+    <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch1">▼</span>
+  </div>
+  <div class="block-body" id="b1">
+    <div class="instr">Read each sentence and the context. All options may be grammatically correct — but only ONE has the right meaning for the situation.</div>
+    <div class="mc-block" id="mc1">
+      <div class="mc-q">1. Your director says: "The Q2 report is optional — submit it only if you have time." You tell your engineer:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc1',this,'A','B')">A) You must not submit the Q2 report.</button>
+        <button class="mc-btn" onclick="smc('mc1',this,'B','B')">B) You don't have to submit the Q2 report — it is optional.</button>
+        <button class="mc-btn" onclick="smc('mc1',this,'C','B')">C) You must submit the Q2 report — it is optional.</button>
+      </div><div class="mc-fb" id="f-mc1"></div>
+    </div>
+    <div class="mc-block" id="mc2">
+      <div class="mc-q">2. You want to suggest an alternative approach to your team — not give an order:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc2',this,'A','B')">A) We must split the project into two phases.</button>
+        <button class="mc-btn" onclick="smc('mc2',this,'B','B')">B) We could split the project into two phases to reduce the budget pressure.</button>
+        <button class="mc-btn" onclick="smc('mc2',this,'C','B')">C) We have to split the project into two phases.</button>
+      </div><div class="mc-fb" id="f-mc2"></div>
+    </div>
+    <div class="mc-block" id="mc3">
+      <div class="mc-q">3. You look at a cost report and something is clearly wrong. You say to your engineer:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc3',this,'A','A')">A) This can't be right — our total budget is 40M TL, not 400M.</button>
+        <button class="mc-btn" onclick="smc('mc3',this,'B','A')">B) This might not be right — maybe the total is 400M TL.</button>
+        <button class="mc-btn" onclick="smc('mc3',this,'C','A')">C) This mustn't be right — we should check.</button>
+      </div><div class="mc-fb" id="f-mc3"></div>
+    </div>
+    <div class="mc-block" id="mc4">
+      <div class="mc-q">4. You want to politely ask your Romanian colleague to resend a document:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc4',this,'A','B')">A) You must resend the technical specification document.</button>
+        <button class="mc-btn" onclick="smc('mc4',this,'B','B')">B) Could you resend the technical specification document at your earliest convenience?</button>
+        <button class="mc-btn" onclick="smc('mc4',this,'C','B')">C) You should to resend the technical specification document.</button>
+      </div><div class="mc-fb" id="f-mc4"></div>
+    </div>
+    <div class="mc-block" id="mc5">
+      <div class="mc-q">5. The delivery is confirmed for next Tuesday — you are 100% certain:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc5',this,'A','B')">A) The delivery might arrive on Tuesday.</button>
+        <button class="mc-btn" onclick="smc('mc5',this,'B','B')">B) The delivery will arrive on Tuesday — the logistics team confirmed it.</button>
+        <button class="mc-btn" onclick="smc('mc5',this,'C','B')">C) The delivery could arrive on Tuesday if everything goes well.</button>
+      </div><div class="mc-fb" id="f-mc5"></div>
+    </div>
+    <button class="main-btn" onclick="done(1)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 3: DOUBLE ERROR -->
+<div class="block" id="s2">
+  <div class="block-top" onclick="tog(2)">
+    <div class="b-ico">⚠️</div>
+    <div class="b-meta"><h2>Part 3 — Double Error Correction</h2><p>Two modal errors per sentence. Fix both.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff vhard">VERY HARD</span></div>
+    <span class="b-chev" id="ch2">▼</span>
+  </div>
+  <div class="block-body" id="b2">
+    <div class="instr">Each sentence has <strong>exactly two modal-related errors</strong>. They can be: wrong modal choice, "to" after modal, -s/-ing after modal, must not vs don't have to confusion, or wrong form. Rewrite the corrected full sentence.</div>
+    <div class="ec-block">
+      <div class="ec-n">Sentence 01 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">Engineers <span class="err">must to submit</span> their reports and they <span class="err">must not attend</span> the Friday meeting if they are busy — it is optional.</div>
+      <input class="ec-inp" id="ec1" autocomplete="off" placeholder="Engineers must…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec1',['must submit',"don't have to attend"])">CHECK</button>
+    </div>
+    <div class="ec-block">
+      <div class="ec-n">Sentence 02 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">The supplier <span class="err">mights</span> delay again, so we <span class="err">should to prepare</span> a backup procurement plan.</div>
+      <input class="ec-inp" id="ec2" autocomplete="off" placeholder="The supplier might…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec2',['might delay','should prepare'])">CHECK</button>
+    </div>
+    <div class="ec-block">
+      <div class="ec-n">Sentence 03 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">You <span class="err">don't have to</span> share project costs with the supplier — it is strictly confidential and completely <span class="err">must not</span> leave this team.</div>
+      <input class="ec-inp" id="ec3" autocomplete="off" placeholder="You must not…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec3',['must not share','must not leave'])">CHECK</button>
+    </div>
+    <div class="ec-block">
+      <div class="ec-n">Sentence 04 <span class="ec-errors">— 2 errors</span></div>
+      <div class="ec-wrong">We <span class="err">could to split</span> the project, but we <span class="err">must not forget</span> that the deadline is fixed — changing it is not necessary.</div>
+      <input class="ec-inp" id="ec4" autocomplete="off" placeholder="We could split…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec4',['could split',"don't have to"])">CHECK</button>
+    </div>
+    <button class="main-btn" onclick="done(2)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 4: SITUATION WRITING -->
+<div class="block" id="s3">
+  <div class="block-top" onclick="tog(3)">
+    <div class="b-ico">💬</div>
+    <div class="b-meta"><h2>Part 4 — Manager Responses: Write from Scratch</h2><p>6 situations. Write your natural response as a manager. No sentence starters.</p></div>
+    <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch3">▼</span>
+  </div>
+  <div class="block-body" id="b3">
+    <div class="instr">For each situation, write exactly what you would say as a manager. Use the most appropriate modal verb. No sentence starters provided.</div>
+    <div class="fi-row" style="flex-direction:column;align-items:flex-start;">
+      <span style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;">01 — An engineer wants to skip the safety training because he is busy.</span>
+      <input class="fi-inp" id="s1a" placeholder="Write your manager response…" style="min-width:100%;margin:0;" autocomplete="off">
+      <button class="chk" style="margin-top:6px;" onclick="cec('s1a','must')">CHECK</button>
+    </div>
+    <div class="fi-row" style="flex-direction:column;align-items:flex-start;">
+      <span style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;">02 — You want to politely suggest postponing the procurement to Q3.</span>
+      <input class="fi-inp" id="s2a" placeholder="Write your manager response…" style="min-width:100%;margin:0;" autocomplete="off">
+      <button class="chk" style="margin-top:6px;" onclick="cec('s2a','could')">CHECK</button>
+    </div>
+    <div class="fi-row" style="flex-direction:column;align-items:flex-start;">
+      <span style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;">03 — You're not sure if the director will attend the Wednesday call.</span>
+      <input class="fi-inp" id="s3a" placeholder="Write your manager response…" style="min-width:100%;margin:0;" autocomplete="off">
+      <button class="chk" style="margin-top:6px;" onclick="cec('s3a','might')">CHECK</button>
+    </div>
+    <div class="fi-row" style="flex-direction:column;align-items:flex-start;">
+      <span style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;">04 — You advise your engineer about the best way to write the report.</span>
+      <input class="fi-inp" id="s4a" placeholder="Write your manager response…" style="min-width:100%;margin:0;" autocomplete="off">
+      <button class="chk" style="margin-top:6px;" onclick="cec('s4a','should')">CHECK</button>
+    </div>
+    <div class="fi-row" style="flex-direction:column;align-items:flex-start;">
+      <span style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;">05 — An engineer asks if he must write the daily status email on weekends.</span>
+      <input class="fi-inp" id="s5a" placeholder="Write your manager response…" style="min-width:100%;margin:0;" autocomplete="off">
+      <button class="chk" style="margin-top:6px;" onclick="cec('s5a',"don't have to")">CHECK</button>
+    </div>
+    <div class="fi-row" style="flex-direction:column;align-items:flex-start;">
+      <span style="font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:500;">06 — You tell a new engineer that sharing internal pricing with suppliers is forbidden.</span>
+      <input class="fi-inp" id="s6a" placeholder="Write your manager response…" style="min-width:100%;margin:0;" autocomplete="off">
+      <button class="chk" style="margin-top:6px;" onclick="cec('s6a','must not')">CHECK</button>
+    </div>
+    <button class="main-btn" onclick="done(3)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 5: READING - COMPANY EMAIL -->
+<div class="block" id="s4">
+  <div class="block-top" onclick="tog(4)">
+    <div class="b-ico">📋</div>
+    <div class="b-meta"><h2>Part 5 — Read the Policy Email and Answer</h2><p>Identify modal verbs, explain their function, answer comprehension questions</p></div>
+    <div class="b-badge"><span class="b-tag">7 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch4">▼</span>
+  </div>
+  <div class="block-body" id="b4">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-top:2px solid var(--am-l);padding:18px 20px;margin-bottom:14px;font-size:13px;line-height:1.95;color:rgba(228,216,176,0.9);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--am-l);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);">FROM: director@eti.com.tr &nbsp;|&nbsp; TO: investment_team@eti.com.tr &nbsp;|&nbsp; SUBJECT: Q2 Procurement Policy Update</div>
+      Dear team,<br/><br/>
+      I am writing to clarify our Q2 procurement policy following recent budget overruns.<br/><br/>
+      <strong>Mandatory requirements:</strong><br/>
+      All purchase requests over 500,000 TL <strong>must</strong> be submitted with three competitive quotes. Engineers <strong>have to</strong> complete the procurement form before any order is placed — no exceptions.<br/><br/>
+      <strong>Recommendations:</strong><br/>
+      You <strong>should</strong> always keep a record of supplier communication in writing. Where possible, you <strong>could</strong> negotiate extended payment terms to protect cash flow.<br/><br/>
+      <strong>Restrictions:</strong><br/>
+      You <strong>must not</strong> approve any purchase without my written authorisation if the amount exceeds 1,000,000 TL. Engineers <strong>don't have to</strong> copy me on routine supplier emails — only escalate if there is a problem.<br/><br/>
+      <strong>Note:</strong><br/>
+      Delivery dates <strong>might</strong> shift in Q2 due to global logistics pressures. Please plan accordingly.<br/><br/>
+      Best regards,<br/>Director
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:11px 14px;margin-bottom:7px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;">Question 01</div>
+      <div style="color:var(--text);font-weight:500;font-size:12.5px;margin-bottom:7px;">What modal is used for strict rules and what does it signal?</div>
+      <input class="ec-inp" id="rq1" autocomplete="off" placeholder="Write a full sentence answer…">
+      <button class="chk" style="margin-top:6px;" onclick="cec('rq1','must')">CHECK</button>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:11px 14px;margin-bottom:7px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;">Question 02</div>
+      <div style="color:var(--text);font-weight:500;font-size:12.5px;margin-bottom:7px;">What is the difference between "must not" and "don't have to" in this email? Give an example of each from the text.</div>
+      <input class="ec-inp" id="rq2" autocomplete="off" placeholder="Must not means… Don't have to means…">
+      <button class="chk" style="margin-top:6px;" onclick="cec2('rq2',['must not','don\'t have to'])">CHECK</button>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:11px 14px;margin-bottom:7px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;">Question 03</div>
+      <div style="color:var(--text);font-weight:500;font-size:12.5px;margin-bottom:7px;">Which modal shows uncertainty about the future? Write the example from the email.</div>
+      <input class="ec-inp" id="rq3" autocomplete="off" placeholder="The modal is… The example is…">
+      <button class="chk" style="margin-top:6px;" onclick="cec('rq3','might')">CHECK</button>
+    </div>
+    <button class="main-btn" onclick="done(4)">FINAL SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 6: FREE WRITING POLICY MEMO -->
+<div class="block" id="s5">
+  <div class="block-top" onclick="tog(5)">
+    <div class="b-ico">✍️</div>
+    <div class="b-meta"><h2>Part 6 — Write a Team Policy Memo</h2><p>12 sentences. All 6 modals required. Unguided.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff vhard">VERY HARD</span></div>
+    <span class="b-chev" id="ch5">▼</span>
+  </div>
+  <div class="block-body" id="b5">
+    <div class="write-task">
+      <h4>Task: Write Your Own Team Policy Memo</h4>
+      <div class="scenario">
+        <strong>You are Özgün.</strong> Write a short policy memo to your engineering team covering the rules, recommendations, and restrictions for the Romania site visit in May.<br/><br/>
+        <strong>Requirements:</strong><br/>
+        — Minimum <strong>12 sentences</strong><br/>
+        — Use <strong>ALL SIX</strong> modals at least once: must / have to / should / could / must not / don't have to<br/>
+        — Use <strong>might</strong> for at least one uncertain future event<br/>
+        — Cover: travel rules, reporting obligations, what is forbidden, optional activities, recommendations, and uncertainties<br/>
+        — Professional, formal tone — this is an official memo
+      </div>
+      <div class="wl"><div class="wl-n">1</div><input class="wl-inp" id="fw1"></div>
+      <div class="wl"><div class="wl-n">2</div><input class="wl-inp" id="fw2"></div>
+      <div class="wl"><div class="wl-n">3</div><input class="wl-inp" id="fw3"></div>
+      <div class="wl"><div class="wl-n">4</div><input class="wl-inp" id="fw4"></div>
+      <div class="wl"><div class="wl-n">5</div><input class="wl-inp" id="fw5"></div>
+      <div class="wl"><div class="wl-n">6</div><input class="wl-inp" id="fw6"></div>
+      <div class="wl"><div class="wl-n">7</div><input class="wl-inp" id="fw7"></div>
+      <div class="wl"><div class="wl-n">8</div><input class="wl-inp" id="fw8"></div>
+      <div class="wl"><div class="wl-n">9</div><input class="wl-inp" id="fw9"></div>
+      <div class="wl"><div class="wl-n">10</div><input class="wl-inp" id="fw10"></div>
+      <div class="wl"><div class="wl-n">11</div><input class="wl-inp" id="fw11"></div>
+      <div class="wl"><div class="wl-n">12</div><input class="wl-inp" id="fw12"></div>
+    </div>
+    <div style="background:var(--am-dim);border-left:2px solid var(--am-l);padding:9px 13px;font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;"><strong style="color:var(--am-l);">Self-check:</strong> Scan each sentence — modal + base verb (no "to", no -s, no -ing). Check must not vs don't have to. Did you use all 6 modals? Is the tone formal and professional throughout?</div>
+    <button class="main-btn" onclick="finish()">✓ SUBMIT HOMEWORK 4</button>
+    <div class="score-card" id="finalSc"></div>
+  </div>
+</div>
+
+<div class="lesson-nav">
+  <button class="nav-btn" onclick="alert('Go back to Lesson 4!')">← LESSON 04</button>
+  <div class="nav-info">B1 PATHWAY · PHASE 2<br>HOMEWORK 04 OF 12</div>
+  <button class="nav-btn next" onclick="alert('Complete homework first!')">LESSON 05 →</button>
+</div>
+</div>
+<script>
+const comp=new Array(6).fill(false);
+function upd(){const d=comp.filter(Boolean).length;const s=document.getElementById('steps').children;for(let i=0;i<s.length;i++){s[i].classList.remove('done','active');if(i<d)s[i].classList.add('done');else if(i===d)s[i].classList.add('active');}document.getElementById('pct').textContent=Math.round(d/6*100)+'%';}
+function tog(i){const b=document.getElementById('b'+i);const c=document.getElementById('ch'+i);b.classList.toggle('open');if(b.classList.contains('open')){b.style.maxHeight='6000px';b.style.padding='18px';if(c)c.style.transform='rotate(180deg)';}else{b.style.maxHeight='0';b.style.padding='0 18px';if(c)c.style.transform='';}}
+function done(i){comp[i]=true;upd();const nb=document.getElementById('b'+(i+1));if(nb&&!nb.classList.contains('open')){nb.classList.add('open');nb.style.maxHeight='6000px';nb.style.padding='18px';const nc=document.getElementById('ch'+(i+1));if(nc)nc.style.transform='rotate(180deg)';document.getElementById('s'+(i+1))?.scrollIntoView({behavior:'smooth',block:'start'});}}
+function cf(id,a){const el=document.getElementById(id);if(!el)return false;const v=el.value.trim().toLowerCase();const ok=v===a.toLowerCase();el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);return ok;}
+function cfm(id,arr){const el=document.getElementById(id);if(!el)return false;const v=el.value.trim().toLowerCase();const ok=arr.some(a=>v===a.toLowerCase());el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);return ok;}
+function cec(id,kw){const el=document.getElementById(id);if(!el)return;const v=el.value.trim().toLowerCase();const ok=v.includes(kw.toLowerCase());el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);}
+function cec2(id,kws){const el=document.getElementById(id);if(!el)return;const v=el.value.trim().toLowerCase();const ok=kws.every(k=>v.includes(k.toLowerCase()));el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);}
+function smc(pid,btn,val,correct){const par=document.getElementById(pid);par.querySelectorAll('.mc-btn').forEach(b=>b.classList.remove('cor','wrng'));const ok=val===correct;btn.classList.add(ok?'cor':'wrng');if(!ok)par.querySelectorAll('.mc-btn').forEach(b=>{if(b.textContent.trim().startsWith(correct))b.classList.add('cor');});
+const exp={mc1:'"Don\'t have to" = not necessary/optional. "Must not" = forbidden. The director said "submit only if you have time" — so it is optional, not forbidden.',mc2:'"Could" = polite suggestion, one option. "Must" and "have to" = obligation — too strong for a suggestion.',mc3:'"Can\'t be right" = you are certain it is wrong (logical deduction). "Might not" = uncertain. "Mustn\'t" = prohibition, wrong here.',mc4:'"Could you" = polite request. "Must" = obligation/command — too aggressive. "Should to" = grammatically wrong.',mc5:'"Will" = 100% confirmed. "Might" = uncertain. "Could" = possibility — but "confirmed" means will.'};
+const fb=document.getElementById('f-'+pid);fb.textContent=(ok?'✓ Correct. ':'✗ Incorrect. ')+(exp[pid]||'');fb.className='mc-fb show '+(ok?'ok':'no');}
+function chkFill(){const ids=['f1','f2','f3','f4','f5','f6','f7','f8','f10'];const checks=[cfm('f1',['must','have to']),cfm('f2',['should','could']),cf('f3',"don't have to"),cf('f4','must not'),cfm('f5',['might','may','could']),cfm('f6',['could','should']),cfm('f7',['must','has to']),cfm('f8',['can','could']),cfm('f10',['must','have to'])];const ok=checks.filter(Boolean).length;comp[0]=ok>=7;upd();const sc=document.getElementById('fillSc');const p=Math.round(ok/9*100);sc.innerHTML=`<div class="sc-val">${ok}<span>/9</span></div><div class="sc-label">${p>=78?'Excellent':'Developing'}</div><div class="sc-sub">${p>=78?'Strong modal selection. The must not / don\'t have to distinction is mastered.':'Review the must not vs don\'t have to difference — this is the most tested B2 modal error.'}</div>`;sc.classList.add('show');done(0);}
+function finish(){comp[5]=true;upd();const filled=['fw1','fw2','fw3','fw4','fw5','fw6','fw7','fw8','fw9','fw10','fw11','fw12'].filter(id=>document.getElementById(id)?.value.trim().length>5).length;const sc=document.getElementById('finalSc');sc.innerHTML=`<div class="sc-val">${filled}<span>/12</span></div><div class="sc-label">Homework 4 ${filled>=10?'Complete ✓':'Submitted'}</div><div class="sc-sub">${filled>=10?'Policy memo written. Your teacher will check modal accuracy, variety, and professional register in Lesson 5.':'Complete all 12 sentences — a professional memo needs to cover all points clearly.'}</div>`;sc.classList.add('show');sc.scrollIntoView({behavior:'smooth'});}
+const LS_KEY='ozgun_b1_hw4';
+function saveProgress(){const state={comp,inputs:{}};document.querySelectorAll('input[id]').forEach(el=>{state.inputs[el.id]=el.value;});try{localStorage.setItem(LS_KEY,JSON.stringify(state));showSaveToast();}catch(e){}}
+function loadProgress(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return;const state=JSON.parse(raw);if(state.comp){state.comp.forEach((v,i)=>{comp[i]=v;});upd();}if(state.inputs){Object.entries(state.inputs).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val;});}}catch(e){}}
+function clearProgress(){if(confirm('Clear all saved progress?')){localStorage.removeItem(LS_KEY);location.reload();}}
+function showSaveToast(){const t=document.getElementById('save-toast');if(!t)return;t.style.opacity='1';t.style.transform='translateY(0)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';},2000);}
+document.addEventListener('input',()=>saveProgress());
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('b0');if(b){b.style.maxHeight='6000px';b.style.padding='18px';}const c=document.getElementById('ch0');if(c)c.style.transform='rotate(180deg)';loadProgress();});
+</script>
+<div id="save-toast">✓ PROGRESS SAVED</div>
+<div class="save-bar"><button class="save-btn clear" onclick="clearProgress()">RESET</button><button class="save-btn" onclick="saveProgress()">SAVE PROGRESS</button></div>
+</body>
+</html>
