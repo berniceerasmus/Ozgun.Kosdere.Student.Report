@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Özgün B1–B2 · Lesson 12 — Meeting Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f7f8fc;--surface:#ffffff;--surface2:#f4f6fb;
+  --border:#d9deea;--border2:#c8d0e0;
+  --indigo:#4f46e5;--indigo-l:#635bff;--indigo-dim:rgba(79,70,229,0.08);
+  --teal:#0f766e;--teal-l:#0ea5a4;--teal-dim:rgba(15,118,110,0.08);
+  --amber:#d97706;--amber-l:#f59e0b;--amber-dim:rgba(217,119,6,0.08);
+  --green:#059669;--green-dim:rgba(5,150,105,0.08);
+  --red:#dc2626;--red-dim:rgba(220,38,38,0.08);
+  --rose:#e11d48;--rose-dim:rgba(225,29,72,0.08);
+  --text:#162033;--muted:#5e6b85;--muted2:#8d98ae;
+  --shadow:0 14px 34px rgba(31,41,55,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:linear-gradient(180deg,#fbfcff 0%,#f5f7fc 100%);
+  color:var(--text);line-height:1.7;font-weight:300;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 10% 12%,rgba(79,70,229,0.08) 0%,transparent 45%),
+    radial-gradient(ellipse at 85% 18%,rgba(15,118,110,0.06) 0%,transparent 40%),
+    radial-gradient(ellipse at 18% 88%,rgba(217,119,6,0.05) 0%,transparent 40%);
+  pointer-events:none;z-index:0;
+}
+.page{max-width:860px;margin:0 auto;padding:40px 20px 100px;position:relative;z-index:1;}
+
+/* ── HEADER ── */
+.lesson-header{
+  border:1px solid rgba(255,255,255,0.8);background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(10px);box-shadow:var(--shadow);
+  border-radius:28px;padding:28px 28px 24px;margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.lesson-header::after{
+  content:'12';position:absolute;right:8px;top:-18px;font-family:'Syne',sans-serif;
+  font-size:180px;font-weight:800;color:rgba(79,70,229,0.06);line-height:1;pointer-events:none;
+}
+.l-tag{
+  display:inline-flex;align-items:center;gap:8px;background:var(--indigo-dim);
+  border:1px solid rgba(79,70,229,0.18);font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--indigo);
+  padding:5px 12px;margin-bottom:14px;border-radius:999px;
+}
+.lesson-header h1{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:800;
+  line-height:1.02;margin-bottom:10px;max-width:580px;
+}
+.lesson-header h1 em{color:var(--indigo);font-style:normal;}
+.lesson-header p{font-size:14px;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:16px;font-weight:400;}
+.l-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.l-meta span{
+  background:#fff;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:var(--muted);padding:4px 10px;letter-spacing:0.05em;border-radius:999px;
+}
+
+/* ── REVIEW STRIP ── */
+.review-strip{
+  display:flex;align-items:center;gap:10px;background:var(--surface);
+  border:1px solid var(--border);padding:12px 16px;margin-bottom:24px;
+  font-size:12px;color:var(--muted);border-radius:18px;box-shadow:var(--shadow);
+}
+.review-strip strong{color:var(--indigo);}
+
+/* ── PROGRESS ── */
+.prog-row{
+  display:flex;align-items:center;gap:12px;margin-bottom:26px;padding:12px 14px;
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);
+}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.prog-steps{display:flex;gap:4px;flex:1;}
+.prog-step{flex:1;height:5px;background:#e6eaf3;border-radius:999px;}
+.prog-step.done{background:var(--indigo);}
+.prog-step.active{background:var(--amber-l);}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--indigo);}
+
+/* ── ACCORDION BLOCKS ── */
+.block{
+  background:var(--surface);border:1px solid var(--border);margin-bottom:12px;
+  overflow:hidden;border-radius:22px;box-shadow:var(--shadow);
+  transition:border-color .2s,transform .2s;
+}
+.block:hover{border-color:var(--border2);transform:translateY(-1px);}
+.block-top{
+  display:flex;align-items:center;gap:12px;padding:16px 18px;
+  border-bottom:1px solid transparent;cursor:pointer;user-select:none;
+}
+.block.open .block-top{border-bottom-color:var(--border);}
+.b-ico{
+  width:42px;height:42px;border:1px solid var(--border);display:flex;align-items:center;
+  justify-content:center;font-size:16px;flex-shrink:0;border-radius:14px;background:var(--surface2);
+}
+.b-meta{flex:1;}
+.b-meta h2{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.b-meta p{font-size:11px;color:var(--muted);}
+.b-tag{
+  font-family:'JetBrains Mono',monospace;font-size:8px;padding:3px 9px;
+  border:1px solid var(--border);color:var(--muted);border-radius:999px;background:var(--surface2);
+}
+.b-chev{color:var(--muted);font-size:11px;transition:transform .25s;flex-shrink:0;}
+.block-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .45s ease,padding .3s;}
+.block-body.open{max-height:9000px;padding:18px;}
+
+/* ── CONTENT COMPONENTS ── */
+.gram{
+  border-left:3px solid var(--indigo);padding:14px 16px;margin-bottom:12px;
+  background:var(--indigo-dim);border-radius:0 16px 16px 0;
+}
+.gram h3{font-size:11.5px;font-weight:700;color:var(--indigo);margin-bottom:7px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;}
+.gram p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:8px;font-weight:400;}
+.gram p:last-child{margin-bottom:0;}
+.gram.teal{border-left-color:var(--teal);background:var(--teal-dim);}
+.gram.teal h3{color:var(--teal);}
+.gram.amber{border-left-color:var(--amber);background:var(--amber-dim);}
+.gram.amber h3{color:var(--amber);}
+
+.callout{
+  border:1px solid rgba(15,118,110,0.18);border-left:3px solid var(--teal);
+  background:var(--teal-dim);padding:11px 14px;font-size:12.5px;color:var(--muted);
+  line-height:1.7;margin:10px 0;border-radius:16px;font-weight:400;
+}
+.callout strong{color:var(--text);}
+
+.amber-box{
+  border-left:3px solid var(--amber);background:var(--amber-dim);padding:10px 13px;
+  font-size:12.5px;color:#8a5c08;margin-bottom:12px;line-height:1.7;font-weight:400;
+  border-radius:0 16px 16px 0;
+}
+
+.formula{
+  background:var(--surface2);border:1px solid var(--border);padding:13px 14px;
+  font-family:'JetBrains Mono',monospace;font-size:11px;line-height:2.1;
+  margin-bottom:10px;border-radius:16px;
+}
+.formula .ok{color:var(--green);}
+.formula .err{color:var(--red);}
+.formula .hi{color:var(--indigo);}
+.formula .hi2{color:var(--teal);}
+.formula .hi3{color:var(--amber);}
+.formula .note{color:var(--muted2);font-size:9.5px;}
+.formula .sep{border-top:1px solid var(--border);margin:6px 0;}
+
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:560px){.compare-row{grid-template-columns:1fr;}}
+.compare-bad,.compare-good{padding:12px 14px;font-size:12.5px;line-height:1.65;border-radius:16px;}
+.compare-bad{background:var(--red-dim);border:1px solid rgba(220,38,38,.18);border-left:3px solid var(--red);}
+.compare-good{background:var(--green-dim);border:1px solid rgba(5,150,105,.18);border-left:3px solid var(--green);}
+.compare-label{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700;}
+.compare-bad .compare-label{color:var(--red);}
+.compare-good .compare-label{color:var(--green);}
+
+.phrase-grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:14px;}
+.ph2{
+  background:var(--surface2);border:1px solid var(--border);padding:11px 13px;
+  cursor:pointer;transition:border-color .2s,transform .2s;border-radius:16px;
+}
+.ph2:hover,.ph2.flip{border-color:var(--indigo);transform:translateY(-1px);}
+.ph2-text{font-size:12.2px;font-weight:600;color:var(--indigo);margin-bottom:3px;}
+.ph2-ctx{font-size:10.5px;color:var(--muted);display:none;font-style:italic;margin-top:4px;line-height:1.4;}
+.ph2.flip .ph2-ctx{display:block;}
+
+.dialogue{
+  background:#fff;border:1px solid var(--border);padding:16px;
+  border-radius:18px;margin-bottom:14px;
+}
+.line{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.line:last-child{margin-bottom:0;}
+.spk{
+  min-width:88px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin-top:4px;flex-shrink:0;
+}
+.say{font-size:13px;color:var(--text);line-height:1.75;}
+
+.use-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+@media(max-width:700px){.use-grid{grid-template-columns:1fr;}}
+.use-box{background:#fff;border:1px solid var(--border);padding:12px 13px;border-radius:16px;}
+.use-box .ttl{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;}
+.use-box.b1 .ttl{color:var(--indigo);}
+.use-box.b2 .ttl{color:var(--teal);}
+.use-box p{font-size:12.3px;color:var(--muted);line-height:1.75;margin-bottom:7px;}
+.use-box p:last-child{margin-bottom:0;}
+
+.term-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px;margin-bottom:14px;}
+.term{background:var(--surface2);border:1px solid var(--border);padding:11px 13px;border-radius:16px;}
+.term .w{font-size:12.5px;font-weight:700;color:var(--indigo);margin-bottom:3px;}
+.term .t{font-size:10.5px;color:var(--muted);line-height:1.5;}
+
+.drill-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:620px){.drill-grid{grid-template-columns:1fr;}}
+.card{background:var(--surface2);border:1px solid var(--border);padding:14px;border-radius:18px;}
+.card h4{font-size:12px;font-weight:700;margin-bottom:7px;color:var(--text);}
+.card p{font-size:12px;color:var(--muted);line-height:1.7;}
+
+/* ── PRACTICE ── */
+.ex-hdr{
+  font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;
+}
+.ex-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-label{background:var(--indigo);color:white;padding:2px 9px;font-size:8px;font-weight:700;border-radius:999px;}
+.instr{
+  font-size:12.5px;color:var(--muted);margin-bottom:11px;line-height:1.65;padding:10px 12px;
+  background:var(--surface2);border-left:3px solid var(--border2);font-weight:400;border-radius:0 16px 16px 0;
+}
+.instr strong{color:var(--text);}
+.fi-row{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:11px 13px;
+  background:var(--surface2);border:1px solid var(--border);margin-bottom:7px;
+  font-size:13px;line-height:2;border-radius:16px;
+}
+.fi-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;}
+.fi-inp{
+  display:inline-block;min-width:200px;padding:2px 8px;border:none;
+  border-bottom:1.5px solid var(--border2);background:transparent;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;font-size:12.5px;
+  color:var(--text);outline:none;transition:border-color .2s;
+}
+.fi-inp:focus{border-bottom-color:var(--indigo);}
+.fi-inp.ok{border-bottom-color:var(--green);color:var(--green);}
+.fi-inp.no{border-bottom-color:var(--red);color:var(--red);}
+.chk{
+  padding:3px 9px;background:var(--indigo);color:white;border:none;
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;
+  cursor:pointer;letter-spacing:.05em;vertical-align:middle;margin-left:3px;border-radius:999px;
+}
+.chk:hover{opacity:.85;}
+.mc-block{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:8px;border-radius:16px;}
+.mc-q{font-size:13px;color:var(--text);margin-bottom:9px;font-weight:500;line-height:1.55;}
+.mc-opts{display:flex;flex-direction:column;gap:6px;}
+.mc-btn{
+  padding:8px 14px;border:1px solid var(--border);background:transparent;
+  font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--muted);
+  cursor:pointer;transition:all .15s;text-align:left;line-height:1.5;border-radius:14px;
+}
+.mc-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.mc-btn.cor{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.mc-btn.wrng{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.mc-fb{font-size:11px;margin-top:7px;padding:7px 10px;display:none;line-height:1.55;border-radius:12px;}
+.mc-fb.show{display:block;}
+.mc-fb.ok{background:var(--green-dim);color:var(--green);}
+.mc-fb.no{background:var(--red-dim);color:var(--red);}
+
+.roleplay{
+  background:linear-gradient(180deg,#ffffff 0%,#f8faff 100%);border:1px solid var(--border);
+  padding:16px;border-radius:18px;margin-bottom:12px;
+}
+.roleplay h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.roleplay p,.roleplay li{font-size:12.5px;color:var(--muted);line-height:1.7;}
+.roleplay ul{padding-left:18px;margin-top:4px;}
+
+/* ── NAV ── */
+.lesson-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:36px;padding-top:20px;border-top:1px solid var(--border);
+}
+.nav-btn{
+  padding:10px 20px;border:1px solid var(--border);background:#fff;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);
+  cursor:pointer;letter-spacing:.05em;transition:all .15s;border-radius:999px;
+}
+.nav-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.nav-btn.next{background:var(--indigo);color:white;border-color:var(--indigo);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:center;line-height:1.8;}
+
+/* ── SAVE BAR ── */
+.save-bar{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:999;}
+.save-btn{
+  padding:8px 14px;background:var(--indigo);color:white;border:none;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;transition:opacity .15s;border-radius:999px;box-shadow:var(--shadow);
+}
+.save-btn:hover{opacity:.85;}
+.save-btn.clear{background:#fff;border:1px solid var(--border);color:var(--muted);}
+#save-toast{
+  position:fixed;bottom:62px;right:18px;background:var(--indigo);color:white;
+  font-family:'JetBrains Mono',monospace;font-size:9px;padding:7px 14px;letter-spacing:.1em;
+  opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:1000;
+  border-radius:999px;box-shadow:var(--shadow);
+}
+::selection{background:rgba(79,70,229,.16);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="lesson-header">
+    <div class="l-tag">// B1_B2_PATHWAY · PHASE_4 · LESSON_12</div>
+    <h1>Meeting Management<br><em>Agendas, Minutes &amp; Action Points</em></h1>
+    <p>Learn how to prepare a professional meeting agenda, write clear minutes, assign and track action points, and use correct follow-up language in emails. This lesson builds the full meeting cycle — before, during, and after.</p>
+    <div class="l-meta"><span>⏱ 75 MIN</span><span>B1 USE + B2 UPGRADE</span><span>AGENDAS · MINUTES · ACTIONS</span><span>ETİ WORK CONTEXT</span></div>
+  </div>
+
+  <div class="review-strip"><strong>Focus today:</strong> a well-run meeting has three stages — preparation, execution, and follow-up. Learn the language for each stage so you can lead the full cycle professionally.</div>
+
+  <div class="prog-row">
+    <span class="prog-lbl">lesson_progress</span>
+    <div class="prog-steps" id="steps">
+      <div class="prog-step active"></div>
+      <div class="prog-step"></div>
+      <div class="prog-step"></div>
+      <div class="prog-step"></div>
+      <div class="prog-step"></div>
+      <div class="prog-step"></div>
+      <div class="prog-step"></div>
+    </div>
+    <span class="prog-pct" id="pct">0%</span>
+  </div>
+
+  <!-- ═══ SECTION 1 ═══ -->
+  <div class="block open" id="s0">
+    <div class="block-top" onclick="tog(0)">
+      <div class="b-ico">📋</div>
+      <div class="b-meta"><h2>Section 1 — The Meeting Cycle</h2><p>Understand the three stages every professional meeting has.</p></div>
+      <span class="b-tag">FOUNDATION</span>
+      <span class="b-chev" id="ch0" style="transform:rotate(180deg)">▼</span>
+    </div>
+    <div class="block-body open">
+      <div class="gram">
+        <h3>THREE STAGES — ONE PROFESSIONAL MEETING</h3>
+        <p>A professional meeting is not only the conversation in the room. It has three stages, and a manager is responsible for all three.</p>
+      </div>
+      <div class="formula">
+        <span class="hi">BEFORE</span> → prepare the <span class="hi">agenda</span>, share it with participants, set the time<br/>
+        <span class="hi2">DURING</span> → open, guide, summarise, assign <span class="hi2">action points</span>, close<br/>
+        <span class="hi3">AFTER</span>  → write and send the <span class="hi3">minutes</span>, follow up on actions<br/>
+        <div class="sep"></div>
+        <span class="note">Most people only think about "during". A manager thinks about all three.</span>
+      </div>
+      <div class="term-grid">
+        <div class="term"><div class="w">📄 Agenda</div><div class="t">The list of topics to discuss, sent before the meeting. It gives structure and sets expectations.</div></div>
+        <div class="term"><div class="w">📝 Minutes</div><div class="t">The written record of what was discussed and decided. Sent after the meeting.</div></div>
+        <div class="term"><div class="w">✅ Action point</div><div class="t">A specific task assigned to a person with a deadline. "What, who, when."</div></div>
+        <div class="term"><div class="w">📬 Follow-up</div><div class="t">The email or message sent after the meeting to confirm decisions and remind people of their actions.</div></div>
+        <div class="term"><div class="w">🗓️ AOB</div><div class="t">Any Other Business — a space at the end of the agenda for topics not on the original list.</div></div>
+        <div class="term"><div class="w">🔁 Standing item</div><div class="t">A topic that appears on every meeting agenda because it is reviewed regularly.</div></div>
+      </div>
+      <div class="callout"><strong>Manager insight:</strong> sending a clear agenda before the meeting saves time. Sending clear minutes after the meeting prevents confusion. Both show you are organised and in control.</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 2 ═══ -->
+  <div class="block" id="s1">
+    <div class="block-top" onclick="tog(1)">
+      <div class="b-ico">🗓️</div>
+      <div class="b-meta"><h2>Section 2 — Writing a Professional Agenda</h2><p>Structure and language for a clear, well-organised agenda.</p></div>
+      <span class="b-tag">BEFORE THE MEETING</span>
+      <span class="b-chev" id="ch1">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram amber">
+        <h3>WHAT MAKES A GOOD AGENDA?</h3>
+        <p>A good agenda has five elements: <strong>purpose, participants, time allocation per item, the person responsible for each item, and space for AOB</strong>. Each item should be a short noun phrase, not a vague heading.</p>
+      </div>
+      <div class="compare-row">
+        <div class="compare-bad">
+          <div class="compare-label">vague — not useful</div>
+          1. Production<br/>2. Suppliers<br/>3. Other things
+        </div>
+        <div class="compare-good">
+          <div class="compare-label">clear — professional</div>
+          1. Production delay — causes and impact (10 min)<br/>2. Supplier performance review (15 min)<br/>3. AOB (5 min)
+        </div>
+      </div>
+      <div class="gram teal">
+        <h3>AGENDA EMAIL LANGUAGE</h3>
+        <p>When you send the agenda, use a short, professional email. The language should be clear and direct.</p>
+      </div>
+      <div class="phrase-grid2">
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Please find the agenda attached.</div><div class="ph2-ctx">Standard opening for an agenda email. Formal and clear.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">The meeting will cover the following items.</div><div class="ph2-ctx">Use to introduce the agenda list in the email body.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Please come prepared to discuss...</div><div class="ph2-ctx">Ask participants to prepare specific information before arriving.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">If you have any items to add, please let me know by...</div><div class="ph2-ctx">Give a deadline for adding agenda items — prevents last-minute surprises.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">The meeting is scheduled for [time] in [location].</div><div class="ph2-ctx">Always confirm logistics clearly — time, date, room or link.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Please confirm your attendance by [date].</div><div class="ph2-ctx">Request confirmation so you know who is coming.</div></div>
+      </div>
+      <div class="dialogue">
+        <div class="line"><div class="spk">Agenda email</div><div class="say">Dear team, please find the agenda for Thursday's production meeting attached. The meeting will cover the following items: (1) delivery delays — causes and impact, (2) supplier performance review, (3) packaging process update, and (4) AOB. Please come prepared to share your team's latest output data. If you have any items to add, please let me know by Wednesday noon. The meeting is scheduled for 10:00 in Meeting Room B. Please confirm your attendance.</div></div>
+      </div>
+      <div class="amber-box"><strong>ETİ tip:</strong> even a short internal meeting benefits from a 3-line agenda. It shows you have a plan and helps people prepare. A meeting without an agenda often runs over time and ends without clear decisions.</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 3 ═══ -->
+  <div class="block" id="s2">
+    <div class="block-top" onclick="tog(2)">
+      <div class="b-ico">🧭</div>
+      <div class="b-meta"><h2>Section 3 — Opening, Guiding and Closing the Meeting</h2><p>Lead every stage of the meeting with confident, clear language.</p></div>
+      <span class="b-tag">DURING THE MEETING</span>
+      <span class="b-chev" id="ch2">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram">
+        <h3>THE MEETING HAS FOUR MOVES</h3>
+        <p>Every well-run meeting has the same four language moves: open → guide → summarise → close. Each move has its own set of phrases. Learn the move, not just the phrase.</p>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Opening the meeting</div>
+          <p><em>Okay everyone, let's get started.</em></p>
+          <p><em>Thank you all for coming. Today's agenda covers three main items.</em></p>
+          <p><em>Let's begin with item one — the delivery delays.</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — more formal opening</div>
+          <p><em>Good morning. I'd like to call the meeting to order.</em></p>
+          <p><em>Before we start, I'd like to confirm that we have a quorum.</em> (formal — for official meetings)</p>
+          <p><em>Our aim today is to reach a decision on the supplier issue.</em></p>
+        </div>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Guiding the discussion</div>
+          <p><em>Let's stay focused on this point for now.</em></p>
+          <p><em>Let's move on to the next item.</em></p>
+          <p><em>We can come back to that later.</em></p>
+          <p><em>Let me finish, please.</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — managing time and flow</div>
+          <p><em>We're running short on time, so let's keep this brief.</em></p>
+          <p><em>I'd like to park that idea and return to it under AOB.</em></p>
+          <p><em>Can we table that discussion for the next meeting?</em></p>
+          <p><em>I'll give the floor to [name] now.</em></p>
+        </div>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Summarising a point</div>
+          <p><em>So to summarise what we've agreed...</em></p>
+          <p><em>Let me confirm what we've decided.</em></p>
+          <p><em>The main point here is that...</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — checking understanding</div>
+          <p><em>Can I just check that we're all aligned on this?</em></p>
+          <p><em>Does everyone agree that the action here is to...?</em></p>
+          <p><em>I want to make sure this is noted before we move on.</em></p>
+        </div>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Closing the meeting</div>
+          <p><em>Let's wrap up. We've covered all the agenda items.</em></p>
+          <p><em>Thank you everyone. I'll send the minutes shortly.</em></p>
+          <p><em>Our next meeting is on [date].</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — formal close</div>
+          <p><em>Before we close, let me run through the action points.</em></p>
+          <p><em>I'll circulate the minutes within 24 hours for your review.</em></p>
+          <p><em>Is there any other business before we adjourn?</em></p>
+        </div>
+      </div>
+      <div class="dialogue">
+        <div class="line"><div class="spk">Özgün</div><div class="say">Good morning everyone. Let's get started — I know we're all busy. Today's agenda has three items: the supplier delay, packaging output, and a brief update on next week's targets. Let's begin with the supplier delay.</div></div>
+        <div class="line"><div class="spk">Colleague</div><div class="say">Can we also talk about the quality issue from last week?</div></div>
+        <div class="line"><div class="spk">Özgün</div><div class="say">Good point. I'll add that under AOB at the end. Let's stay focused on the supplier issue first.</div></div>
+        <div class="line"><div class="spk">— 25 minutes later —</div><div class="say"> </div></div>
+        <div class="line"><div class="spk">Özgün</div><div class="say">Before we close, let me run through the action points. [Name] will contact the supplier by Thursday. [Name] will share the packaging report by Friday noon. I'll circulate the minutes today. Any other business? No? Thank you all.</div></div>
+      </div>
+      <div class="callout"><strong>Key language pattern — giving the floor:</strong> when you invite someone to speak, use: <em>"I'd like to give the floor to [name]"</em> or <em>"[Name], would you like to take us through the figures?"</em> This sounds much more professional than just pointing or saying "you, speak."</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 4 ═══ -->
+  <div class="block" id="s3">
+    <div class="block-top" onclick="tog(3)">
+      <div class="b-ico">✅</div>
+      <div class="b-meta"><h2>Section 4 — Action Points: Assigning and Confirming</h2><p>The most important skill — who does what, by when.</p></div>
+      <span class="b-tag">ACTION LANGUAGE</span>
+      <span class="b-chev" id="ch3">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram">
+        <h3>THE ACTION POINT FORMULA</h3>
+        <p>Every action point must answer three questions: <strong>What</strong> needs to be done? <strong>Who</strong> is responsible? <strong>When</strong> is the deadline? If any one of these is missing, the action will probably not happen.</p>
+      </div>
+      <div class="formula">
+        <span class="hi">WHAT</span> → specific task description<br/>
+        <span class="hi2">WHO</span>  → one named person (not "the team")<br/>
+        <span class="hi3">WHEN</span> → a specific date or time (not "soon")<br/>
+        <div class="sep"></div>
+        <span class="err">✗ "Someone will check the supplier." (no name, no date)</span><br/>
+        <span class="ok">✓ "Ahmet will contact the supplier by Thursday 5 p.m."</span>
+      </div>
+      <div class="gram teal">
+        <h3>LANGUAGE FOR ASSIGNING ACTIONS</h3>
+        <p>Use these patterns in the meeting to assign tasks clearly and professionally.</p>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">B1 — direct and clear</div>
+          <p><em>[Name], can you send the report by Friday?</em></p>
+          <p><em>[Name], please contact the supplier this week.</em></p>
+          <p><em>Who can take this action?</em></p>
+          <p><em>Let's agree: [Name] will do this by [date].</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — more formal assignment</div>
+          <p><em>I'd like to assign this to [Name]. [Name], can you confirm you're happy with the deadline of [date]?</em></p>
+          <p><em>The action here is for [Name] to review the data and report back by [date].</em></p>
+          <p><em>Can I put [Name] down for this?</em></p>
+        </div>
+      </div>
+      <div class="gram amber">
+        <h3>CONFIRMING AND CHECKING ACTIONS</h3>
+        <p>At the end of the meeting — or at the start of the next one — always read back and confirm all action points.</p>
+      </div>
+      <div class="phrase-grid2">
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Let me run through the actions.</div><div class="ph2-ctx">Use at the end of the meeting before you close. Goes through each action point aloud.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Can I just confirm who is doing what?</div><div class="ph2-ctx">Use to check clarity before the meeting ends. Avoids confusion later.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Are you comfortable with that deadline?</div><div class="ph2-ctx">Always check that the person agrees — this creates commitment.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">I'll note that as an action for [Name].</div><div class="ph2-ctx">Use when taking minutes — confirms the action is being recorded.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">We agreed that [Name] would... by [date].</div><div class="ph2-ctx">Use in follow-up emails to confirm what was agreed in the meeting.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Could you please update me on the status by [date]?</div><div class="ph2-ctx">Use in follow-up to check progress before the deadline.</div></div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-bad">
+          <div class="compare-label">weak — no clarity</div>
+          Okay, someone will look at the supplier problem soon.
+        </div>
+        <div class="compare-good">
+          <div class="compare-label">strong — clear action</div>
+          Ahmet, can you contact the supplier and get a confirmed delivery date by Thursday 5 p.m.?
+        </div>
+      </div>
+      <div class="callout"><strong>Manager habit:</strong> before you close every meeting, say "Let me run through the actions." Then read each one aloud. This takes two minutes and prevents weeks of confusion.</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 5 ═══ -->
+  <div class="block" id="s4">
+    <div class="block-top" onclick="tog(4)">
+      <div class="b-ico">📝</div>
+      <div class="b-meta"><h2>Section 5 — Writing Clear Minutes</h2><p>Record what happened so everyone is aligned — even those who missed the meeting.</p></div>
+      <span class="b-tag">AFTER THE MEETING</span>
+      <span class="b-chev" id="ch4">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram">
+        <h3>WHAT DO MINUTES CONTAIN?</h3>
+        <p>Minutes are not a word-for-word transcript. They are a <strong>clear, concise summary</strong> of: who attended, what was discussed, what was decided, and what the action points are.</p>
+      </div>
+      <div class="formula">
+        <span class="hi">Header:</span>   Meeting title · Date · Location · Attendees<br/>
+        <span class="hi2">Body:</span>    One paragraph or bullet per agenda item: what was discussed, what was decided<br/>
+        <span class="hi3">Footer:</span>  Action point table — What / Who / By when<br/>
+        <div class="sep"></div>
+        <span class="note">Minutes should be sent within 24 hours of the meeting while everything is still fresh.</span>
+      </div>
+      <div class="gram teal">
+        <h3>LANGUAGE FOR MINUTES — PAST TENSE, THIRD PERSON</h3>
+        <p>Minutes are written in the past tense and in the third person. You report what happened — you do not address the reader directly.</p>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">B1 — simple but correct</div>
+          <p><em>The team discussed the supplier delay.</em></p>
+          <p><em>It was agreed that Ahmet would contact the supplier.</em></p>
+          <p><em>The next meeting will be on [date].</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — formal minutes language</div>
+          <p><em>Özgün reported that production output had fallen by 12% due to the supplier delay.</em></p>
+          <p><em>After discussion, it was agreed that the supplier contract would be reviewed.</em></p>
+          <p><em>The meeting was adjourned at 11:45.</em></p>
+        </div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-bad">
+          <div class="compare-label">wrong — direct address</div>
+          We talked about the delay. You need to contact the supplier.
+        </div>
+        <div class="compare-good">
+          <div class="compare-label">correct — reported style</div>
+          The delay was discussed. It was agreed that Ahmet would contact the supplier by Thursday.
+        </div>
+      </div>
+      <div class="dialogue">
+        <div class="line"><div class="spk">Minutes example</div><div class="say"><strong>Meeting:</strong> Weekly Production Review · <strong>Date:</strong> 14 April · <strong>Attendees:</strong> Özgün K., Ahmet Y., Fatma D.<br/><br/><strong>1. Supplier delay</strong> — Özgün reported that the main supplier had failed to deliver on time for the third consecutive week. The team discussed the impact on production targets. It was agreed that Ahmet would contact the supplier to obtain a written delivery commitment by Thursday 17 April.<br/><br/><strong>2. Packaging output</strong> — Fatma presented the weekly packaging figures. Output had improved by 8% compared to the previous week. No further action required at this stage.<br/><br/><strong>Action points:</strong><br/>• Contact supplier for written delivery confirmation — Ahmet Y. — 17 April<br/>• Share updated packaging report — Fatma D. — 18 April noon</div></div>
+      </div>
+      <div class="amber-box"><strong>Common mistake:</strong> writing minutes in the present tense ("The team discusses...") or in the first person ("We talked about..."). Always use past tense and third person in minutes.</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 6 ═══ -->
+  <div class="block" id="s5">
+    <div class="block-top" onclick="tog(5)">
+      <div class="b-ico">📬</div>
+      <div class="b-meta"><h2>Section 6 — Follow-Up Emails and Chasing Actions</h2><p>Professional language to confirm, remind, and escalate after the meeting.</p></div>
+      <span class="b-tag">FOLLOW-UP LANGUAGE</span>
+      <span class="b-chev" id="ch5">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram">
+        <h3>THREE TYPES OF FOLLOW-UP</h3>
+        <p>After a meeting, a manager sends three kinds of follow-up communication: <strong>(1) the minutes email</strong> with action points, <strong>(2) a reminder</strong> before the deadline, and <strong>(3) an escalation</strong> if the action was not completed.</p>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Sending the minutes</div>
+          <p><em>Please find the minutes of today's meeting attached.</em></p>
+          <p><em>As agreed, [Name] will [action] by [date].</em></p>
+          <p><em>Please let me know if anything needs to be corrected.</em></p>
+          <p><em>Our next meeting is scheduled for [date].</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — minutes email opening</div>
+          <p><em>I am writing to share the minutes of this morning's production meeting for your records.</em></p>
+          <p><em>Please review the action points below and confirm you are on track.</em></p>
+          <p><em>If you have any corrections or additions, please respond by [date].</em></p>
+        </div>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Chasing / reminding</div>
+          <p><em>Just a reminder that the report is due tomorrow.</em></p>
+          <p><em>Could you give me a quick update on this?</em></p>
+          <p><em>Have you had a chance to contact the supplier?</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — professional reminder</div>
+          <p><em>I wanted to follow up on the action from our meeting on [date].</em></p>
+          <p><em>As the deadline is approaching, could you please confirm the status?</em></p>
+          <p><em>I appreciate you are busy — please let me know if you need any support to complete this.</em></p>
+        </div>
+      </div>
+      <div class="use-grid">
+        <div class="use-box b1">
+          <div class="ttl">Escalating — when not done</div>
+          <p><em>This hasn't been done yet — can you update me?</em></p>
+          <p><em>We need this done urgently. Can we discuss?</em></p>
+        </div>
+        <div class="use-box b2">
+          <div class="ttl">B2 — formal escalation</div>
+          <p><em>I note that the agreed action from [date] has not yet been completed.</em></p>
+          <p><em>As this is now affecting the production schedule, I would like to discuss next steps.</em></p>
+          <p><em>Could we arrange a brief call today to resolve this?</em></p>
+        </div>
+      </div>
+      <div class="dialogue">
+        <div class="line"><div class="spk">Reminder email</div><div class="say">Hi Ahmet, I wanted to follow up on the action from Monday's meeting. The deadline for contacting the supplier is tomorrow at 5 p.m. Could you please confirm the status? If you need any support, let me know and I'll help. Thanks — Özgün</div></div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-bad">
+          <div class="compare-label">too aggressive</div>
+          Why haven't you done this yet? This is urgent.
+        </div>
+        <div class="compare-good">
+          <div class="compare-label">firm but professional</div>
+          I note this action is still outstanding. As it is now affecting our schedule, I'd like to discuss how we can resolve this today.
+        </div>
+      </div>
+      <div class="callout"><strong>Tone note:</strong> a follow-up email should always be polite but firm. Aggressive language damages the relationship; vague language means nothing happens. The B2 patterns above give you the balance — professional pressure without conflict.</div>
+    </div>
+  </div>
+
+  <!-- ═══ SECTION 7 ═══ -->
+  <div class="block" id="s6">
+    <div class="block-top" onclick="tog(6)">
+      <div class="b-ico">🧪</div>
+      <div class="b-meta"><h2>Section 7 — Controlled Practice</h2><p>Fill in the gaps, choose the best option, and try a speaking task.</p></div>
+      <span class="b-tag">PRACTICE</span>
+      <span class="b-chev" id="ch6">▼</span>
+    </div>
+    <div class="block-body">
+
+      <div class="ex-hdr"><span class="ex-label">A</span> fill in the gap</div>
+      <div class="instr"><strong>Complete</strong> each sentence with the correct word or phrase.</div>
+
+      <div class="fi-row"><span class="fi-n">01</span> Before we close, let me <input class="fi-inp" data-a="run through the action points"/> . <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">02</span> The meeting will <input class="fi-inp" data-a="cover"/> the following items. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">03</span> Please come <input class="fi-inp" data-a="prepared"/> to discuss the delivery figures. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">04</span> I'd like to <input class="fi-inp" data-a="give the floor"/> to Ahmet now. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">05</span> I'll <input class="fi-inp" data-a="circulate"/> the minutes within 24 hours. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">06</span> As the deadline is <input class="fi-inp" data-a="approaching"/> , could you confirm the status? <button class="chk" onclick="checkFill(this)">check</button></div>
+
+      <div class="ex-hdr" style="margin-top:20px"><span class="ex-label">B</span> multiple choice</div>
+
+      <div class="mc-block">
+        <div class="mc-q">1) You want to move to the next agenda item. Which is most professional?</div>
+        <div class="mc-opts">
+          <button class="mc-btn" onclick="markMc(this,false)">Okay stop, next topic.</button>
+          <button class="mc-btn" onclick="markMc(this,true)">Let's move on to the next item.</button>
+          <button class="mc-btn" onclick="markMc(this,false)">We're done with that. Next.</button>
+        </div>
+        <div class="mc-fb">Correct — "Let's move on to the next item" is clear, professional, and natural for a manager.</div>
+      </div>
+
+      <div class="mc-block">
+        <div class="mc-q">2) A colleague raises a topic that is not on the agenda. What do you say?</div>
+        <div class="mc-opts">
+          <button class="mc-btn" onclick="markMc(this,false)">That's not relevant. Don't talk about that now.</button>
+          <button class="mc-btn" onclick="markMc(this,true)">Good point — I'll add that under AOB at the end.</button>
+          <button class="mc-btn" onclick="markMc(this,false)">We don't have time for that topic at all.</button>
+        </div>
+        <div class="mc-fb">Exactly — you acknowledge the idea and redirect it to AOB. This is firm but respectful.</div>
+      </div>
+
+      <div class="mc-block">
+        <div class="mc-q">3) Which action point is written correctly?</div>
+        <div class="mc-opts">
+          <button class="mc-btn" onclick="markMc(this,false)">Someone will call the supplier when possible.</button>
+          <button class="mc-btn" onclick="markMc(this,false)">The team will solve the quality issue.</button>
+          <button class="mc-btn" onclick="markMc(this,true)">Ahmet will contact the supplier and confirm the delivery date by Thursday 5 p.m.</button>
+        </div>
+        <div class="mc-fb">Correct — it has all three elements: what (contact supplier, confirm date), who (Ahmet), and when (Thursday 5 p.m.).</div>
+      </div>
+
+      <div class="mc-block">
+        <div class="mc-q">4) Which is correct minutes language?</div>
+        <div class="mc-opts">
+          <button class="mc-btn" onclick="markMc(this,false)">We agreed that you should contact the supplier.</button>
+          <button class="mc-btn" onclick="markMc(this,true)">It was agreed that Ahmet would contact the supplier by Thursday.</button>
+          <button class="mc-btn" onclick="markMc(this,false)">The team agrees to contact the supplier soon.</button>
+        </div>
+        <div class="mc-fb">Exactly — minutes use past tense and third person: "it was agreed that [Name] would..."</div>
+      </div>
+
+      <div class="ex-hdr" style="margin-top:20px"><span class="ex-label">C</span> speaking tasks</div>
+
+      <div class="roleplay">
+        <h4>Roleplay 1 — Open and Set the Agenda</h4>
+        <p>Open a meeting about a packaging delay. Your agenda has three items: (1) the cause of the delay, (2) the impact on targets, and (3) action points. Use the four-move structure: open → set agenda → invite contribution → begin item one.</p>
+      </div>
+
+      <div class="roleplay">
+        <h4>Roleplay 2 — Assign Action Points</h4>
+        <p>The meeting is ending. You need to assign two actions: one to a colleague for contacting a supplier, and one to yourself for preparing a report. Use the What / Who / When formula. Ask each person to confirm the deadline.</p>
+      </div>
+
+      <div class="roleplay">
+        <h4>Roleplay 3 — Write a Chase Email</h4>
+        <p>It is the day before a deadline. A colleague has not updated you on their action point. Write a short, professional reminder email (4–5 lines). Be polite, specific, and firm. Include the original action, the deadline, and a request for a status update.</p>
+      </div>
+
+      <div class="callout"><strong>Teacher tip:</strong> for Roleplay 2, interrupt Özgün once when he is assigning the action — say "I'm quite busy this week, is Thursday okay?" — and see if he handles the negotiation professionally. He should acknowledge, ask about capacity, and still confirm a specific deadline.</div>
+    </div>
+  </div>
+
+  <div class="lesson-nav">
+    <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ TOP</button>
+    <div class="nav-info">LESSON 12 · MEETING MANAGEMENT<br/>agendas · minutes · action points · follow-up</div>
+    <button class="nav-btn next" onclick="document.getElementById('s6').scrollIntoView({behavior:'smooth'})">PRACTICE →</button>
+  </div>
+</div>
+
+<div class="save-bar">
+  <button class="save-btn" onclick="saveAll()">SAVE</button>
+  <button class="save-btn clear" onclick="clearAll()">CLEAR</button>
+</div>
+<div id="save-toast">PROGRESS SAVED</div>
+
+<script>
+const blocks=[...document.querySelectorAll('.block')];
+function tog(i){
+  const b=blocks[i],body=b.querySelector('.block-body'),chev=b.querySelector('.b-chev');
+  b.classList.toggle('open');
+  body.classList.toggle('open');
+  chev.style.transform=body.classList.contains('open')?'rotate(180deg)':'rotate(0deg)';
+  updateProgress();
+}
+function updateProgress(){
+  const opened=document.querySelectorAll('.block-body.open').length;
+  const total=blocks.length;
+  const pct=Math.round((opened/total)*100);
+  document.getElementById('pct').textContent=pct+'%';
+  [...document.querySelectorAll('.prog-step')].forEach((s,i)=>{
+    s.classList.remove('done','active');
+    if(i<opened)s.classList.add('done');
+    else if(i===opened&&i<total)s.classList.add('active');
+  });
+}
+function norm(t){return t.toLowerCase().trim().replace(/\s+/g,' ');}
+function checkFill(btn){
+  const inp=btn.previousElementSibling;
+  const ans=norm(inp.dataset.a);
+  const val=norm(inp.value);
+  inp.classList.remove('ok','no');
+  inp.classList.add(val===ans?'ok':'no');
+}
+function markMc(btn,correct){
+  const wrap=btn.closest('.mc-block');
+  wrap.querySelectorAll('.mc-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(correct?'cor':'wrng');
+  const fb=wrap.querySelector('.mc-fb');
+  fb.classList.add('show',correct?'ok':'no');
+  if(!correct)fb.textContent='Not the best choice. Think about what sounds professional and respectful in a meeting.';
+}
+const key='ozgun_lesson12_meeting_management';
+function saveAll(){
+  const data={
+    inputs:[...document.querySelectorAll('input')].map(i=>i.value),
+    open:[...document.querySelectorAll('.block-body')].map(b=>b.classList.contains('open')),
+    flips:[...document.querySelectorAll('.ph2')].map(c=>c.classList.contains('flip'))
+  };
+  localStorage.setItem(key,JSON.stringify(data));
+  const t=document.getElementById('save-toast');
+  t.style.opacity='1';t.style.transform='translateY(0)';
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';},1400);
+}
+function clearAll(){
+  localStorage.removeItem(key);
+  [...document.querySelectorAll('input')].forEach(i=>{i.value='';i.classList.remove('ok','no');});
+  [...document.querySelectorAll('.ph2')].forEach(c=>c.classList.remove('flip'));
+  [...document.querySelectorAll('.mc-btn')].forEach(b=>{b.disabled=false;b.classList.remove('cor','wrng');});
+  [...document.querySelectorAll('.mc-fb')].forEach(f=>f.className='mc-fb');
+}
+(function loadAll(){
+  const raw=localStorage.getItem(key);if(!raw){updateProgress();return;}
+  try{
+    const data=JSON.parse(raw);
+    [...document.querySelectorAll('input')].forEach((i,idx)=>{if(data.inputs&&data.inputs[idx]!=null)i.value=data.inputs[idx];});
+    [...document.querySelectorAll('.ph2')].forEach((c,idx)=>{if(data.flips&&data.flips[idx])c.classList.add('flip');});
+    if(data.open){
+      [...document.querySelectorAll('.block-body')].forEach((b,idx)=>{
+        const blk=blocks[idx],ch=blk.querySelector('.b-chev');
+        if(data.open[idx]){blk.classList.add('open');b.classList.add('open');ch.style.transform='rotate(180deg)';}
+        else{blk.classList.remove('open');b.classList.remove('open');ch.style.transform='rotate(0deg)';}
+      });
+    }
+  }catch(e){}
+  updateProgress();
+})();
+</script>
+</body>
+</html>

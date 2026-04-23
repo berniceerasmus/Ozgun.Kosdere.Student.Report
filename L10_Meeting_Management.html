@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Özgün B1+ · Lesson 10 — Management Communication</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f7f8fc;--surface:#ffffff;--surface2:#f4f6fb;
+  --border:#d9deea;--border2:#c8d0e0;
+  --indigo:#4f46e5;--indigo-l:#635bff;--indigo-dim:rgba(79,70,229,0.08);
+  --teal:#0f766e;--teal-l:#0ea5a4;--teal-dim:rgba(15,118,110,0.08);
+  --amber:#d97706;--amber-l:#f59e0b;--amber-dim:rgba(217,119,6,0.08);
+  --green:#059669;--green-dim:rgba(5,150,105,0.08);
+  --red:#dc2626;--red-dim:rgba(220,38,38,0.08);
+  --rose:#e11d48;--rose-dim:rgba(225,29,72,0.08);
+  --text:#162033;--muted:#5e6b85;--muted2:#8d98ae;
+  --shadow:0 14px 34px rgba(31,41,55,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(180deg,#fbfcff 0%,#f5f7fc 100%);
+  color:var(--text);line-height:1.7;font-weight:300;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 10% 12%,rgba(79,70,229,0.08) 0%,transparent 45%),
+    radial-gradient(ellipse at 85% 18%,rgba(15,118,110,0.06) 0%,transparent 40%),
+    radial-gradient(ellipse at 18% 88%,rgba(217,119,6,0.05) 0%,transparent 40%);
+  pointer-events:none;z-index:0;
+}
+.page{max-width:860px;margin:0 auto;padding:40px 20px 100px;position:relative;z-index:1;}
+.lesson-header{
+  border:1px solid rgba(255,255,255,0.8);
+  background:rgba(255,255,255,0.78);
+  backdrop-filter:blur(10px);
+  box-shadow:var(--shadow);
+  border-radius:28px;padding:28px 28px 24px;margin-bottom:24px;position:relative;overflow:hidden;
+}
+.lesson-header::after{
+  content:'10';position:absolute;right:8px;top:-18px;font-family:'Syne',sans-serif;
+  font-size:180px;font-weight:800;color:rgba(79,70,229,0.06);line-height:1;pointer-events:none;
+}
+.l-tag{
+  display:inline-flex;align-items:center;gap:8px;background:var(--indigo-dim);border:1px solid rgba(79,70,229,0.18);
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--indigo);padding:5px 12px;margin-bottom:14px;border-radius:999px;
+}
+.lesson-header h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,48px);font-weight:800;line-height:1.02;margin-bottom:10px;max-width:560px;}
+.lesson-header h1 em{color:var(--indigo);font-style:normal;}
+.lesson-header p{font-size:14px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:16px;font-weight:400;}
+.l-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.l-meta span{
+  background:#fff;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:var(--muted);padding:4px 10px;letter-spacing:0.05em;border-radius:999px;
+}
+.review-strip{
+  display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);
+  padding:12px 16px;margin-bottom:24px;font-size:12px;color:var(--muted);border-radius:18px;box-shadow:var(--shadow);
+}
+.review-strip strong{color:var(--indigo);}
+.prog-row{
+  display:flex;align-items:center;gap:12px;margin-bottom:26px;padding:12px 14px;background:var(--surface);
+  border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);
+}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.prog-steps{display:flex;gap:4px;flex:1;}
+.prog-step{flex:1;height:5px;background:#e6eaf3;border-radius:999px;}
+.prog-step.done{background:var(--indigo);}
+.prog-step.active{background:var(--amber-l);}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--indigo);}
+.block{
+  background:var(--surface);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;
+  border-radius:22px;box-shadow:var(--shadow);transition:border-color .2s,transform .2s;
+}
+.block:hover{border-color:var(--border2);transform:translateY(-1px);}
+.block-top{
+  display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid transparent;cursor:pointer;user-select:none;
+}
+.block.open .block-top{border-bottom-color:var(--border);}
+.b-ico{
+  width:42px;height:42px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;border-radius:14px;background:var(--surface2);
+}
+.b-meta{flex:1;}
+.b-meta h2{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.b-meta p{font-size:11px;color:var(--muted);}
+.b-tag{
+  font-family:'JetBrains Mono',monospace;font-size:8px;padding:3px 9px;border:1px solid var(--border);color:var(--muted);
+  border-radius:999px;background:var(--surface2);
+}
+.b-chev{color:var(--muted);font-size:11px;transition:transform .25s;flex-shrink:0;}
+.block-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .45s ease,padding .3s;}
+.block-body.open{max-height:7000px;padding:18px;}
+.gram{
+  border-left:3px solid var(--indigo);padding:14px 16px;margin-bottom:12px;background:var(--indigo-dim);
+  border-radius:0 16px 16px 0;
+}
+.gram h3{font-size:11.5px;font-weight:700;color:var(--indigo);margin-bottom:7px;font-family:'JetBrains Mono',monospace;letter-spacing:.06em;}
+.gram p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:8px;font-weight:400;}
+.gram.teal{border-left-color:var(--teal);background:var(--teal-dim);}
+.gram.teal h3{color:var(--teal);}
+.gram.amber{border-left-color:var(--amber);background:var(--amber-dim);}
+.gram.amber h3{color:var(--amber);}
+.formula{
+  background:var(--surface2);border:1px solid var(--border);padding:13px 14px;font-family:'JetBrains Mono',monospace;
+  font-size:11px;line-height:2.1;margin-bottom:10px;border-radius:16px;
+}
+.formula .ok{color:var(--green);}
+.formula .err{color:var(--red);}
+.formula .hi{color:var(--indigo);}
+.formula .hi2{color:var(--teal);}
+.formula .hi3{color:var(--amber);}
+.formula .note{color:var(--muted2);font-size:9.5px;}
+.formula .sep{border-top:1px solid var(--border);margin:6px 0;}
+.callout{
+  border:1px solid rgba(15,118,110,0.18);border-left:3px solid var(--teal);background:var(--teal-dim);
+  padding:11px 14px;font-size:12.5px;color:var(--muted);line-height:1.7;margin:10px 0;border-radius:16px;font-weight:400;
+}
+.callout strong{color:var(--text);}
+.amber-box{
+  border-left:3px solid var(--amber);background:var(--amber-dim);padding:10px 13px;font-size:12.5px;
+  color:#8a5c08;margin-bottom:12px;line-height:1.7;font-weight:400;border-radius:0 16px 16px 0;
+}
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:560px){.compare-row{grid-template-columns:1fr;}}
+.compare-bad,.compare-good{padding:12px 14px;font-size:12.5px;line-height:1.65;border-radius:16px;}
+.compare-bad{background:var(--red-dim);border:1px solid rgba(220,38,38,.18);border-left:3px solid var(--red);}
+.compare-good{background:var(--green-dim);border:1px solid rgba(5,150,105,.18);border-left:3px solid var(--green);}
+.compare-label{font-family:'JetBrains Mono',monospace;font-size:8px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-weight:700;}
+.compare-bad .compare-label{color:var(--red);}
+.compare-good .compare-label{color:var(--green);}
+.phrase-grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px;margin-bottom:14px;}
+.ph2{
+  background:var(--surface2);border:1px solid var(--border);padding:11px 13px;cursor:pointer;transition:border-color .2s,transform .2s;
+  border-radius:16px;
+}
+.ph2:hover,.ph2.flip{border-color:var(--indigo);transform:translateY(-1px);}
+.ph2-text{font-size:12.2px;font-weight:600;color:var(--indigo);margin-bottom:3px;}
+.ph2-ctx{font-size:10.5px;color:var(--muted);display:none;font-style:italic;margin-top:4px;line-height:1.4;}
+.ph2.flip .ph2-ctx{display:block;}
+.ex-hdr{
+  font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:12px;display:flex;align-items:center;gap:10px;
+}
+.ex-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-label{background:var(--indigo);color:white;padding:2px 9px;font-size:8px;font-weight:700;border-radius:999px;}
+.instr{
+  font-size:12.5px;color:var(--muted);margin-bottom:11px;line-height:1.65;padding:10px 12px;background:var(--surface2);
+  border-left:3px solid var(--border2);font-weight:400;border-radius:0 16px 16px 0;
+}
+.instr strong{color:var(--text);}
+.fi-row{
+  display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:11px 13px;background:var(--surface2);
+  border:1px solid var(--border);margin-bottom:7px;font-size:13px;line-height:2;border-radius:16px;
+}
+.fi-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;}
+.fi-inp{
+  display:inline-block;min-width:180px;padding:2px 8px;border:none;border-bottom:1.5px solid var(--border2);background:transparent;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;font-size:12.5px;color:var(--text);outline:none;transition:border-color .2s;
+}
+.fi-inp:focus{border-bottom-color:var(--indigo);}
+.fi-inp.ok{border-bottom-color:var(--green);color:var(--green);}
+.fi-inp.no{border-bottom-color:var(--red);color:var(--red);}
+.chk{
+  padding:3px 9px;background:var(--indigo);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;
+  font-weight:700;cursor:pointer;letter-spacing:.05em;vertical-align:middle;margin-left:3px;border-radius:999px;
+}
+.chk:hover{opacity:.85;}
+.mc-block{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:8px;border-radius:16px;}
+.mc-q{font-size:13px;color:var(--text);margin-bottom:9px;font-weight:500;line-height:1.55;}
+.mc-opts{display:flex;flex-direction:column;gap:6px;}
+.mc-btn{
+  padding:8px 14px;border:1px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;text-align:left;line-height:1.5;border-radius:14px;
+}
+.mc-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.mc-btn.cor{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.mc-btn.wrng{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.mc-fb{font-size:11px;margin-top:7px;padding:7px 10px;display:none;line-height:1.55;border-radius:12px;}
+.mc-fb.show{display:block;}
+.mc-fb.ok{background:var(--green-dim);color:var(--green);}
+.mc-fb.no{background:var(--red-dim);color:var(--red);}
+.dialogue{
+  background:#fff;border:1px solid var(--border);padding:16px;border-radius:18px;margin-bottom:14px;
+}
+.line{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.spk{
+  min-width:84px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-top:4px;
+}
+.say{font-size:13px;color:var(--text);line-height:1.75;}
+.drill-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+@media(max-width:620px){.drill-grid{grid-template-columns:1fr;}}
+.card{
+  background:var(--surface2);border:1px solid var(--border);padding:14px;border-radius:18px;
+}
+.card h4{font-size:12px;font-weight:700;margin-bottom:7px;color:var(--text);}
+.card p{font-size:12px;color:var(--muted);line-height:1.7;}
+.roleplay{
+  background:linear-gradient(180deg,#ffffff 0%,#f8faff 100%);border:1px solid var(--border);padding:16px;
+  border-radius:18px;margin-bottom:12px;
+}
+.roleplay h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.roleplay p,.roleplay li{font-size:12.5px;color:var(--muted);line-height:1.7;}
+.roleplay ul{padding-left:18px;}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+.nav-btn{
+  padding:10px 20px;border:1px solid var(--border);background:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--muted);cursor:pointer;letter-spacing:.05em;transition:all .15s;border-radius:999px;
+}
+.nav-btn:hover{border-color:var(--indigo);color:var(--indigo);}
+.nav-btn.next{background:var(--indigo);color:white;border-color:var(--indigo);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:center;line-height:1.8;}
+.save-bar{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:999;}
+.save-btn{
+  padding:8px 14px;background:var(--indigo);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;border-radius:999px;box-shadow:var(--shadow);
+}
+.save-btn:hover{opacity:.85;}
+.save-btn.clear{background:#fff;border:1px solid var(--border);color:var(--muted);}
+#save-toast{
+  position:fixed;bottom:62px;right:18px;background:var(--indigo);color:white;font-family:'JetBrains Mono',monospace;font-size:9px;
+  padding:7px 14px;letter-spacing:.1em;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:1000;
+  border-radius:999px;box-shadow:var(--shadow);
+}
+::selection{background:rgba(79,70,229,.16);}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="lesson-header">
+    <div class="l-tag">// B1_PATHWAY · PHASE_3 · LESSON_10</div>
+    <h1>Management Communication<br><em>Taking Control Professionally</em></h1>
+    <p>Learn how to lead a meeting, explain decisions clearly, and disagree respectfully in English. This lesson is designed for Özgün’s new management role and focuses on practical language for real workplace situations.</p>
+    <div class="l-meta"><span>⏱ 60 MIN</span><span>MANAGEMENT ENGLISH</span><span>B1+ TO B2 BRIDGE</span><span>ETİ WORK CONTEXT</span></div>
+  </div>
+
+  <div class="review-strip"><strong>Focus today:</strong> control the meeting, structure your message, manage interruptions, and disagree without sounding aggressive.</div>
+
+  <div class="prog-row">
+    <span class="prog-lbl">lesson_progress</span>
+    <div class="prog-steps" id="steps">
+      <div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div>
+    </div>
+    <span class="prog-pct" id="pct">0%</span>
+  </div>
+
+  <div class="block open" id="s0">
+    <div class="block-top" onclick="tog(0)">
+      <div class="b-ico">🎯</div>
+      <div class="b-meta"><h2>Section 1 — The Manager’s Job in a Meeting</h2><p>Understand what leadership language sounds like in English.</p></div>
+      <span class="b-tag">CORE SKILL</span>
+      <span class="b-chev" id="ch0" style="transform:rotate(180deg)">▼</span>
+    </div>
+    <div class="block-body open">
+      <div class="gram">
+        <h3>MANAGER LANGUAGE ≠ LONG LANGUAGE</h3>
+        <p>A good manager does not speak more. A good manager speaks <strong>more clearly</strong>. In English, strong management language is often short, direct, calm, and organised.</p>
+      </div>
+      <div class="formula">
+        <span class="hi">Open</span> the meeting → <span class="hi2">Set</span> the focus → <span class="hi3">Guide</span> the discussion → <span class="ok">Close</span> with action<br/>
+        <span class="note">Example pattern: "Let’s get started. Today I’d like to focus on..."</span>
+      </div>
+      <div class="compare-row">
+        <div class="compare-bad">
+          <div class="compare-label">too weak / unclear</div>
+          Maybe we can talk about some problems and then maybe decide something.
+        </div>
+        <div class="compare-good">
+          <div class="compare-label">manager style</div>
+          Let’s focus on the delay first, then agree on the next step.
+        </div>
+      </div>
+      <div class="callout"><strong>Key idea:</strong> Leadership language gives direction. It helps people know what the meeting is about, what matters most, and what happens next.</div>
+    </div>
+  </div>
+
+  <div class="block" id="s1">
+    <div class="block-top" onclick="tog(1)">
+      <div class="b-ico">🧭</div>
+      <div class="b-meta"><h2>Section 2 — Taking Control of the Meeting</h2><p>Open, direct, refocus, and move the discussion forward.</p></div>
+      <span class="b-tag">PHRASES</span>
+      <span class="b-chev" id="ch1">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram teal">
+        <h3>USEFUL PHRASE FAMILIES</h3>
+        <p>Managers often use short functional phrases. Learn the function, not only the sentence.</p>
+      </div>
+
+      <div class="phrase-grid2">
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Let’s get started.</div><div class="ph2-ctx">Use it to open the meeting confidently.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Today I’d like to focus on...</div><div class="ph2-ctx">Use it to set the agenda.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Let’s stay focused on...</div><div class="ph2-ctx">Use it when the discussion goes off-topic.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Let’s move on to the next point.</div><div class="ph2-ctx">Use it to manage time and keep control.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">We can come back to that later.</div><div class="ph2-ctx">Use it to postpone a topic politely.</div></div>
+        <div class="ph2" onclick="this.classList.toggle('flip')"><div class="ph2-text">Let me finish, please.</div><div class="ph2-ctx">Use it to handle interruption professionally.</div></div>
+      </div>
+
+      <div class="dialogue">
+        <div class="line"><div class="spk">Özgün</div><div class="say">Okay everyone, let’s get started. Today I’d like to focus on three things: delivery delays, supplier communication, and next week’s production targets.</div></div>
+        <div class="line"><div class="spk">Colleague</div><div class="say">Can we also talk about packaging issues?</div></div>
+        <div class="line"><div class="spk">Özgün</div><div class="say">Yes, good point. Let’s cover that at the end if we have time.</div></div>
+      </div>
+
+      <div class="amber-box"><strong>Manager move:</strong> first acknowledge the idea, then redirect the meeting. This sounds firm but respectful.</div>
+    </div>
+  </div>
+
+  <div class="block" id="s2">
+    <div class="block-top" onclick="tog(2)">
+      <div class="b-ico">🗣️</div>
+      <div class="b-meta"><h2>Section 3 — Explaining Your Decision Clearly</h2><p>Structure your explanation so people can follow you.</p></div>
+      <span class="b-tag">STRUCTURE</span>
+      <span class="b-chev" id="ch2">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram amber">
+        <h3>THE 3-STEP EXPLANATION</h3>
+        <p>When you explain a decision, use a simple structure: <strong>reason → impact → next step</strong>.</p>
+      </div>
+
+      <div class="formula">
+        <span class="hi">The main reason is...</span><br/>
+        <span class="hi2">This is causing...</span><br/>
+        <span class="hi3">So what we need to do is...</span><br/>
+        <div class="sep"></div>
+        <span class="note">This pattern makes you sound organised and professional.</span>
+      </div>
+
+      <div class="dialogue">
+        <div class="line"><div class="spk">Özgün</div><div class="say">The main reason for this change is efficiency. At the moment, we lose too much time during the packaging stage. This is causing delays in delivery. So what we need to do is review the process and simplify the handover between teams.</div></div>
+      </div>
+
+      <div class="drill-grid">
+        <div class="card"><h4>Useful starters</h4><p>The main issue is...<br/>The problem is...<br/>What we need to do is...<br/>The next step is...</p></div>
+        <div class="card"><h4>Useful endings</h4><p>...to avoid further delay.<br/>...so we can work more efficiently.<br/>...before the next production cycle.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block" id="s3">
+    <div class="block-top" onclick="tog(3)">
+      <div class="b-ico">⚖️</div>
+      <div class="b-meta"><h2>Section 4 — Respectfully Disagreeing</h2><p>Disagree without sounding rude, defensive, or too soft.</p></div>
+      <span class="b-tag">HIGH VALUE</span>
+      <span class="b-chev" id="ch3">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="gram">
+        <h3>ACKNOWLEDGE → DISAGREE → REASON</h3>
+        <p>This is the safest and most professional pattern for disagreement in meetings.</p>
+      </div>
+
+      <div class="formula">
+        <span class="hi">I understand your point,</span> <span class="hi2">but</span> <span class="hi3">I think...</span><br/>
+        <span class="hi">I see what you mean,</span> <span class="hi2">however</span> <span class="hi3">the main issue is...</span><br/>
+        <span class="hi">That’s a fair point,</span> <span class="hi2">but</span> <span class="hi3">we also need to consider...</span>
+      </div>
+
+      <div class="compare-row">
+        <div class="compare-bad">
+          <div class="compare-label">too direct</div>
+          No, that’s wrong.
+        </div>
+        <div class="compare-good">
+          <div class="compare-label">professional</div>
+          I understand your point, but I’m not sure that’s the best option at this stage.
+        </div>
+      </div>
+
+      <div class="dialogue">
+        <div class="line"><div class="spk">Colleague</div><div class="say">We should change the supplier immediately.</div></div>
+        <div class="line"><div class="spk">Özgün</div><div class="say">I understand the concern, but I don’t think changing the supplier now is the best solution. It may create more disruption in the short term.</div></div>
+      </div>
+
+      <div class="callout"><strong>Important:</strong> In English, disagreement often sounds stronger than you expect. Small phrases like <em>I think</em>, <em>I’m not sure</em>, and <em>at this stage</em> help soften your message.</div>
+    </div>
+  </div>
+
+  <div class="block" id="s4">
+    <div class="block-top" onclick="tog(4)">
+      <div class="b-ico">🧪</div>
+      <div class="b-meta"><h2>Section 5 — Controlled Practice</h2><p>Fill in key phrases and check your answer instantly.</p></div>
+      <span class="b-tag">PRACTICE</span>
+      <span class="b-chev" id="ch4">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="ex-hdr"><span class="ex-label">A</span> meeting control phrases</div>
+      <div class="instr"><strong>Complete</strong> each sentence with the best management phrase.</div>
+
+      <div class="fi-row"><span class="fi-n">01</span> Okay everyone, let’s <input class="fi-inp" data-a="get started"/> <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">02</span> Today I’d like to <input class="fi-inp" data-a="focus on"/> the delivery problem first. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">03</span> Let’s stay <input class="fi-inp" data-a="focused on"/> the main issue for now. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">04</span> We’re running out of time, so let’s <input class="fi-inp" data-a="move on"/> to the next point. <button class="chk" onclick="checkFill(this)">check</button></div>
+
+      <div class="ex-hdr" style="margin-top:20px"><span class="ex-label">B</span> multiple choice</div>
+
+      <div class="mc-block">
+        <div class="mc-q">1) A colleague keeps speaking about a different topic. What is the best response?</div>
+        <div class="mc-opts">
+          <button class="mc-btn" onclick="markMc(this,false)">You are not listening.</button>
+          <button class="mc-btn" onclick="markMc(this,true)">Let’s stay focused on the current issue for now.</button>
+          <button class="mc-btn" onclick="markMc(this,false)">Stop talking about that.</button>
+        </div>
+        <div class="mc-fb">Good — this sounds firm, professional, and calm.</div>
+      </div>
+
+      <div class="mc-block">
+        <div class="mc-q">2) Which sentence shows respectful disagreement?</div>
+        <div class="mc-opts">
+          <button class="mc-btn" onclick="markMc(this,false)">No, that’s wrong.</button>
+          <button class="mc-btn" onclick="markMc(this,true)">I see your point, but I think we should look at another option.</button>
+          <button class="mc-btn" onclick="markMc(this,false)">You don’t understand the real problem.</button>
+        </div>
+        <div class="mc-fb">Exactly — it acknowledges first, then disagrees politely.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block" id="s5">
+    <div class="block-top" onclick="tog(5)">
+      <div class="b-ico">🎭</div>
+      <div class="b-meta"><h2>Section 6 — Roleplay Tasks</h2><p>Use the target language in realistic management situations.</p></div>
+      <span class="b-tag">SPEAKING</span>
+      <span class="b-chev" id="ch5">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="roleplay">
+        <h4>Roleplay 1 — First Meeting as a New Manager</h4>
+        <ul>
+          <li>Start the meeting.</li>
+          <li>Set two priorities.</li>
+          <li>Redirect one off-topic comment.</li>
+          <li>Close with one action point.</li>
+        </ul>
+      </div>
+
+      <div class="roleplay">
+        <h4>Roleplay 2 — Strong Disagreement in the Team</h4>
+        <ul>
+          <li>A colleague says the supplier must change immediately.</li>
+          <li>You disagree.</li>
+          <li>Use: acknowledge → disagree → reason.</li>
+        </ul>
+      </div>
+
+      <div class="roleplay">
+        <h4>Roleplay 3 — Explain a Process Change</h4>
+        <ul>
+          <li>Explain why the packaging process needs to change.</li>
+          <li>Say what problem it causes now.</li>
+          <li>Say what the team should do next.</li>
+        </ul>
+      </div>
+
+      <div class="callout"><strong>Teacher tip:</strong> interrupt him during roleplay once or twice. He should practise recovering control with phrases like <em>Let me finish, please</em> and <em>I’ll come back to that in a moment</em>.</div>
+    </div>
+  </div>
+
+  <div class="lesson-nav">
+    <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ TOP</button>
+    <div class="nav-info">LESSON 10 · MANAGEMENT COMMUNICATION<br/>taking control professionally</div>
+    <button class="nav-btn next" onclick="document.getElementById('s5').scrollIntoView({behavior:'smooth'})">ROLEPLAY →</button>
+  </div>
+</div>
+
+<div class="save-bar">
+  <button class="save-btn" onclick="saveAll()">SAVE</button>
+  <button class="save-btn clear" onclick="clearAll()">CLEAR</button>
+</div>
+<div id="save-toast">PROGRESS SAVED</div>
+
+<script>
+const blocks=[...document.querySelectorAll('.block')];
+function tog(i){
+  const b=blocks[i], body=b.querySelector('.block-body'), chev=b.querySelector('.b-chev');
+  b.classList.toggle('open');
+  body.classList.toggle('open');
+  chev.style.transform=body.classList.contains('open')?'rotate(180deg)':'rotate(0deg)';
+  updateProgress();
+}
+function updateProgress(){
+  const opened=document.querySelectorAll('.block-body.open').length;
+  const total=blocks.length;
+  const pct=Math.round((opened/total)*100);
+  document.getElementById('pct').textContent=pct+'%';
+  [...document.querySelectorAll('.prog-step')].forEach((s,i)=>{
+    s.classList.remove('done','active');
+    if(i<opened) s.classList.add('done');
+    else if(i===opened && i<total) s.classList.add('active');
+  });
+}
+function norm(t){return t.toLowerCase().trim().replace(/\s+/g,' ');}
+function checkFill(btn){
+  const inp=btn.previousElementSibling;
+  const ans=norm(inp.dataset.a);
+  const val=norm(inp.value);
+  inp.classList.remove('ok','no');
+  if(val===ans){inp.classList.add('ok');}
+  else{inp.classList.add('no');}
+}
+function markMc(btn,correct){
+  const wrap=btn.closest('.mc-block');
+  wrap.querySelectorAll('.mc-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(correct?'cor':'wrng');
+  const fb=wrap.querySelector('.mc-fb');
+  fb.classList.add('show',correct?'ok':'no');
+  fb.textContent=correct ? fb.textContent : 'Not the best choice. Aim for calm, professional language.';
+}
+const key='ozgun_management_lesson10_light';
+function saveAll(){
+  const data={
+    inputs:[...document.querySelectorAll('input')].map(i=>i.value),
+    open:[...document.querySelectorAll('.block-body')].map(b=>b.classList.contains('open')),
+    flips:[...document.querySelectorAll('.ph2')].map(c=>c.classList.contains('flip'))
+  };
+  localStorage.setItem(key,JSON.stringify(data));
+  const t=document.getElementById('save-toast');
+  t.style.opacity='1'; t.style.transform='translateY(0)';
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';},1400);
+}
+function clearAll(){
+  localStorage.removeItem(key);
+  [...document.querySelectorAll('input')].forEach(i=>{i.value='';i.classList.remove('ok','no');});
+  [...document.querySelectorAll('.ph2')].forEach(c=>c.classList.remove('flip'));
+  [...document.querySelectorAll('.mc-btn')].forEach(b=>{b.disabled=false;b.classList.remove('cor','wrng');});
+  [...document.querySelectorAll('.mc-fb')].forEach(f=>f.className='mc-fb');
+}
+(function loadAll(){
+  const raw=localStorage.getItem(key); if(!raw){updateProgress();return;}
+  try{
+    const data=JSON.parse(raw);
+    [...document.querySelectorAll('input')].forEach((i,idx)=>{if(data.inputs&&data.inputs[idx]!=null)i.value=data.inputs[idx];});
+    [...document.querySelectorAll('.ph2')].forEach((c,idx)=>{if(data.flips&&data.flips[idx])c.classList.add('flip');});
+    if(data.open){
+      [...document.querySelectorAll('.block-body')].forEach((b,idx)=>{
+        const blk=blocks[idx], ch=blk.querySelector('.b-chev');
+        if(data.open[idx]){blk.classList.add('open');b.classList.add('open');ch.style.transform='rotate(180deg)';}
+        else{blk.classList.remove('open');b.classList.remove('open');ch.style.transform='rotate(0deg)';}
+      });
+    }
+  }catch(e){}
+  updateProgress();
+})();
+</script>
+</body>
+</html>
