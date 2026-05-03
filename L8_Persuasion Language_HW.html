@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Özgün B1 · Homework 8 — Persuasion Mastery</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0d0508;--surface:#170810;--surface2:#1c0c15;--border:#2a1020;--border2:#38162a;--rose:#9f1239;--rose-l:#fca5a5;--rose-dim:rgba(159,18,57,0.09);--orange:#c2410c;--or-l:#fed7aa;--or-dim:rgba(194,65,12,0.08);--green:#10b981;--green-dim:rgba(16,185,129,0.08);--red:#ef4444;--red-dim:rgba(239,68,68,0.09);--amber:#f59e0b;--amber-dim:rgba(245,158,11,0.08);--text:#fce7e7;--muted:#6b2c3c;--muted2:#3f1824;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-weight:300;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 30%40%,rgba(159,18,57,0.07) 0%,transparent 55%);pointer-events:none;z-index:0;}
+.page{max-width:820px;margin:0 auto;padding:40px 20px 110px;position:relative;z-index:1;}
+.hw-header{border-bottom:1px solid var(--border);padding-bottom:28px;margin-bottom:28px;position:relative;overflow:hidden;}
+.hw-header::after{content:'HW';position:absolute;right:-8px;top:-20px;font-family:'Syne',sans-serif;font-size:180px;font-weight:800;color:rgba(159,18,57,0.05);line-height:1;pointer-events:none;}
+.hw-tag{display:inline-flex;align-items:center;gap:8px;background:var(--rose-dim);border:1px solid rgba(159,18,57,0.25);font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--rose-l);padding:4px 12px;margin-bottom:14px;}
+.hw-header h1{font-family:'Syne',sans-serif;font-size:clamp(24px,5vw,44px);font-weight:800;color:var(--text);line-height:1.05;margin-bottom:8px;}
+.hw-header h1 em{color:var(--rose-l);font-style:normal;}
+.hw-header p{font-size:13.5px;color:var(--muted);max-width:520px;line-height:1.65;margin-bottom:16px;font-weight:400;}
+.l-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.l-meta span{background:rgba(255,255,255,0.025);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:3px 10px;letter-spacing:0.05em;}
+.hw-banner{background:var(--rose-dim);border:1px solid rgba(159,18,57,0.2);border-left:3px solid var(--rose-l);padding:12px 16px;margin-bottom:28px;font-size:12.5px;line-height:1.7;color:var(--muted);}
+.hw-banner strong{color:var(--rose-l);}
+.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:28px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.prog-steps{display:flex;gap:3px;flex:1;}
+.prog-step{flex:1;height:3px;background:var(--border);}
+.prog-step.done{background:var(--rose);}
+.prog-step.active{background:var(--amber);}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--rose-l);}
+.block{background:var(--surface);border:1px solid var(--border);margin-bottom:10px;overflow:hidden;}
+.block-top{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--border);cursor:pointer;user-select:none;}
+.b-ico{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.b-meta{flex:1;}
+.b-meta h2{font-size:13px;font-weight:700;color:var(--text);margin-bottom:1px;}
+.b-meta p{font-size:10.5px;color:var(--muted);}
+.b-badge{display:inline-flex;align-items:center;gap:5px;}
+.b-tag{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid var(--border);color:var(--muted);}
+.b-diff{font-family:'JetBrains Mono',monospace;font-size:8px;padding:2px 8px;border:1px solid rgba(159,18,57,0.3);color:var(--rose-l);background:var(--rose-dim);}
+.b-diff.vhard{border-color:rgba(194,65,12,0.3);color:var(--or-l);background:var(--or-dim);}
+.b-chev{color:var(--muted);font-size:11px;transition:transform 0.25s;flex-shrink:0;}
+.block-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height 0.45s ease,padding 0.3s;}
+.block-body.open{max-height:6000px;padding:18px;}
+.instr{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.65;padding:10px 14px;background:var(--surface2);border-left:2px solid var(--border2);font-weight:400;}
+.instr strong{color:var(--text);}
+.ex-hdr{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.ex-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-label{background:var(--rose);color:white;padding:2px 9px;font-size:8px;font-weight:700;}
+.fi-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);margin-bottom:6px;font-size:13px;line-height:2;}
+.fi-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;}
+.fi-inp{display:inline-block;min-width:160px;padding:2px 8px;border:none;border-bottom:1.5px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;font-size:12.5px;color:var(--text);outline:none;transition:border-color 0.2s;vertical-align:middle;}
+.fi-inp:focus{border-bottom-color:var(--rose-l);}
+.fi-inp.ok{border-bottom-color:var(--green);color:var(--green);}
+.fi-inp.no{border-bottom-color:var(--red);color:var(--red);}
+.chk{padding:2px 9px;background:var(--rose);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:0.05em;vertical-align:middle;margin-left:3px;transition:opacity 0.15s;}
+.chk:hover{opacity:0.75;}
+.mc-block{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:7px;}
+.mc-q{font-size:13px;color:var(--text);margin-bottom:5px;font-weight:500;line-height:1.6;}
+.mc-opts{display:flex;flex-direction:column;gap:6px;}
+.mc-btn{padding:8px 14px;border:1px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all 0.15s;text-align:left;line-height:1.5;}
+.mc-btn:hover{border-color:var(--rose-l);color:var(--rose-l);}
+.mc-btn.cor{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.mc-btn.wrng{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.mc-fb{font-size:11px;margin-top:7px;padding:5px 10px;display:none;line-height:1.55;}
+.mc-fb.show{display:block;}
+.mc-fb.ok{background:var(--green-dim);color:var(--green);}
+.mc-fb.no{background:var(--red-dim);color:var(--red);}
+.ec-block{background:var(--surface2);border:1px solid var(--border);padding:13px 15px;margin-bottom:8px;}
+.ec-n{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.ec-errors{font-size:10px;color:var(--or-l);}
+.ec-wrong{font-size:13px;color:var(--text);margin-bottom:10px;padding:8px 12px;background:rgba(194,65,12,0.05);border-left:2px solid var(--orange);line-height:1.65;}
+.ec-inp{width:100%;padding:8px 12px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;margin-top:6px;}
+.ec-inp:focus{border-color:var(--rose-l);}
+.ec-inp.ok{border-color:var(--green);background:var(--green-dim);}
+.ec-inp.no{border-color:var(--red);background:var(--red-dim);}
+.write-task{background:var(--surface2);border:1px solid var(--border);padding:16px 18px;margin-bottom:12px;}
+.write-task h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.write-task p{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;}
+.scenario{background:rgba(159,18,57,0.07);border:1px solid rgba(159,18,57,0.2);border-left:3px solid var(--rose-l);padding:10px 14px;font-size:12.5px;color:var(--muted);line-height:1.7;margin:10px 0;}
+.scenario strong{color:var(--text);}
+.wl{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.wl-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:22px;flex-shrink:0;margin-top:5px;}
+.wl-inp{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);outline:none;padding:3px 5px;}
+.wl-inp:focus{border-bottom-color:var(--rose-l);}
+.main-btn{width:100%;padding:11px;background:linear-gradient(90deg,var(--rose),rgba(159,18,57,0.6));color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;margin-top:10px;transition:opacity 0.15s;}
+.main-btn:hover{opacity:0.82;}
+.score-card{background:var(--surface2);border:1px solid var(--rose);padding:18px;text-align:center;display:none;margin-top:12px;}
+.score-card.show{display:block;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:44px;color:var(--rose-l);line-height:1;}
+.sc-val span{font-size:16px;}
+.sc-label{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--text);margin:6px 0 4px;}
+.sc-sub{font-size:12px;color:var(--muted);line-height:1.55;}
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+.nav-btn{padding:9px 20px;border:1px solid var(--border);background:transparent;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;letter-spacing:0.05em;transition:all 0.15s;}
+.nav-btn:hover{border-color:var(--rose-l);color:var(--rose-l);}
+.nav-btn.next{background:var(--rose);color:white;border-color:var(--rose);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:center;line-height:1.8;}
+.save-bar{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:999;}
+.save-btn{padding:7px 14px;background:var(--rose);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.15s;}
+.save-btn:hover{opacity:0.8;}
+.save-btn.clear{background:var(--surface2);border:1px solid var(--border);color:var(--muted);}
+#save-toast{position:fixed;bottom:58px;right:18px;background:var(--rose);color:white;font-family:'JetBrains Mono',monospace;font-size:9px;padding:6px 14px;letter-spacing:0.1em;opacity:0;transform:translateY(10px);transition:all 0.3s;pointer-events:none;z-index:1000;}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="hw-header">
+  <div class="hw-tag">// B1_PATHWAY · PHASE_3 · HOMEWORK_08</div>
+  <h1>Persuasion<br/><em>Mastery</em></h1>
+  <p>No phrase box. No scaffolding. Build complete persuasive arguments from scratch for real workplace situations.</p>
+  <div class="l-meta"><span>⏱ 45 MIN</span><span>INDEPENDENT PRACTICE</span><span>No scaffolding</span><span>B1 Level</span></div>
+</div>
+<div class="hw-banner"><strong>Reminder:</strong> The 5-step structure: Claim → Evidence → Benefit → Objection → Call to Action. Always include numbers. "I understand your concern, however…" before countering. Call to action must be specific. Two errors per sentence in Part 3.</div>
+<div class="prog-row">
+  <span class="prog-lbl">homework_progress</span>
+  <div class="prog-steps" id="steps"><div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div></div>
+  <span class="prog-pct" id="pct">0%</span>
+</div>
+
+<!-- PART 1: PHRASE RECALL -->
+<div class="block" id="s0">
+  <div class="block-top" onclick="tog(0)">
+    <div class="b-ico">✏️</div>
+    <div class="b-meta"><h2>Part 1 — Persuasion Phrase Recall</h2><p>Complete each sentence with the correct persuasion phrase. No phrase box.</p></div>
+    <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch0" style="transform:rotate(180deg);">▼</span>
+  </div>
+  <div class="block-body open" id="b0">
+    <div class="instr">Write the correct persuasion phrase for each sentence. These come from Lesson 8 — no phrase list provided.</div>
+    <div class="fi-row"><span class="fi-n">01</span><span>You are making your main argument: "I</span><input class="fi-inp" id="f1" placeholder="___" autocomplete="off" style="min-width:170px"><span>that we must replace the boiler system this quarter."</span><button class="chk" onclick="cf('f1','strongly believe')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">02</span><span>Presenting data: "The figures</span><input class="fi-inp" id="f2" placeholder="___" autocomplete="off" style="min-width:140px"><span>that the failure rate has increased by 40% this year."</span><button class="chk" onclick="cf('f2','indicate that')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">03</span><span>Stating the benefit: "This would</span><input class="fi-inp" id="f3" placeholder="___" autocomplete="off" style="min-width:100px"><span>in annual savings of approximately 1.5M TL."</span><button class="chk" onclick="cf('f3','result')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">04</span><span>Acknowledging an objection: "I</span><input class="fi-inp" id="f4" placeholder="___" autocomplete="off" style="min-width:140px"><span>your concern about the timeline, however…"</span><button class="chk" onclick="cf('f4','understand')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">05</span><span>Double benefit: "Not only would this reduce costs,</span><input class="fi-inp" id="f5" placeholder="___" autocomplete="off" style="min-width:100px"><span>it would improve safety compliance."</span><button class="chk" onclick="cf('f5','but also')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">06</span><span>Call to action: "I</span><input class="fi-inp" id="f6" placeholder="___" autocomplete="off" style="min-width:170px"><span>that we evaluate two alternative suppliers immediately."</span><button class="chk" onclick="cf('f6','recommend')">CHECK</button></div>
+    <div class="fi-row"><span class="fi-n">07</span><span>Reframing risk: "The risk of not</span><input class="fi-inp" id="f7" placeholder="___" autocomplete="off" style="min-width:80px"><span>is a complete system failure costing 5M TL."</span><button class="chk" onclick="cf('f7','acting')">CHECK</button></div>
+    <button class="main-btn" onclick="chkPhrases()">CHECK ALL & CONTINUE →</button>
+    <div class="score-card" id="p1Sc"></div>
+  </div>
+</div>
+
+<!-- PART 2: MC -->
+<div class="block" id="s1">
+  <div class="block-top" onclick="tog(1)">
+    <div class="b-ico">🎯</div>
+    <div class="b-meta"><h2>Part 2 — Which Argument Wins?</h2><p>Choose the most persuasive response for each professional situation</p></div>
+    <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch1">▼</span>
+  </div>
+  <div class="block-body" id="b1">
+    <div class="mc-block" id="mc1">
+      <div class="mc-q">1. Your director says the Q3 budget is frozen. You need 2M TL for urgent equipment. Your response:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc1',this,'A','C')">A) That is a problem. Maybe we wait until Q4.</button>
+        <button class="mc-btn" onclick="smc('mc1',this,'B','C')">B) But we really need this. The equipment is very important.</button>
+        <button class="mc-btn" onclick="smc('mc1',this,'C','C')">C) I understand the budget constraint. However, delaying this investment will result in 3M TL in preventable losses by Q4. Could we discuss a phased release of 1M TL to begin critical procurement?</button>
+      </div><div class="mc-fb" id="f-mc1"></div>
+    </div>
+    <div class="mc-block" id="mc2">
+      <div class="mc-q">2. A supplier says they cannot reduce the price. Your negotiation response:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc2',this,'A','B')">A) Okay. We will accept the original price then.</button>
+        <button class="mc-btn" onclick="smc('mc2',this,'B','B')">B) I understand your position. However, we are evaluating three suppliers simultaneously. If you cannot offer a 10% reduction, we would need to proceed with an alternative. I would prefer to maintain our relationship.</button>
+        <button class="mc-btn" onclick="smc('mc2',this,'C','B')">C) The price is too high. You must reduce it.</button>
+      </div><div class="mc-fb" id="f-mc2"></div>
+    </div>
+    <div class="mc-block" id="mc3">
+      <div class="mc-q">3. An engineer disagrees with your project timeline. You want to defend it diplomatically:</div>
+      <div class="mc-opts">
+        <button class="mc-btn" onclick="smc('mc3',this,'A','B')">A) I am the manager. The timeline stays.</button>
+        <button class="mc-btn" onclick="smc('mc3',this,'B','B')">B) That is a valid concern. In addition, the data shows that a similar project in Factory 2 was completed in the same timeframe. I am confident we can achieve this if we prioritise the critical path items.</button>
+        <button class="mc-btn" onclick="smc('mc3',this,'C','B')">C) I think you are wrong about the timeline.</button>
+      </div><div class="mc-fb" id="f-mc3"></div>
+    </div>
+    <button class="main-btn" onclick="done(1)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 3: DOUBLE ERROR -->
+<div class="block" id="s2">
+  <div class="block-top" onclick="tog(2)">
+    <div class="b-ico">⚠️</div>
+    <div class="b-meta"><h2>Part 3 — Weak Argument Rewrite</h2><p>Each argument has TWO weaknesses. Identify and rewrite both.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff vhard">VERY HARD</span></div>
+    <span class="b-chev" id="ch2">▼</span>
+  </div>
+  <div class="block-body" id="b2">
+    <div class="instr">Each argument is missing or has TWO weaknesses: no evidence/data, no benefit stated, rude objection handling, or vague call to action. Rewrite it as a strong persuasive argument.</div>
+    <div class="ec-block">
+      <div class="ec-n">Argument 01 <span class="ec-errors">— 2 weaknesses</span></div>
+      <div class="ec-wrong">"We should change the supplier because the current one is bad. We need to act now."</div>
+      <input class="ec-inp" id="ec1" autocomplete="off" placeholder="Based on… The figures indicate… This would result in… I recommend that we…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec1',['indicate','result'])">CHECK</button>
+    </div>
+    <div class="ec-block">
+      <div class="ec-n">Argument 02 <span class="ec-errors">— 2 weaknesses</span></div>
+      <div class="ec-wrong">"I know you said no, but you are wrong. We must have this budget."</div>
+      <input class="ec-inp" id="ec2" autocomplete="off" placeholder="I understand your concern, however… The risk of not acting is… I would like to request…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec2',['understand','request'])">CHECK</button>
+    </div>
+    <div class="ec-block">
+      <div class="ec-n">Argument 03 <span class="ec-errors">— 2 weaknesses</span></div>
+      <div class="ec-wrong">"In my opinion this project is important and we should do something about it."</div>
+      <input class="ec-inp" id="ec3" autocomplete="off" placeholder="Based on my analysis… This would save approximately… I propose that we…">
+      <button class="chk" style="margin-top:7px;" onclick="cec2('ec3',['based on','approximately'])">CHECK</button>
+    </div>
+    <button class="main-btn" onclick="done(2)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 4: READING SCENARIO -->
+<div class="block" id="s3">
+  <div class="block-top" onclick="tog(3)">
+    <div class="b-ico">📋</div>
+    <div class="b-meta"><h2>Part 4 — Read &amp; Respond Persuasively</h2><p>The director has rejected your request. Prepare your counter-argument.</p></div>
+    <div class="b-badge"><span class="b-tag">7 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch3">▼</span>
+  </div>
+  <div class="block-body" id="b3">
+    <div style="background:var(--surface2);border:1px solid var(--border);border-top:2px solid var(--rose-l);padding:16px 18px;margin-bottom:14px;font-size:13px;line-height:1.9;color:rgba(252,231,231,0.9);">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--rose-l);margin-bottom:10px;border-bottom:1px solid var(--border);padding-bottom:8px;">DIRECTOR'S RESPONSE — Monday meeting</div>
+      "Özgün, I have reviewed your request for 3M TL to upgrade the Factory 3 boiler system. I cannot approve this right now. The Q3 budget is already allocated. Perhaps we can revisit this in Q4."
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:11px 14px;margin-bottom:7px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;">Q01</div>
+      <div style="color:var(--text);font-weight:500;font-size:12.5px;margin-bottom:7px;">What is the director's main objection? Write one sentence.</div>
+      <input style="width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;" id="rq1" autocomplete="off" placeholder="The director said that…">
+      <button class="chk" style="margin-top:6px;" onclick="cec('rq1','budget')">CHECK</button>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);padding:11px 14px;margin-bottom:7px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;">Q02</div>
+      <div style="color:var(--text);font-weight:500;font-size:12.5px;margin-bottom:7px;">Write your counter-argument using the persuasion framework. 3 sentences minimum.</div>
+      <input style="width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;margin-bottom:6px;" id="rq2" autocomplete="off" placeholder="I understand your concern, however…">
+      <input style="width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;margin-bottom:6px;" id="rq3" autocomplete="off" placeholder="The risk of not acting is… / The figures indicate…">
+      <input style="width:100%;padding:6px 10px;background:var(--surface);border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;" id="rq4" autocomplete="off" placeholder="I would like to request / Could we agree to…">
+      <button class="chk" style="margin-top:6px;" onclick="cec('rq2','understand')">CHECK</button>
+    </div>
+    <button class="main-btn" onclick="done(3)">NEXT SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 5: WRITE NEGOTIATION EMAIL -->
+<div class="block" id="s4">
+  <div class="block-top" onclick="tog(4)">
+    <div class="b-ico">📧</div>
+    <div class="b-meta"><h2>Part 5 — Write a Negotiation Email</h2><p>Convince a supplier to reduce price using the persuasion framework</p></div>
+    <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">HARD</span></div>
+    <span class="b-chev" id="ch4">▼</span>
+  </div>
+  <div class="block-body" id="b4">
+    <div class="write-task">
+      <h4>Task: Write a Price Negotiation Email</h4>
+      <div class="scenario">
+        <strong>Scenario:</strong> Technika GmbH has quoted 4.2M TL for the compressor system. Your budget is 3.5M TL. Write a professional email using persuasion language to negotiate a 15% reduction. Use the 5-step framework. Minimum 8 sentences. No scaffold.
+      </div>
+      <div class="wl"><div class="wl-n">1</div><input class="wl-inp" id="fw1" placeholder="Dear [Name], I am writing regarding…"></div>
+      <div class="wl"><div class="wl-n">2</div><input class="wl-inp" id="fw2"></div>
+      <div class="wl"><div class="wl-n">3</div><input class="wl-inp" id="fw3"></div>
+      <div class="wl"><div class="wl-n">4</div><input class="wl-inp" id="fw4"></div>
+      <div class="wl"><div class="wl-n">5</div><input class="wl-inp" id="fw5"></div>
+      <div class="wl"><div class="wl-n">6</div><input class="wl-inp" id="fw6"></div>
+      <div class="wl"><div class="wl-n">7</div><input class="wl-inp" id="fw7"></div>
+      <div class="wl"><div class="wl-n">8</div><input class="wl-inp" id="fw8" placeholder="I look forward to your response. Best regards…"></div>
+    </div>
+    <button class="main-btn" onclick="done(4)">FINAL SECTION →</button>
+  </div>
+</div>
+
+<!-- PART 6: FREE WRITE - FULL ARGUMENT -->
+<div class="block" id="s5">
+  <div class="block-top" onclick="tog(5)">
+    <div class="b-ico">✍️</div>
+    <div class="b-meta"><h2>Part 6 — Full Persuasive Argument: Board Presentation</h2><p>12 sentences. Complete 5-step structure. Unguided.</p></div>
+    <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff vhard">VERY HARD</span></div>
+    <span class="b-chev" id="ch5">▼</span>
+  </div>
+  <div class="block-body" id="b5">
+    <div class="write-task">
+      <h4>Task: Prepare Your Board Argument</h4>
+      <div class="scenario">
+        <strong>Scenario:</strong> You are presenting to the ETİ board of directors. You need approval for a 5M TL investment in new utilities equipment for Romania and Factory 3. Some board members are skeptical about the ROI. Write your complete 12-sentence argument using the full persuasion framework. Include: specific numbers, experience evidence, benefits, objection handling, and a clear call to action. No structure provided.
+      </div>
+      <div class="wl"><div class="wl-n">1</div><input class="wl-inp" id="bw1"></div>
+      <div class="wl"><div class="wl-n">2</div><input class="wl-inp" id="bw2"></div>
+      <div class="wl"><div class="wl-n">3</div><input class="wl-inp" id="bw3"></div>
+      <div class="wl"><div class="wl-n">4</div><input class="wl-inp" id="bw4"></div>
+      <div class="wl"><div class="wl-n">5</div><input class="wl-inp" id="bw5"></div>
+      <div class="wl"><div class="wl-n">6</div><input class="wl-inp" id="bw6"></div>
+      <div class="wl"><div class="wl-n">7</div><input class="wl-inp" id="bw7"></div>
+      <div class="wl"><div class="wl-n">8</div><input class="wl-inp" id="bw8"></div>
+      <div class="wl"><div class="wl-n">9</div><input class="wl-inp" id="bw9"></div>
+      <div class="wl"><div class="wl-n">10</div><input class="wl-inp" id="bw10"></div>
+      <div class="wl"><div class="wl-n">11</div><input class="wl-inp" id="bw11"></div>
+      <div class="wl"><div class="wl-n">12</div><input class="wl-inp" id="bw12"></div>
+    </div>
+    <div style="background:var(--rose-dim);border-left:2px solid var(--rose-l);padding:9px 13px;font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;"><strong style="color:var(--rose-l);">Self-check:</strong> Does your argument follow Claim → Evidence → Benefit → Objection → Action? Did you include at least 3 specific numbers? Did you use "I understand, however…" for the objection? Is your call to action specific?</div>
+    <button class="main-btn" onclick="finish()">✓ SUBMIT HOMEWORK 8</button>
+    <div class="score-card" id="finalSc"></div>
+  </div>
+</div>
+
+<div class="lesson-nav">
+  <button class="nav-btn" onclick="alert('Go back to Lesson 8!')">← LESSON 08</button>
+  <div class="nav-info">B1 PATHWAY · PHASE 3<br>HOMEWORK 08 OF 12</div>
+  <button class="nav-btn next" onclick="alert('Complete homework first!')">LESSON 09 →</button>
+</div>
+</div>
+<script>
+const comp=new Array(6).fill(false);
+function upd(){const d=comp.filter(Boolean).length;const s=document.getElementById('steps').children;for(let i=0;i<s.length;i++){s[i].classList.remove('done','active');if(i<d)s[i].classList.add('done');else if(i===d)s[i].classList.add('active');}document.getElementById('pct').textContent=Math.round(d/6*100)+'%';}
+function tog(i){const b=document.getElementById('b'+i);const c=document.getElementById('ch'+i);b.classList.toggle('open');if(b.classList.contains('open')){b.style.maxHeight='6000px';b.style.padding='18px';if(c)c.style.transform='rotate(180deg)';}else{b.style.maxHeight='0';b.style.padding='0 18px';if(c)c.style.transform='';}}
+function done(i){comp[i]=true;upd();const nb=document.getElementById('b'+(i+1));if(nb&&!nb.classList.contains('open')){nb.classList.add('open');nb.style.maxHeight='6000px';nb.style.padding='18px';const nc=document.getElementById('ch'+(i+1));if(nc)nc.style.transform='rotate(180deg)';document.getElementById('s'+(i+1))?.scrollIntoView({behavior:'smooth',block:'start'});}}
+function cf(id,a){const el=document.getElementById(id);if(!el)return false;const v=el.value.trim().toLowerCase();const ok=v===a.toLowerCase();el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);return ok;}
+function cec(id,kw){const el=document.getElementById(id);if(!el)return;const v=el.value.trim().toLowerCase();const ok=v.includes(kw.toLowerCase());el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);}
+function cec2(id,kws){const el=document.getElementById(id);if(!el)return;const v=el.value.trim().toLowerCase();const ok=kws.every(k=>v.includes(k.toLowerCase()));el.classList.toggle('ok',ok);el.classList.toggle('no',!ok);}
+function smc(pid,btn,val,correct){const par=document.getElementById(pid);par.querySelectorAll('.mc-btn').forEach(b=>b.classList.remove('cor','wrng'));const ok=val===correct;btn.classList.add(ok?'cor':'wrng');if(!ok)par.querySelectorAll('.mc-btn').forEach(b=>{if(b.textContent.trim().startsWith(correct))b.classList.add('cor');});
+const exp={mc1:'Option C: acknowledges constraint + quantifies the cost of inaction (3M TL) + proposes a specific alternative (phased release). Never just accept no.',mc2:'Option B: acknowledges position + creates urgency (3 suppliers competing) + preserves relationship. Polite but firm.',mc3:'Option B: "valid concern" (diplomatic) + evidence from similar project + confidence statement. No confrontation.'};
+const fb=document.getElementById('f-'+pid);fb.textContent=(ok?'✓ Correct. ':'✗ Incorrect. ')+(exp[pid]||'');fb.className='mc-fb show '+(ok?'ok':'no');}
+function chkPhrases(){const ids=['f1','f2','f3','f4','f5','f6','f7'];const ans=['strongly believe','indicate that','result','understand','but also','recommend','acting'];let ok=0;ids.forEach((id,i)=>{const el=document.getElementById(id);if(!el)return;const v=el.value.trim().toLowerCase();if(v.includes(ans[i])){el.classList.add('ok');el.classList.remove('no');ok++;}else{el.classList.add('no');el.classList.remove('ok');}});comp[0]=ok>=5;upd();const sc=document.getElementById('p1Sc');const p=Math.round(ok/7*100);sc.innerHTML=`<div class="sc-val">${ok}<span>/7</span></div><div class="sc-label">${p>=71?'Strong':'Review Needed'}</div><div class="sc-sub">${p>=71?'Good persuasion phrase memory. These exact structures will change the outcome of real negotiations.':'Review Lesson 8 Block 2 phrase sets — persuasion language must be automatic to be effective.'}</div>`;sc.classList.add('show');done(0);}
+function finish(){comp[5]=true;upd();const filled=['bw1','bw2','bw3','bw4','bw5','bw6','bw7','bw8','bw9','bw10','bw11','bw12'].filter(id=>document.getElementById(id)?.value.trim().length>5).length;const sc=document.getElementById('finalSc');sc.innerHTML=`<div class="sc-val">${filled}<span>/12</span></div><div class="sc-label">Homework 8 ${filled>=10?'Complete ✓':'Submitted'}</div><div class="sc-sub">${filled>=10?'Board argument written. Your teacher will review the 5-step structure, data use, and objection handling in Lesson 9.':'Complete all 12 sentences — a board argument must be thorough and complete.'}</div>`;sc.classList.add('show');sc.scrollIntoView({behavior:'smooth'});}
+const LS_KEY='ozgun_b1_hw8';
+function saveProgress(){const state={comp,inputs:{}};document.querySelectorAll('input[id]').forEach(el=>{state.inputs[el.id]=el.value;});try{localStorage.setItem(LS_KEY,JSON.stringify(state));showSaveToast();}catch(e){}}
+function loadProgress(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return;const state=JSON.parse(raw);if(state.comp){state.comp.forEach((v,i)=>{comp[i]=v;});upd();}if(state.inputs){Object.entries(state.inputs).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val;});}}catch(e){}}
+function clearProgress(){if(confirm('Clear all saved progress?')){localStorage.removeItem(LS_KEY);location.reload();}}
+function showSaveToast(){const t=document.getElementById('save-toast');if(!t)return;t.style.opacity='1';t.style.transform='translateY(0)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';},2000);}
+document.addEventListener('input',()=>saveProgress());
+document.addEventListener('DOMContentLoaded',()=>{const b=document.getElementById('b0');if(b){b.style.maxHeight='6000px';b.style.padding='18px';}const c=document.getElementById('ch0');if(c)c.style.transform='rotate(180deg)';loadProgress();});
+</script>
+<div id="save-toast">✓ PROGRESS SAVED</div>
+<div class="save-bar"><button class="save-btn clear" onclick="clearProgress()">RESET</button><button class="save-btn" onclick="saveProgress()">SAVE PROGRESS</button></div>
+</body>
+</html>
