@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Özgün B1–B2 · Homework 13 — Diplomatic Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#f7faf8;--surface:#ffffff;--surface2:#f4faf8;
+  --border:#d7e5df;--border2:#c6d7d0;
+  --em:#0f766e;--em-l:#14b8a6;--em-dim:rgba(15,118,110,0.08);
+  --ind:#4338ca;--ind-l:#6366f1;--ind-dim:rgba(67,56,202,0.08);
+  --amber:#d97706;--amber-dim:rgba(217,119,6,0.08);
+  --green:#059669;--green-dim:rgba(5,150,105,0.08);
+  --red:#dc2626;--red-dim:rgba(220,38,38,0.08);
+  --rose:#e11d48;--rose-dim:rgba(225,29,72,0.08);
+  --text:#163126;--muted:#5d776c;--muted2:#8aa095;
+  --shadow:0 14px 34px rgba(31,41,55,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:linear-gradient(180deg,#fcfefc 0%,#f4faf8 100%);color:var(--text);line-height:1.7;font-weight:300;}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse at 12% 14%,rgba(15,118,110,0.08) 0%,transparent 45%),
+    radial-gradient(ellipse at 87% 18%,rgba(67,56,202,0.06) 0%,transparent 42%),
+    radial-gradient(ellipse at 20% 88%,rgba(217,119,6,0.05) 0%,transparent 40%);
+  pointer-events:none;z-index:0;
+}
+.page{max-width:860px;margin:0 auto;padding:40px 20px 110px;position:relative;z-index:1;}
+
+/* ── HEADER ── */
+.hw-header{
+  border:1px solid rgba(255,255,255,.84);background:rgba(255,255,255,.8);backdrop-filter:blur(10px);
+  box-shadow:var(--shadow);border-radius:28px;padding:28px 28px 24px;margin-bottom:24px;position:relative;overflow:hidden;
+}
+.hw-header::after{
+  content:'HW';position:absolute;right:-6px;top:-18px;font-family:'Syne',sans-serif;font-size:170px;font-weight:800;
+  color:rgba(15,118,110,.06);line-height:1;pointer-events:none;letter-spacing:-4px;
+}
+.hw-tag{
+  display:inline-flex;align-items:center;gap:8px;background:var(--em-dim);border:1px solid rgba(15,118,110,.18);
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--em);
+  padding:5px 12px;margin-bottom:14px;border-radius:999px;
+}
+.hw-header h1{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:800;color:var(--text);line-height:1.04;margin-bottom:8px;}
+.hw-header h1 em{color:var(--em);font-style:normal;}
+.hw-header p{font-size:14px;color:var(--muted);max-width:630px;line-height:1.7;margin-bottom:16px;font-weight:400;}
+.l-meta{display:flex;gap:8px;flex-wrap:wrap;}
+.l-meta span{background:#fff;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);padding:4px 10px;letter-spacing:.05em;border-radius:999px;}
+
+/* ── BANNER ── */
+.hw-banner{
+  background:var(--surface);border:1px solid rgba(15,118,110,.14);border-left:4px solid var(--em-l);
+  padding:13px 16px;margin-bottom:24px;font-size:12.5px;line-height:1.7;color:var(--muted);
+  border-radius:18px;box-shadow:var(--shadow);
+}
+.hw-banner strong{color:var(--text);}
+
+/* ── PROGRESS ── */
+.prog-row{
+  display:flex;align-items:center;gap:12px;margin-bottom:26px;padding:12px 14px;
+  background:var(--surface);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);
+}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);white-space:nowrap;}
+.prog-steps{display:flex;gap:4px;flex:1;}
+.prog-step{flex:1;height:5px;background:#e4eee9;border-radius:999px;}
+.prog-step.done{background:var(--em);}
+.prog-step.active{background:#f59e0b;}
+.prog-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--em);}
+
+/* ── ACCORDION ── */
+.block{background:var(--surface);border:1px solid var(--border);margin-bottom:12px;overflow:hidden;border-radius:22px;box-shadow:var(--shadow);transition:border-color .2s,transform .2s;}
+.block:hover{border-color:var(--border2);transform:translateY(-1px);}
+.block-top{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid transparent;cursor:pointer;user-select:none;}
+.block.open .block-top{border-bottom-color:var(--border);}
+.b-ico{width:42px;height:42px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border-radius:14px;background:var(--surface2);}
+.b-meta{flex:1;}
+.b-meta h2{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;}
+.b-meta p{font-size:11px;color:var(--muted);}
+.b-badge{display:inline-flex;align-items:center;gap:6px;}
+.b-tag,.b-diff{font-family:'JetBrains Mono',monospace;font-size:8px;padding:3px 9px;border-radius:999px;}
+.b-tag{border:1px solid var(--border);color:var(--muted);background:var(--surface2);}
+.b-diff{border:1px solid rgba(225,29,72,.18);color:var(--rose);background:var(--rose-dim);}
+.b-chev{color:var(--muted);font-size:11px;transition:transform .25s;flex-shrink:0;}
+.block-body{padding:0 18px;max-height:0;overflow:hidden;transition:max-height .45s ease,padding .3s;}
+.block-body.open{max-height:11000px;padding:18px;}
+
+/* ── CONTENT ── */
+.instr{font-size:12.5px;color:var(--muted);margin-bottom:14px;line-height:1.65;padding:10px 14px;background:var(--surface2);border-left:3px solid var(--border2);font-weight:400;border-radius:0 16px 16px 0;}
+.instr strong{color:var(--text);}
+.ex-hdr{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+.ex-hdr::after{content:'';flex:1;height:1px;background:var(--border);}
+.ex-label{background:var(--em);color:white;padding:2px 9px;font-size:8px;font-weight:700;border-radius:999px;}
+
+/* ── FILL IN ── */
+.fi-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:11px 13px;background:var(--surface2);border:1px solid var(--border);margin-bottom:7px;font-size:13px;line-height:2;border-radius:16px;}
+.fi-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;}
+.fi-inp{display:inline-block;min-width:160px;padding:2px 8px;border:none;border-bottom:1.5px solid var(--border2);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-weight:500;font-size:12.5px;color:var(--text);outline:none;transition:border-color .2s;}
+.fi-inp:focus{border-bottom-color:var(--em);}
+.fi-inp.ok{border-bottom-color:var(--green);color:var(--green);}
+.fi-inp.no{border-bottom-color:var(--red);color:var(--red);}
+.chk{padding:3px 9px;background:var(--em);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;letter-spacing:.05em;vertical-align:middle;margin-left:3px;transition:opacity .15s;border-radius:999px;}
+.chk:hover{opacity:.82;}
+
+/* ── MULTIPLE CHOICE ── */
+.mc-block{background:var(--surface2);border:1px solid var(--border);padding:13px 14px;margin-bottom:8px;border-radius:16px;}
+.mc-q{font-size:13px;color:var(--text);margin-bottom:6px;font-weight:500;line-height:1.6;}
+.mc-ctx{font-size:11.5px;color:var(--muted);margin-bottom:9px;font-style:italic;}
+.mc-opts{display:flex;flex-direction:column;gap:6px;}
+.mc-btn{padding:8px 14px;border:1px solid var(--border);background:transparent;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;color:var(--muted);cursor:pointer;transition:all .15s;text-align:left;line-height:1.5;border-radius:14px;}
+.mc-btn:hover{border-color:var(--em);color:var(--em);}
+.mc-btn.cor{background:var(--green-dim);border-color:var(--green);color:var(--green);}
+.mc-btn.wrng{background:var(--red-dim);border-color:var(--red);color:var(--red);}
+.mc-fb{font-size:11px;margin-top:7px;padding:7px 10px;display:none;line-height:1.55;border-radius:12px;}
+.mc-fb.show{display:block;}
+.mc-fb.ok{background:var(--green-dim);color:var(--green);}
+.mc-fb.no{background:var(--red-dim);color:var(--red);}
+
+/* ── ERROR CORRECTION ── */
+.ec-block{background:var(--surface2);border:1px solid var(--border);padding:13px 15px;margin-bottom:8px;border-radius:16px;}
+.ec-n{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px;display:flex;align-items:center;gap:8px;}
+.ec-errors{font-size:10px;color:var(--rose);}
+.ec-wrong{font-size:13px;color:var(--text);margin-bottom:10px;padding:8px 12px;background:var(--rose-dim);border-left:3px solid var(--rose);line-height:1.65;border-radius:0 12px 12px 0;}
+.ec-wrong .err{text-decoration:underline;text-decoration-style:wavy;text-decoration-color:var(--red);color:var(--red);}
+.ec-inp{width:100%;padding:8px 12px;background:#fff;border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;margin-top:6px;border-radius:12px;}
+.ec-inp:focus{border-color:var(--em);}
+.ec-inp.ok{border-color:var(--green);background:var(--green-dim);}
+.ec-inp.no{border-color:var(--red);background:var(--red-dim);}
+
+/* ── OPEN WRITING ── */
+.write-task{background:var(--surface2);border:1px solid var(--border);padding:16px 18px;margin-bottom:12px;border-radius:18px;}
+.write-task h4{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.write-task p{font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.65;}
+.scenario{background:rgba(15,118,110,.07);border:1px solid rgba(15,118,110,.18);border-left:3px solid var(--em-l);padding:10px 14px;font-size:12.5px;color:var(--muted);line-height:1.7;margin:10px 0;border-radius:0 16px 16px 0;}
+.scenario strong{color:var(--text);}
+.wl{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.wl-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);width:24px;flex-shrink:0;margin-top:5px;}
+.wl-inp{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border2);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;color:var(--text);outline:none;padding:4px 5px;}
+.wl-inp:focus{border-bottom-color:var(--em);}
+.rq{background:var(--surface2);border:1px solid var(--border);padding:12px 14px;margin-bottom:7px;border-radius:16px;}
+.rq-n{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);margin-bottom:5px;}
+.rq-q{color:var(--text);font-weight:500;font-size:12.5px;margin-bottom:7px;line-height:1.55;}
+.rq-inp{width:100%;padding:7px 10px;background:#fff;border:1px solid var(--border);font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;color:var(--text);outline:none;border-radius:12px;}
+.rq-inp:focus{border-color:var(--em);}
+
+/* ── SCORE ── */
+.main-btn{width:100%;padding:12px;background:linear-gradient(90deg,var(--em),rgba(15,118,110,0.7));color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;margin-top:10px;transition:opacity .15s;border-radius:999px;}
+.main-btn:hover{opacity:.85;}
+.score-card{background:var(--surface);border:1px solid rgba(15,118,110,.22);padding:18px;text-align:center;display:none;margin-top:12px;border-radius:18px;box-shadow:var(--shadow);}
+.score-card.show{display:block;}
+.sc-val{font-family:'JetBrains Mono',monospace;font-size:44px;color:var(--em);line-height:1;}
+.sc-val span{font-size:16px;}
+.sc-label{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;color:var(--text);margin:6px 0 4px;}
+.sc-sub{font-size:12px;color:var(--muted);line-height:1.55;}
+
+/* ── NAV ── */
+.lesson-nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;padding-top:20px;border-top:1px solid var(--border);}
+.nav-btn{padding:10px 20px;border:1px solid var(--border);background:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;letter-spacing:.05em;transition:all .15s;border-radius:999px;}
+.nav-btn:hover{border-color:var(--em);color:var(--em);}
+.nav-btn.next{background:var(--em);color:white;border-color:var(--em);}
+.nav-info{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-align:center;line-height:1.8;}
+
+/* ── SAVE BAR ── */
+.save-bar{position:fixed;bottom:18px;right:18px;display:flex;gap:8px;z-index:999;}
+.save-btn{padding:8px 14px;background:var(--em);color:white;border:none;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:opacity .15s;border-radius:999px;box-shadow:var(--shadow);}
+.save-btn:hover{opacity:.85;}
+.save-btn.clear{background:#fff;border:1px solid var(--border);color:var(--muted);}
+#save-toast{position:fixed;bottom:62px;right:18px;background:var(--em);color:white;font-family:'JetBrains Mono',monospace;font-size:9px;padding:7px 14px;letter-spacing:.1em;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:1000;border-radius:999px;box-shadow:var(--shadow);}
+::selection{background:rgba(15,118,110,.14);}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hw-header">
+    <div class="hw-tag">// B1_B2_PATHWAY · WEEK_5 · HOMEWORK_13</div>
+    <h1>Diplomatic Language<br><em>Softeners &amp; Modal Verbs Practice</em></h1>
+    <p>Practise making direct workplace English sound more professional, respectful and calm. This homework focuses on softeners, modal verbs, polite requests, tone upgrades and realistic ETİ-style communication.</p>
+    <div class="l-meta"><span>⏱ 60 MIN</span><span>CONTROLLED + OPEN TASKS</span><span>B1 TO B2 BRIDGE</span><span>DIPLOMATIC LANGUAGE</span></div>
+  </div>
+
+  <div class="hw-banner"><strong>Goal:</strong> use softeners and modal verbs to sound professional without becoming unclear. You will practise changing direct sentences into diplomatic workplace English.</div>
+
+  <div class="prog-row">
+    <span class="prog-lbl">homework_progress</span>
+    <div class="prog-steps" id="steps">
+      <div class="prog-step active"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div><div class="prog-step"></div>
+    </div>
+    <span class="prog-pct" id="pct">0%</span>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="block open" id="s0">
+    <div class="block-top" onclick="tog(0)">
+      <div class="b-ico">🧠</div>
+      <div class="b-meta"><h2>Part 1 — Softener Gap-Fill</h2><p>Complete each professional sentence with the correct softener or phrase.</p></div>
+      <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">AUTO-CHECK</span></div>
+      <span class="b-chev" id="ch0" style="transform:rotate(180deg)">▼</span>
+    </div>
+    <div class="block-body open">
+      <div class="instr"><strong>Write</strong> the correct word or phrase. Use lower case or capital letters — both are fine.</div>
+      <div class="fi-row"><span class="fi-n">01</span> <input class="fi-inp" data-a="could"/> you send me the updated figures by Friday? <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">02</span> I <input class="fi-inp" data-a="was wondering if"/> you could check this before the meeting. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">03</span> There <input class="fi-inp" data-a="seems to be"/> a small issue with the delivery schedule. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">04</span> This <input class="fi-inp" data-a="might"/> cause a delay if we do not act today. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">05</span> It <input class="fi-inp" data-a="would be helpful if"/> you could confirm the final numbers. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">06</span> I am <input class="fi-inp" data-a="slightly concerned"/> about the timeline for this project. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">07</span> We <input class="fi-inp" data-a="may need to"/> review the plan again before we continue. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">08</span> I <input class="fi-inp" data-a="just wanted to"/> follow up on the action point from yesterday. <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">09</span> Would it be <input class="fi-inp" data-a="possible"/> to move the deadline to Monday? <button class="chk" onclick="checkFill(this)">check</button></div>
+      <div class="fi-row"><span class="fi-n">10</span> I think we <input class="fi-inp" data-a="could"/> approach this in a slightly different way. <button class="chk" onclick="checkFill(this)">check</button></div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="block" id="s1">
+    <div class="block-top" onclick="tog(1)">
+      <div class="b-ico">✅</div>
+      <div class="b-meta"><h2>Part 2 — Multiple Choice: Best Diplomatic Response</h2><p>Choose the sentence that sounds professional, calm and respectful.</p></div>
+      <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">AUTO-CHECK</span></div>
+      <span class="b-chev" id="ch1">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="mc-block"><div class="mc-q">1) You need a colleague to send a report today.</div><div class="mc-ctx">Choose the best professional request.</div><div class="mc-opts"><button class="mc-btn" onclick="markMc(this,false)">Send me the report today.</button><button class="mc-btn" onclick="markMc(this,true)">Could you send me the report by the end of today?</button><button class="mc-btn" onclick="markMc(this,false)">You need to send this now.</button></div><div class="mc-fb">Correct — "Could you...?" is clear, polite and professional.</div></div>
+      <div class="mc-block"><div class="mc-q">2) You notice a mistake in the data.</div><div class="mc-ctx">Choose the softest accurate sentence.</div><div class="mc-opts"><button class="mc-btn" onclick="markMc(this,false)">Your data is wrong.</button><button class="mc-btn" onclick="markMc(this,true)">There seems to be a small issue with the data.</button><button class="mc-btn" onclick="markMc(this,false)">You made a mistake again.</button></div><div class="mc-fb">Exactly — the sentence focuses on the issue, not the person.</div></div>
+      <div class="mc-block"><div class="mc-q">3) You disagree with a suggestion in a meeting.</div><div class="mc-ctx">Choose the most diplomatic response.</div><div class="mc-opts"><button class="mc-btn" onclick="markMc(this,false)">No, that won't work.</button><button class="mc-btn" onclick="markMc(this,false)">I don't agree with this idea.</button><button class="mc-btn" onclick="markMc(this,true)">I see your point, but I wonder if we could consider another option.</button></div><div class="mc-fb">Correct — it acknowledges the other person first, then introduces another view.</div></div>
+      <div class="mc-block"><div class="mc-q">4) You are worried about a deadline.</div><div class="mc-opts"><button class="mc-btn" onclick="markMc(this,true)">I'm slightly concerned that we may not meet the deadline.</button><button class="mc-btn" onclick="markMc(this,false)">We will definitely miss the deadline.</button><button class="mc-btn" onclick="markMc(this,false)">This plan is bad and too slow.</button></div><div class="mc-fb">Exactly — "slightly concerned" and "may" make the warning professional, not dramatic.</div></div>
+      <div class="mc-block"><div class="mc-q">5) You want to ask for a deadline change.</div><div class="mc-opts"><button class="mc-btn" onclick="markMc(this,false)">Move the deadline to Monday.</button><button class="mc-btn" onclick="markMc(this,true)">Would it be possible to move the deadline to Monday?</button><button class="mc-btn" onclick="markMc(this,false)">The deadline is impossible, change it.</button></div><div class="mc-fb">Correct — "Would it be possible...?" is a strong B2 professional request pattern.</div></div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div class="block" id="s2">
+    <div class="block-top" onclick="tog(2)">
+      <div class="b-ico">✏️</div>
+      <div class="b-meta"><h2>Part 3 — Error Correction: Too Direct</h2><p>Rewrite the sentence in a softer, more professional way.</p></div>
+      <div class="b-badge"><span class="b-tag">12 MIN</span><span class="b-diff">AUTO-CHECK</span></div>
+      <span class="b-chev" id="ch2">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="instr"><strong>Rewrite</strong> the sentence. Exact wording is not the only option, but the answer must include a softener or modal verb.</div>
+      <div class="ec-block"><div class="ec-n">item 01 <span class="ec-errors">too direct request</span></div><div class="ec-wrong">"<span class="err">Send me the report today.</span>"</div><input class="ec-inp" data-a="Could you send me the report by the end of today?" placeholder="Rewrite with could"/></div>
+      <div class="ec-block"><div class="ec-n">item 02 <span class="ec-errors">blaming the person</span></div><div class="ec-wrong">"<span class="err">You made a mistake in the figures.</span>"</div><input class="ec-inp" data-a="There seems to be a small issue with the figures." placeholder="Focus on the issue, not the person"/></div>
+      <div class="ec-block"><div class="ec-n">item 03 <span class="ec-errors">too aggressive disagreement</span></div><div class="ec-wrong">"<span class="err">That idea won't work.</span>"</div><input class="ec-inp" data-a="I see your point, but I wonder if we could consider another option." placeholder="Acknowledge first, then disagree softly"/></div>
+      <div class="ec-block"><div class="ec-n">item 04 <span class="ec-errors">too certain / too strong</span></div><div class="ec-wrong">"<span class="err">This will delay the project.</span>"</div><input class="ec-inp" data-a="This might delay the project." placeholder="Use might or may"/></div>
+      <button class="main-btn" onclick="checkRewrite()">CHECK ALL CORRECTIONS</button>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div class="block" id="s3">
+    <div class="block-top" onclick="tog(3)">
+      <div class="b-ico">🔄</div>
+      <div class="b-meta"><h2>Part 4 — B1 to B2 Tone Upgrade</h2><p>Change direct workplace English into polished B2 professional English.</p></div>
+      <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">OPEN PRACTICE</span></div>
+      <span class="b-chev" id="ch3">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="instr"><strong>Upgrade</strong> each sentence. Use softeners such as: could, would, might, may, perhaps, I was wondering if, there seems to be, I am slightly concerned.</div>
+      <div class="rq"><div class="rq-n">upgrade 01</div><div class="rq-q">B1: "I need this by Friday." → Write a polite professional request.</div><input class="rq-inp" placeholder="Write a B2 version"/></div>
+      <div class="rq"><div class="rq-n">upgrade 02</div><div class="rq-q">B1: "The plan is not good." → Write a diplomatic comment about the plan.</div><input class="rq-inp" placeholder="Write a B2 version"/></div>
+      <div class="rq"><div class="rq-n">upgrade 03</div><div class="rq-q">B1: "We have a problem with the supplier." → Write a softer update.</div><input class="rq-inp" placeholder="Write a B2 version"/></div>
+      <div class="rq"><div class="rq-n">upgrade 04</div><div class="rq-q">B1: "You forgot to send the file." → Write a polite follow-up.</div><input class="rq-inp" placeholder="Write a B2 version"/></div>
+      <div class="rq"><div class="rq-n">upgrade 05</div><div class="rq-q">B1: "I disagree." → Write a professional disagreement.</div><input class="rq-inp" placeholder="Write a B2 version"/></div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div class="block" id="s4">
+    <div class="block-top" onclick="tog(4)">
+      <div class="b-ico">📧</div>
+      <div class="b-meta"><h2>Part 5 — Email Rewrite Task</h2><p>Make the whole email more diplomatic and professional.</p></div>
+      <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">WRITING</span></div>
+      <span class="b-chev" id="ch4">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="write-task"><h4>Rewrite the email below</h4><p>The original email is too direct. Rewrite it with a polite but clear professional tone.</p><div class="scenario"><strong>Original email:</strong><br/>Hi Mehmet,<br/>You didn't send the updated production figures. I need them today. The meeting is tomorrow and this is a problem. Send them before 4 p.m.<br/>Özgün</div>
+      <div class="wl"><span class="wl-n">01</span><input class="wl-inp" placeholder="Greeting"/></div>
+      <div class="wl"><span class="wl-n">02</span><input class="wl-inp" placeholder="Polite reason for writing"/></div>
+      <div class="wl"><span class="wl-n">03</span><input class="wl-inp" placeholder="Soft follow-up about the missing figures"/></div>
+      <div class="wl"><span class="wl-n">04</span><input class="wl-inp" placeholder="Clear deadline request"/></div>
+      <div class="wl"><span class="wl-n">05</span><input class="wl-inp" placeholder="Professional closing"/></div></div>
+    </div>
+  </div>
+
+  <!-- PART 6 -->
+  <div class="block" id="s5">
+    <div class="block-top" onclick="tog(5)">
+      <div class="b-ico">💬</div>
+      <div class="b-meta"><h2>Part 6 — Meeting Response Practice</h2><p>Write diplomatic spoken responses for difficult workplace moments.</p></div>
+      <div class="b-badge"><span class="b-tag">10 MIN</span><span class="b-diff">SPEAKING PREP</span></div>
+      <span class="b-chev" id="ch5">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="instr"><strong>Write</strong> one professional response for each situation. Keep it clear, calm and respectful.</div>
+      <div class="rq"><div class="rq-n">situation 01</div><div class="rq-q">A colleague suggests a plan you think is risky.</div><input class="rq-inp" placeholder="I see your point, but..."/></div>
+      <div class="rq"><div class="rq-n">situation 02</div><div class="rq-q">You need to interrupt politely because the meeting is running late.</div><input class="rq-inp" placeholder="Could I just...?"/></div>
+      <div class="rq"><div class="rq-n">situation 03</div><div class="rq-q">You need more information before making a decision.</div><input class="rq-inp" placeholder="Would it be possible to...?"/></div>
+      <div class="rq"><div class="rq-n">situation 04</div><div class="rq-q">You want to warn the team about a possible delay.</div><input class="rq-inp" placeholder="I'm slightly concerned that..."/></div>
+    </div>
+  </div>
+
+  <!-- PART 7 -->
+  <div class="block" id="s6">
+    <div class="block-top" onclick="tog(6)">
+      <div class="b-ico">🎯</div>
+      <div class="b-meta"><h2>Part 7 — Final Reflection and Self-Check</h2><p>Review your progress and prepare for the next diplomatic language lesson.</p></div>
+      <div class="b-badge"><span class="b-tag">8 MIN</span><span class="b-diff">FINAL TASK</span></div>
+      <span class="b-chev" id="ch6">▼</span>
+    </div>
+    <div class="block-body">
+      <div class="write-task"><h4>Mini reflection</h4><p>Answer in complete sentences.</p>
+        <div class="rq"><div class="rq-n">reflection 01</div><div class="rq-q">Which softener feels most natural for you to use at work?</div><input class="rq-inp" placeholder="Write your answer"/></div>
+        <div class="rq"><div class="rq-n">reflection 02</div><div class="rq-q">Which situation is hardest for you: requests, disagreement, warnings, or follow-ups?</div><input class="rq-inp" placeholder="Write your answer"/></div>
+        <div class="rq"><div class="rq-n">reflection 03</div><div class="rq-q">Write one sentence you want to use in a real meeting this week.</div><input class="rq-inp" placeholder="Write your sentence"/></div>
+      </div>
+      <button class="main-btn" onclick="showScore()">SHOW HOMEWORK PROGRESS</button>
+      <div class="score-card" id="scoreCard"><div class="sc-val" id="scoreVal">0<span>%</span></div><div class="sc-label" id="scoreLabel">Homework Progress</div><div class="sc-sub" id="scoreText">Complete the tasks above, then check your progress.</div></div>
+    </div>
+  </div>
+
+  <div class="lesson-nav">
+    <button class="nav-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑ TOP</button>
+    <div class="nav-info">WEEK 5 · LESSON 13 HOMEWORK<br/>DIPLOMATIC LANGUAGE · SOFTENERS &amp; MODALS</div>
+    <button class="nav-btn next" onclick="document.getElementById('s6').scrollIntoView({behavior:'smooth'})">FINAL TASK →</button>
+  </div>
+</div>
+
+<div class="save-bar"><button class="save-btn" onclick="saveAll()">SAVE</button><button class="save-btn clear" onclick="clearAll()">CLEAR</button></div>
+<div id="save-toast">PROGRESS SAVED</div>
+
+<script>
+const blocks=[...document.querySelectorAll('.block')];
+function tog(i){const b=blocks[i],body=b.querySelector('.block-body'),chev=b.querySelector('.b-chev');b.classList.toggle('open');body.classList.toggle('open');chev.style.transform=body.classList.contains('open')?'rotate(180deg)':'rotate(0deg)';updateProgress();}
+function updateProgress(){const opened=document.querySelectorAll('.block-body.open').length;const total=blocks.length;const pct=Math.round((opened/total)*100);document.getElementById('pct').textContent=pct+'%';[...document.querySelectorAll('.prog-step')].forEach((s,i)=>{s.classList.remove('done','active');if(i<opened)s.classList.add('done');else if(i===opened&&i<total)s.classList.add('active');});}
+function norm(t){return (t||'').toLowerCase().trim().replace(/[?.!,]/g,'').replace(/\s+/g,' ');}
+function checkFill(btn){const inp=btn.previousElementSibling;const ans=norm(inp.dataset.a);const val=norm(inp.value);inp.classList.remove('ok','no');inp.classList.add(val===ans?'ok':'no');}
+function markMc(btn,correct){const wrap=btn.closest('.mc-block');wrap.querySelectorAll('.mc-btn').forEach(b=>b.disabled=true);btn.classList.add(correct?'cor':'wrng');const fb=wrap.querySelector('.mc-fb');fb.classList.add('show',correct?'ok':'no');if(!correct)fb.textContent='Not the best choice. Look for the option that is polite, calm and still clear.';}
+function checkRewrite(){document.querySelectorAll('.ec-inp').forEach((inp,idx)=>{const v=norm(inp.value);inp.classList.remove('ok','no');let ok=false;if(idx===0) ok=v.includes('could')&&v.includes('send')&&v.includes('report');if(idx===1) ok=(v.includes('seems to be')||v.includes('appears to be'))&&v.includes('figures');if(idx===2) ok=(v.includes('i see your point')||v.includes('i understand'))&&(v.includes('could')||v.includes('another option')||v.includes('consider'));if(idx===3) ok=(v.includes('might')||v.includes('may')||v.includes('could'))&&v.includes('delay');inp.classList.add(ok?'ok':'no');});}
+function showScore(){let total=0,done=0;document.querySelectorAll('.fi-inp').forEach(i=>{total++;if(norm(i.value)===norm(i.dataset.a))done++;});document.querySelectorAll('.ec-inp').forEach(i=>{total++;if(i.classList.contains('ok'))done++;});document.querySelectorAll('.rq-inp,.wl-inp').forEach(i=>{total++;if(i.value.trim().length>4)done++;});const pct=Math.round((done/Math.max(total,1))*100);document.getElementById('scoreVal').innerHTML=pct+'<span>%</span>';document.getElementById('scoreLabel').textContent=pct>=85?'Excellent Work':'Homework Progress';document.getElementById('scoreText').textContent=pct>=85?'Excellent — your diplomatic tone is becoming much more natural and professional.':pct>=65?'Good progress. Review the softeners for disagreement and follow-up language.':'Keep practising. Focus first on could, would, might, may, and there seems to be.';document.getElementById('scoreCard').classList.add('show');}
+const key='ozgun_hw13_diplomatic_softeners_modals';
+function saveAll(){const data={inputs:[...document.querySelectorAll('input')].map(i=>i.value),open:[...document.querySelectorAll('.block-body')].map(b=>b.classList.contains('open'))};localStorage.setItem(key,JSON.stringify(data));const t=document.getElementById('save-toast');t.style.opacity='1';t.style.transform='translateY(0)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px)';},1400);}
+function clearAll(){localStorage.removeItem(key);[...document.querySelectorAll('input')].forEach(i=>{i.value='';i.classList.remove('ok','no');});[...document.querySelectorAll('.mc-btn')].forEach(b=>{b.disabled=false;b.classList.remove('cor','wrng');});[...document.querySelectorAll('.mc-fb')].forEach(f=>f.className='mc-fb');[...document.querySelectorAll('.ec-inp')].forEach(i=>i.classList.remove('ok','no'));document.getElementById('scoreCard').classList.remove('show');}
+(function loadAll(){const raw=localStorage.getItem(key);if(!raw){updateProgress();return;}try{const data=JSON.parse(raw);[...document.querySelectorAll('input')].forEach((i,idx)=>{if(data.inputs&&data.inputs[idx]!=null)i.value=data.inputs[idx];});if(data.open){[...document.querySelectorAll('.block-body')].forEach((b,idx)=>{const blk=blocks[idx],ch=blk.querySelector('.b-chev');if(data.open[idx]){blk.classList.add('open');b.classList.add('open');ch.style.transform='rotate(180deg)';}else{blk.classList.remove('open');b.classList.remove('open');ch.style.transform='rotate(0deg)';}});}}catch(e){}updateProgress();})();
+</script>
+</body>
+</html>
